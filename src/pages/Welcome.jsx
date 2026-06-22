@@ -1,5 +1,6 @@
-import React from 'react';
-import { ArrowRight, Zap } from 'lucide-react';
+import { Zap, ArrowRight } from 'lucide-react';
+import googleLogo from '../assets/google.jpg';
+import facebookLogo from '../assets/facebook.jpg';
 
 export default function Welcome({ onSignUpEmail, onNavigateToLogin }) {
   return (
@@ -32,11 +33,11 @@ export default function Welcome({ onSignUpEmail, onNavigateToLogin }) {
 
         {/* Social Authentication */}
         <div className="auth-social-row">
-          <button className="social-auth-btn google-btn" onClick={onSignUpEmail} aria-label="Đăng nhập bằng Google">
-            <span className="social-icon-placeholder">G</span>
+          <button className="social-auth-btn google-btn" onClick={onSignUpEmail} aria-label="Đăng ký bằng Google">
+            <img src={googleLogo} alt="Google" className="social-logo-img" />
           </button>
-          <button className="social-auth-btn facebook-btn" onClick={onSignUpEmail} aria-label="Đăng nhập bằng Facebook">
-            <span className="social-icon-placeholder">F</span>
+          <button className="social-auth-btn facebook-btn" onClick={onSignUpEmail} aria-label="Đăng ký bằng Facebook">
+            <img src={facebookLogo} alt="Facebook" className="social-logo-img" />
           </button>
         </div>
       </div>

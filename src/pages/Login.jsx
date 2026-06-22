@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Zap, Eye, EyeOff } from 'lucide-react';
+import googleLogo from '../assets/google.jpg';
+import facebookLogo from '../assets/facebook.jpg';
 
 export default function Login({ onLoginSuccess, onNavigateToSignUp, onBack }) {
   const [email, setEmail] = useState('');
@@ -106,10 +108,10 @@ export default function Login({ onLoginSuccess, onNavigateToSignUp, onBack }) {
       {/* Social Login */}
       <div className="auth-social-row" style={{ marginBottom: '24px' }}>
         <button className="social-auth-btn google-btn" onClick={onLoginSuccess} aria-label="Đăng nhập bằng Google">
-          <span className="social-icon-placeholder">G</span>
+          <img src={googleLogo} alt="Google" className="social-logo-img" />
         </button>
         <button className="social-auth-btn facebook-btn" onClick={onLoginSuccess} aria-label="Đăng nhập bằng Facebook">
-          <span className="social-icon-placeholder">F</span>
+          <img src={facebookLogo} alt="Facebook" className="social-logo-img" />
         </button>
       </div>
 

@@ -4442,3 +4442,10 @@ p {
   padding: 12px 24px;
   font-size: 15px;
 }
+
+.social-logo-img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  border-radius: 50%;
+}

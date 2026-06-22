@@ -12,6 +12,7 @@ import Progress from './pages/Progress';
 import Profile from './pages/Profile';
 import Welcome from './pages/Welcome';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import './App.css';
 
 export default function App() {
@@ -106,8 +107,16 @@ export default function App() {
       case 'welcome':
         return (
           <Welcome
-            onSignUpEmail={() => setActivePage('onboarding')}
+            onSignUpEmail={() => setActivePage('register')}
             onNavigateToLogin={() => setActivePage('login')}
+          />
+        );
+      case 'register':
+        return (
+          <Register
+            onRegisterSuccess={() => setActivePage('onboarding')}
+            onNavigateToLogin={() => setActivePage('login')}
+            onBack={() => setActivePage('welcome')}
           />
         );
       case 'login':
@@ -117,7 +126,7 @@ export default function App() {
               setIsOnboarded(true);
               setActivePage('dashboard');
             }}
-            onNavigateToSignUp={() => setActivePage('onboarding')}
+            onNavigateToSignUp={() => setActivePage('register')}
             onBack={() => setActivePage('welcome')}
           />
         );
