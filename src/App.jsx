@@ -10,6 +10,8 @@ import AICoach from './pages/AICoach';
 import Community from './pages/Community';
 import Progress from './pages/Progress';
 import Profile from './pages/Profile';
+import Welcome from './pages/Welcome';
+import Login from './pages/Login';
 import './App.css';
 
 export default function App() {
@@ -17,7 +19,7 @@ export default function App() {
   const [isOnboarded, setIsOnboarded] = useState(false);
   const [userGoal, setUserGoal] = useState(null);
   const [currentPlan, setCurrentPlan] = useState('free');
-  const [activePage, setActivePage] = useState('onboarding'); // onboarding, pricing, dashboard, etc.
+  const [activePage, setActivePage] = useState('welcome'); // welcome, login, onboarding, pricing, dashboard, etc.
   
   // App settings & profile
   const [isDark, setIsDark] = useState(false);
@@ -90,7 +92,7 @@ export default function App() {
       setIsOnboarded(false);
       setUserGoal(null);
       setCurrentPlan('free');
-      setActivePage('onboarding');
+      setActivePage('welcome');
       setCheckInHistory([2, 3, 5, 8, 12, 13, 14, 15, 18, 19, 21]);
       setActiveStreak(5);
       setXp(1680);
@@ -101,6 +103,24 @@ export default function App() {
   // Render components based on state
   const renderPage = () => {
     switch (activePage) {
+      case 'welcome':
+        return (
+          <Welcome
+            onSignUpEmail={() => setActivePage('onboarding')}
+            onNavigateToLogin={() => setActivePage('login')}
+          />
+        );
+      case 'login':
+        return (
+          <Login
+            onLoginSuccess={() => {
+              setIsOnboarded(true);
+              setActivePage('dashboard');
+            }}
+            onNavigateToSignUp={() => setActivePage('onboarding')}
+            onBack={() => setActivePage('welcome')}
+          />
+        );
       case 'onboarding':
         return <Onboarding onComplete={handleOnboardingComplete} />;
       case 'pricing':
