@@ -7,29 +7,29 @@ export default function Onboarding({ onComplete }) {
   const goals = [
     {
       id: 'consistency',
-      title: 'Build Consistency',
-      description: 'Stick to a schedule & form a habit',
+      title: 'Xây dựng sự Kỷ luật',
+      description: 'Bám sát lịch trình & duy trì thói quen tập luyện',
       icon: CalendarRange,
       color: 'blue'
     },
     {
       id: 'energy',
-      title: 'Boost Energy',
-      description: 'Feel more active throughout the day',
+      title: 'Tăng cường Năng lượng',
+      description: 'Cảm thấy năng động và tràn đầy sức sống hơn',
       icon: Zap,
       color: 'orange'
     },
     {
       id: 'strength',
-      title: 'Gain Strength',
-      description: 'Build muscle & physical endurance',
+      title: 'Cải thiện Sức mạnh',
+      description: 'Phát triển cơ bắp & tăng cường sức chịu đựng',
       icon: Dumbbell,
       color: 'purple'
     },
     {
       id: 'better_feel',
-      title: 'Feel Better',
-      description: 'Improve sleep quality & mental health',
+      title: 'Sức khỏe & Tinh thần',
+      description: 'Cải thiện giấc ngủ, giảm căng thẳng & mệt mỏi',
       icon: Heart,
       color: 'green'
     }
@@ -44,16 +44,16 @@ export default function Onboarding({ onComplete }) {
   return (
     <div className="onboarding-screen fade-in">
       <div className="onboarding-progress">
-        <div className="progress-step-text">STEP 1 OF 2</div>
+        <div className="progress-step-text">BƯỚC 1 / 2</div>
         <div className="progress-track-full">
           <div className="progress-bar-fill" style={{ width: '50%' }}></div>
         </div>
       </div>
 
       <div className="onboarding-intro">
-        <h2 className="onboarding-title">What's your main fitness goal?</h2>
+        <h2 className="onboarding-title">Mục tiêu chính của bạn là gì?</h2>
         <p className="onboarding-subtitle">
-          We tailor your AI coach & workouts to support you where it matters most.
+          Chúng tôi sẽ cá nhân hóa AI Coach & các bài tập phù hợp nhất với bạn.
         </p>
       </div>
 
@@ -88,7 +88,7 @@ export default function Onboarding({ onComplete }) {
           disabled={!selectedGoal}
           onClick={handleContinue}
         >
-          Continue
+          Tiếp tục
         </button>
       </div>
     </div>

@@ -622,9 +622,8 @@ p {
 .onboarding-screen {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  padding: 8px 8px 24px 8px;
-  justify-content: space-between;
+  padding: 8px;
+  box-sizing: border-box;
 }
 
 .onboarding-progress {
@@ -826,7 +825,21 @@ p {
 }
 
 .onboarding-actions {
-  margin-top: auto;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 76px;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  z-index: 80;
+  box-sizing: border-box;
 }
 
 .btn:disabled {
@@ -845,66 +858,91 @@ p {
 .pricing-screen {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  padding: 8px 8px 24px 8px;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.pricing-header-row {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
-}
-
-.pricing-back-header {
   margin-bottom: 12px;
+  padding: 0 4px;
 }
 
-.back-btn {
+.back-btn-icon {
   background: none;
   border: none;
-  color: var(--primary);
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 14px;
+  color: var(--text-secondary);
   cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  width: 28px;
+  height: 28px;
 }
 
-.dark-theme .back-btn {
-  color: #60a5fa;
+.dark-theme .back-btn-icon {
+  color: var(--text-muted);
+}
+
+.back-btn-icon:hover {
+  background-color: var(--primary-light);
+  color: var(--primary);
+}
+
+.dark-theme .back-btn-icon:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.pricing-logo-text {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--primary);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent-purple) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .pricing-intro {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .pricing-title {
-  font-size: 26px;
+  font-size: 20px;
   font-weight: 800;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   letter-spacing: -0.5px;
 }
 
 .pricing-subtitle {
-  font-size: 13.5px;
+  font-size: 12.5px;
   color: var(--text-secondary);
 }
 
 .plans-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-bottom: 24px;
-  flex: 1;
-  overflow-y: auto;
-  padding-right: 2px;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 
 .plan-card {
   border: 2px solid var(--border-light);
   background-color: var(--bg-card);
   border-radius: var(--radius-md);
-  padding: 20px 16px 16px 16px;
+  padding: 12px 14px;
   cursor: pointer;
   position: relative;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .dark-theme .plan-card {
@@ -958,6 +996,35 @@ p {
   letter-spacing: 0.05em;
 }
 
+.squad-badge {
+  position: absolute;
+  top: -12px;
+  right: 16px;
+  background-color: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+  letter-spacing: 0.05em;
+}
+
+.dark-theme .squad-badge {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border-color: rgba(52, 211, 153, 0.3);
+}
+
+.plan-card-btn {
+  margin-top: 8px;
+  padding: 10px 16px;
+  font-size: 13.5px;
+}
+
 .plan-header-info {
   display: flex;
   justify-content: space-between;
@@ -980,7 +1047,7 @@ p {
 
 .plan-name {
   font-family: var(--font-display);
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 800;
   color: var(--text-primary);
 }
@@ -997,7 +1064,7 @@ p {
 
 .plan-price {
   font-family: var(--font-display);
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 800;
   color: var(--text-primary);
   line-height: 1;
@@ -1016,7 +1083,7 @@ p {
 }
 
 .plan-period {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-secondary);
   font-weight: 500;
 }
@@ -1025,9 +1092,9 @@ p {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   border-top: 1px solid var(--border-light);
-  padding-top: 12px;
+  padding-top: 8px;
 }
 
 .dark-theme .plan-features {
@@ -1037,8 +1104,8 @@ p {
 .feature-item {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
-  font-size: 12.5px;
+  gap: 6px;
+  font-size: 12px;
   color: var(--text-secondary);
 }
 
@@ -1053,7 +1120,31 @@ p {
 }
 
 .pricing-actions {
-  margin-top: auto;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 76px;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  z-index: 80;
+  box-sizing: border-box;
+}
+
+.dark-theme .onboarding-actions, .dark-theme .pricing-actions {
+  background-color: rgba(21, 31, 50, 0.9);
+  border-top-color: var(--dark-border);
+}
+
+.pricing-actions-static {
+  margin-top: 24px;
+  width: 100%;
 }
 
 /* Dashboard Screen */
@@ -3111,17 +3202,32 @@ p {
   border: none;
   background: none;
   font-family: var(--font-display);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 800;
   color: var(--primary);
   outline: none;
   cursor: pointer;
   margin-top: 2px;
-  width: 80px;
+  width: 95px;
+  height: 24px;
+  line-height: 24px;
+  padding: 0;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+}
+
+.reminder-time-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  margin-left: 4px;
 }
 
 .dark-theme .reminder-time-input {
   color: #60a5fa;
+}
+
+.dark-theme .reminder-time-input::-webkit-calendar-picker-indicator {
+  filter: invert(1);
 }
 
 /* Dropdown Voice */
@@ -3214,6 +3320,62 @@ p {
 .reset-btn:hover {
   background-color: rgba(239, 68, 68, 0.05) !important;
   border-color: var(--danger);
+}
+
+/* Real Calendar Styles */
+.grid-weekday-header {
+  font-size: 10px;
+  color: var(--text-secondary);
+  font-weight: 700;
+  text-align: center;
+  padding-bottom: 6px;
+  text-transform: uppercase;
+}
+.dark-theme .grid-weekday-header {
+  color: var(--text-muted);
+}
+.grid-day-cell-empty {
+  aspect-ratio: 1;
+}
+.grid-day-cell.today {
+  border: 2px solid var(--primary) !important;
+}
+.dark-theme .grid-day-cell.today {
+  border-color: #60a5fa !important;
+}
+.current-month-label {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+.dark-theme .current-month-label {
+  color: var(--text-muted);
+}
+
+/* Responsive scaling for small desktop screen viewports to prevent cutoff of bottom notch/buttons */
+@media (max-height: 900px) and (min-width: 450px) {
+  .device-container {
+    transform: scale(0.85);
+    transform-origin: center center;
+    margin: -60px 0;
+  }
+}
+
+@media (max-height: 780px) and (min-width: 450px) {
+  .device-container {
+    transform: scale(0.75);
+    transform-origin: center center;
+    margin: -105px 0;
+  }
+}
+
+@media (max-height: 680px) and (min-width: 450px) {
+  .device-container {
+    transform: scale(0.65);
+    transform-origin: center center;
+    margin: -145px 0;
+  }
 }
 
 

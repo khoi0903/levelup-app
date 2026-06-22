@@ -24,7 +24,7 @@ export default function Header({ xp = 1680, maxXp = 2000, level = 4, setActivePa
         <button 
           className="header-action-btn" 
           onClick={() => setActivePage('pricing')}
-          title="Subscription plans"
+          title="Gói đăng ký"
         >
           <Trophy size={18} className="trophy-gold" />
         </button>

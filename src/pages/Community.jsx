@@ -49,7 +49,7 @@ export default function Community({ userName = 'Alex', userXp = 1680 }) {
   return (
     <div className="community-page fade-in">
       <div className="page-title-section">
-        <h2 className="page-title">The Squad</h2>
+        <h2 className="page-title">Đồng đội</h2>
         <p className="page-subtitle">Đồng hành cùng đồng đội để giữ vững kỷ luật.</p>
       </div>
 
@@ -77,7 +77,7 @@ export default function Community({ userName = 'Alex', userXp = 1680 }) {
               <span className="challenge-badge">THỬ THÁCH TUẦN</span>
               <span className="days-left-text">Còn 4 ngày</span>
             </div>
-            <h3 className="challenge-title">10k Steps Daily</h3>
+            <h3 className="challenge-title">10k bước mỗi ngày</h3>
             <p className="challenge-desc">Đi bộ tối thiểu 10,000 bước mỗi ngày.</p>
             
             <div className="challenge-progress-container">
@@ -103,7 +103,7 @@ export default function Community({ userName = 'Alex', userXp = 1680 }) {
 
           {/* Weekly Leaderboard */}
           <div className="leaderboard-section">
-            <h3 className="section-title-standard">Weekly Leaderboard</h3>
+            <h3 className="section-title-standard">Bảng xếp hạng tuần</h3>
             <div className="leaderboard-list">
               {leaderboardData.map((user) => {
                 const isCheered = cheeredUsers.includes(user.name);

@@ -5,7 +5,7 @@ const exercisesData = [
   {
     id: 1,
     name: 'Cat-Cow Stretch',
-    type: 'Stretch',
+    type: 'Giãn cơ',
     duration: 60, // in seconds
     isRepBased: false,
     reps: 0,
@@ -15,7 +15,7 @@ const exercisesData = [
   {
     id: 2,
     name: 'Bird Dog',
-    type: 'Core',
+    type: 'Cơ bụng',
     duration: 45,
     isRepBased: true,
     reps: 8, // reps each side
@@ -25,7 +25,7 @@ const exercisesData = [
   {
     id: 3,
     name: 'Plank Hold',
-    type: 'Core',
+    type: 'Cơ bụng',
     duration: 30,
     isRepBased: false,
     reps: 0,
@@ -35,7 +35,7 @@ const exercisesData = [
   {
     id: 4,
     name: 'Bodyweight Squats',
-    type: 'Lower Body',
+    type: 'Thân dưới',
     duration: 45,
     isRepBased: true,
     reps: 12,
@@ -220,7 +220,7 @@ export default function Workouts({ onWorkoutComplete }) {
   return (
     <div className="workout-page fade-in">
       <div className="page-title-section">
-        <h2 className="page-title">Workout Plan</h2>
+        <h2 className="page-title">Kế hoạch tập luyện</h2>
         <p className="page-subtitle">Thực hiện các động tác hôm nay để nhận XP habit.</p>
       </div>
 
@@ -250,7 +250,7 @@ export default function Workouts({ onWorkoutComplete }) {
                 <div className="ex-details">
                   <h4 className="ex-title">{exercise.name}</h4>
                   <p className="ex-info">
-                    {exercise.type} • {exercise.isRepBased ? `${exercise.reps} reps` : `${exercise.duration}s`}
+                    {exercise.type} • {exercise.isRepBased ? `${exercise.reps} lần` : `${exercise.duration} giây`}
                   </p>
                 </div>
               </div>

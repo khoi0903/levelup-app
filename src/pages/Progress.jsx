@@ -11,14 +11,29 @@ export default function Progress({
 }) {
   const xpPercentage = (xp / maxXp) * 100;
 
-  // Generate 28 days for the calendar grid
-  const totalDays = 28;
+  // Real calendar generation for the current month
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const currentMonth = today.getMonth();
+  
+  const monthNames = [
+    "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
+    "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
+  ];
+  
+  const currentMonthName = `${monthNames[currentMonth]} ${currentYear}`;
+  const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
   const days = Array.from({ length: totalDays }, (_, i) => i + 1);
+  
+  const firstDayIndex = new Date(currentYear, currentMonth, 1).getDay();
+  // Map JS getDay (0=Sun, 1=Mon, ..., 6=Sat) to (Mon=0, ..., Sun=6)
+  const startOffset = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
+  const emptySpacers = Array.from({ length: startOffset });
 
   const milestones = [
     {
       id: 'streak_5',
-      title: '5-Day Streak',
+      title: 'Chuỗi 5 ngày',
       desc: 'Tập luyện 5 ngày liên tiếp.',
       status: 'completed',
       progress: '5/5',
@@ -27,7 +42,7 @@ export default function Progress({
     },
     {
       id: 'early_bird',
-      title: 'Early Bird',
+      title: 'Tập sớm',
       desc: 'Hoàn thành bài tập trước 7 AM.',
       status: 'completed',
       progress: '1/1',
@@ -57,7 +72,7 @@ export default function Progress({
   return (
     <div className="progress-page fade-in">
       <div className="page-title-section">
-        <h2 className="page-title">Your Journey</h2>
+        <h2 className="page-title">Hành trình của bạn</h2>
         <p className="page-subtitle">Theo dõi sự kỷ luật và thành quả của bạn.</p>
       </div>
 
@@ -96,9 +111,10 @@ export default function Progress({
       {/* Consistency Grid */}
       <div className="consistency-grid-section card">
         <div className="section-header-row">
-          <div className="section-title-wrapper">
+          <div className="section-title-wrapper" style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
             <Calendar size={16} className="text-primary" />
-            <h3 className="section-title">Consistency Grid</h3>
+            <h3 className="section-title" style={{ margin: 0 }}>Lịch kỷ luật</h3>
+            <span className="current-month-label" style={{ fontSize: '12px', opacity: 0.75 }}>({currentMonthName})</span>
           </div>
           <div className="grid-streak-text">
             🔥 {activeStreak} ngày liên tiếp
@@ -107,14 +123,26 @@ export default function Progress({
         <p className="grid-instruction">Chạm vào ô ngày để đánh dấu điểm danh tập luyện.</p>
 
         <div className="calendar-grid">
+          {/* Weekday headers */}
+          {['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map((wDay) => (
+            <div key={wDay} className="grid-weekday-header">{wDay}</div>
+          ))}
+          
+          {/* Empty cells for offset */}
+          {emptySpacers.map((_, idx) => (
+            <div key={`empty-${idx}`} className="grid-day-cell-empty"></div>
+          ))}
+          
+          {/* Real day cells */}
           {days.map((day) => {
             const isCompleted = checkInHistory.includes(day);
+            const isToday = day === today.getDate();
             return (
               <button
                 key={day}
-                className={`grid-day-cell ${isCompleted ? 'completed animate-pop' : ''}`}
+                className={`grid-day-cell ${isCompleted ? 'completed animate-pop' : ''} ${isToday ? 'today' : ''}`}
                 onClick={() => onToggleCheckIn(day)}
-                aria-label={`Day ${day}`}
+                aria-label={`Ngày ${day}`}
               >
                 {day}
               </button>
@@ -125,7 +153,7 @@ export default function Progress({
 
       {/* Milestones / Badges List */}
       <div className="milestones-section">
-        <h3 className="section-title-standard">Milestones & Achievements</h3>
+        <h3 className="section-title-standard">Cột mốc & Thành tích</h3>
         <div className="milestones-grid">
           {milestones.map((ms) => {
             const Icon = ms.icon;

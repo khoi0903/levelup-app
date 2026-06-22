@@ -47,7 +47,7 @@ export default function Profile({
         </div>
         <div className="profile-user-text">
           <h3 className="profile-user-name">{userName}</h3>
-          <span className="profile-user-role">Fitness Enthusiast</span>
+          <span className="profile-user-role">Người đam mê tập luyện</span>
         </div>
       </div>
 

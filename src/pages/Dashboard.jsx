@@ -21,8 +21,8 @@ export default function Dashboard({ userName = 'Alex', activeStreak = 5, onStart
       {/* Greeting Header */}
       <div className="dashboard-greeting-row">
         <div>
-          <h2 className="greeting-text">Good Morning, {userName}!</h2>
-          <p className="greeting-sub">Consistency is your superpower.</p>
+          <h2 className="greeting-text">Chào buổi sáng, {userName}!</h2>
+          <p className="greeting-sub">Kỷ luật là siêu năng lực của bạn.</p>
         </div>
         <div className="streak-badge-container" onClick={() => setActivePage('progress')}>
           <Flame className="streak-fire-icon" size={18} fill="currentColor" />
@@ -82,7 +82,7 @@ export default function Dashboard({ userName = 'Alex', activeStreak = 5, onStart
         <div className="section-header-row">
           <div className="section-title-wrapper">
             <TrendingUp size={16} className="text-primary" />
-            <h3 className="section-title">Weekly Progress</h3>
+            <h3 className="section-title">Tiến trình tuần</h3>
           </div>
           <button className="view-detail-link" onClick={() => setActivePage('progress')}>
             Chi tiết <ChevronRight size={14} />
@@ -92,9 +92,9 @@ export default function Dashboard({ userName = 'Alex', activeStreak = 5, onStart
         {/* SVG Bar Chart */}
         <div className="chart-container">
           <div className="chart-y-axis">
-            <span>60m</span>
-            <span>30m</span>
-            <span>0m</span>
+            <span>60p</span>
+            <span>30p</span>
+            <span>0p</span>
           </div>
           <div className="chart-bars-wrapper">
             {weeklyData.map((data, index) => {
@@ -114,7 +114,7 @@ export default function Dashboard({ userName = 'Alex', activeStreak = 5, onStart
                     >
                       {isHovered && data.mins > 0 && (
                         <div className="chart-tooltip">
-                          <span className="tooltip-mins">{data.mins}m</span>
+                          <span className="tooltip-mins">{data.mins} phút</span>
                           <span className="tooltip-kcal">{data.kcal} kcal</span>
                         </div>
                       )}

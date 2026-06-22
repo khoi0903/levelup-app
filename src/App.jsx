@@ -56,8 +56,8 @@ export default function App() {
       setXp(newXp);
     }
 
-    // Add today to check-in grid (e.g. day 22)
-    const todayNum = 22;
+    // Add today to check-in grid dynamically
+    const todayNum = new Date().getDate();
     if (!checkInHistory.includes(todayNum)) {
       setCheckInHistory((prev) => [...prev, todayNum]);
       setActiveStreak((prev) => prev + 1);
@@ -65,14 +65,15 @@ export default function App() {
   };
 
   const handleToggleCheckIn = (day) => {
+    const todayNum = new Date().getDate();
     if (checkInHistory.includes(day)) {
       setCheckInHistory((prev) => prev.filter((d) => d !== day));
       // adjust streak if today is deselected
-      if (day === 22) setActiveStreak((prev) => Math.max(0, prev - 1));
+      if (day === todayNum) setActiveStreak((prev) => Math.max(0, prev - 1));
     } else {
       setCheckInHistory((prev) => [...prev, day]);
       // adjust streak if today is selected
-      if (day === 22) setActiveStreak((prev) => prev + 1);
+      if (day === todayNum) setActiveStreak((prev) => prev + 1);
     }
   };
 
@@ -108,7 +109,7 @@ export default function App() {
             onSelectPlan={handlePricingSelect}
             currentPlan={currentPlan}
             fromProfile={isOnboarded}
-            onBack={() => setActivePage('profile')}
+            onBack={isOnboarded ? () => setActivePage('profile') : () => setActivePage('onboarding')}
           />
         );
       case 'dashboard':
@@ -159,7 +160,7 @@ export default function App() {
   };
 
   const showHeader = isOnboarded && activePage !== 'pricing';
-  const showBottomNav = isOnboarded && activePage !== 'pricing';
+  const showBottomNav = isOnboarded;
 
   return (
     <MobileFrame isDark={isDark}>
@@ -179,7 +180,7 @@ export default function App() {
 
       {showBottomNav && (
         <BottomNav
-          activePage={activePage === 'progress' ? 'profile' : activePage}
+          activePage={activePage === 'progress' || activePage === 'pricing' ? 'profile' : activePage}
           setActivePage={setActivePage}
           isDark={isDark}
         />
