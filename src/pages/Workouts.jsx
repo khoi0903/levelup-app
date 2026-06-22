@@ -209,7 +209,7 @@ export default function Workouts({ onWorkoutComplete }) {
           </button>
           
           <button className="btn btn-primary player-done-btn" onClick={handleExerciseDone}>
-            {currentExerciseIndex === exercisesData.length - 1 ? 'Hoàn thành' : 'Động tác tiếp'}
+            {currentExerciseIndex === exercisesData.length - 1 ? 'Hoàn thành' : 'Tiếp theo'}
           </button>
         </div>
       </div>
