@@ -117,11 +117,13 @@ export default function Pricing({ onSelectPlan, currentPlan = 'free', fromProfil
               </ul>
 
               <button
-                className={`btn ${isCurrent ? 'btn-outline' : 'btn-primary'} plan-card-btn`}
+                className={`btn ${fromProfile && isCurrent ? 'btn-outline' : 'btn-primary'} plan-card-btn`}
                 onClick={() => onSelectPlan(plan.id)}
-                disabled={isCurrent}
+                disabled={fromProfile && isCurrent}
               >
-                {isCurrent ? 'Gói hiện tại' : (plan.id === 'free' ? 'Chọn gói này' : 'Nâng cấp ngay')}
+                {fromProfile && isCurrent 
+                  ? 'Gói hiện tại' 
+                  : (plan.id === 'free' ? (fromProfile ? 'Chọn gói này' : 'Bắt đầu miễn phí') : 'Nâng cấp ngay')}
               </button>
             </div>
           );
