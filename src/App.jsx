@@ -141,7 +141,7 @@ export default function App() {
       case 'profile':
         return (
           <Profile
-            userName="Alex Johnson"
+            userName="Alex"
             userGoal={userGoal}
             reminderTime={reminderTime}
             coachVoice={coachVoice}
@@ -152,6 +152,8 @@ export default function App() {
             onUpdateSettings={handleUpdateSettings}
             onResetOnboarding={handleResetOnboarding}
             setActivePage={setActivePage}
+            xp={xp}
+            level={level}
           />
         );
       default:

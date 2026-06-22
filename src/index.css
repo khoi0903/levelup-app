@@ -3378,11 +3378,678 @@ p {
   }
 }
 
+/* Achievements View (Profile Tab Figma Redesign) */
+.achievements-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
 
+.achievements-user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
+.achievements-user-text {
+  display: flex;
+  flex-direction: column;
+}
 
+.achievements-user-name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
 
+.dark-theme .achievements-user-name {
+  color: white;
+}
 
+.achievements-user-role {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
 
+.dark-theme .achievements-user-role {
+  color: var(--text-muted);
+}
+
+.settings-gear-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.dark-theme .settings-gear-btn {
+  color: var(--text-muted);
+}
+
+.settings-gear-btn:hover {
+  background-color: var(--primary-light);
+  color: var(--primary);
+  transform: rotate(45deg);
+}
+
+.dark-theme .settings-gear-btn:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+
+/* Rank Card */
+.rank-card {
+  position: relative;
+  background: linear-gradient(135deg, #1d4ed8 0%, #6d28d9 100%);
+  color: white;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-md);
+  border: none;
+}
+
+.rank-card-label {
+  font-size: 11px;
+  font-weight: 800;
+  opacity: 0.85;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.rank-card-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.rank-name-badge {
+  font-size: 20px;
+  font-weight: 800;
+  font-family: var(--font-display);
+}
+
+.rank-badge-percent {
+  font-size: 11px;
+  font-weight: 700;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.rank-card-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding-top: 8px;
+  font-size: 12px;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+/* Monthly Stats */
+.section-title-sm {
+  font-size: 14px;
+  font-weight: 800;
+  font-family: var(--font-display);
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.dark-theme .section-title-sm {
+  color: white;
+}
+
+.achievements-monthly-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.monthly-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+}
+
+.stat-icon-wrapper-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-icon-wrapper-circle.distance {
+  background-color: #ecfdf5;
+  color: #059669;
+}
+
+.dark-theme .stat-icon-wrapper-circle.distance {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+}
+
+.stat-icon-wrapper-circle.energy {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.dark-theme .stat-icon-wrapper-circle.energy {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+}
+
+.monthly-stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.monthly-stat-label {
+  font-size: 10px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.dark-theme .monthly-stat-label {
+  color: var(--text-muted);
+}
+
+.monthly-stat-val {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.dark-theme .monthly-stat-val {
+  color: white;
+}
+
+/* Badge Collection Grid */
+.badges-collection-section {
+  margin-bottom: 20px;
+}
+
+.section-header-row-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.section-link {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dark-theme .section-link {
+  color: #60a5fa;
+}
+
+.badges-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.badge-item-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 8px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.badge-item-card:hover {
+  transform: translateY(-2px);
+}
+
+.badge-icon-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
+.badge-icon-circle.gold { background: linear-gradient(135deg, #fef3c7 0%, #fde047 100%); color: #d97706; }
+.badge-icon-circle.blue { background: linear-gradient(135deg, #e0f2fe 0%, #7dd3fc 100%); color: #0284c7; }
+.badge-icon-circle.purple { background: linear-gradient(135deg, #f3e8ff 0%, #c084fc 100%); color: #7c3aed; }
+.badge-icon-circle.green { background: linear-gradient(135deg, #dcfce7 0%, #86efac 100%); color: #16a34a; }
+.badge-icon-circle.orange { background: linear-gradient(135deg, #ffedd5 0%, #fdba74 100%); color: #ea580c; }
+.badge-icon-circle.cyan { background: linear-gradient(135deg, #ecfeff 0%, #67e8f9 100%); color: #0891b2; }
+
+.badge-icon-circle.locked {
+  background: var(--border-light) !important;
+  color: var(--text-muted) !important;
+}
+
+.dark-theme .badge-icon-circle.locked {
+  background: var(--dark-border) !important;
+  color: var(--text-secondary) !important;
+}
+
+.badge-name-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+}
+
+.dark-theme .badge-name-label {
+  color: white;
+}
+
+.badge-desc-label {
+  font-size: 9px;
+  color: var(--text-secondary);
+}
+
+.dark-theme .badge-desc-label {
+  color: var(--text-muted);
+}
+
+/* Settings back button header */
+.settings-header-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.settings-page-title {
+  font-size: 18px;
+  font-weight: 800;
+  font-family: var(--font-display);
+  color: var(--text-primary);
+}
+
+.dark-theme .settings-page-title {
+  color: white;
+}
+
+/* Video Library (Workouts Tab Figma Redesign) */
+.video-search-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.video-search-input {
+  width: 100%;
+  padding: 10px 14px 10px 38px;
+  font-size: 13px;
+  font-family: var(--font-body);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  outline: none;
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  transition: all 0.2s;
+}
+
+.dark-theme .video-search-input {
+  border-color: var(--dark-border);
+  background-color: var(--dark-card);
+  color: white;
+}
+
+.video-search-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 86, 198, 0.15);
+}
+
+.dark-theme .video-search-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+.video-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+/* Category Chips */
+.category-chips-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.category-chips-row::-webkit-scrollbar {
+  display: none;
+}
+
+.category-chip-btn {
+  background-color: var(--bg-card);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-light);
+  padding: 6px 14px;
+  font-size: 11.5px;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.dark-theme .category-chip-btn {
+  background-color: var(--dark-card);
+  border-color: var(--dark-border);
+  color: var(--text-muted);
+}
+
+.category-chip-btn.active {
+  background-color: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  box-shadow: 0 4px 10px rgba(0, 86, 198, 0.15);
+}
+
+.dark-theme .category-chip-btn.active {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.25);
+}
+
+/* Featured Video Card */
+.featured-video-card {
+  position: relative;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  color: white;
+  border: none;
+  overflow: hidden;
+  height: 160px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 16px;
+  cursor: pointer;
+}
+
+.featured-video-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.25) 0%, transparent 60%);
+  z-index: 1;
+}
+
+.featured-badge-overlay {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background-color: var(--success);
+  color: white;
+  font-size: 8px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.05em;
+  z-index: 10;
+}
+
+.featured-play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  transition: all 0.2s ease;
+  z-index: 10;
+  padding-left: 2px;
+}
+
+.featured-video-card:hover .featured-play-btn {
+  transform: translate(-50%, -50%) scale(1.1);
+  background-color: white;
+}
+
+.featured-video-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+
+.featured-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: white !important;
+  line-height: 1.25;
+  margin-bottom: 2px;
+}
+
+.featured-meta {
+  font-size: 10.5px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+/* Horizontal Scroll Continue Watching */
+.horizontal-scroll-row {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.horizontal-scroll-row::-webkit-scrollbar {
+  display: none;
+}
+
+.continue-video-card {
+  width: 200px;
+  flex-shrink: 0;
+  padding: 10px;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.continue-media-placeholder {
+  width: 100%;
+  height: 90px;
+  border-radius: var(--radius-sm);
+  background-color: #0f172a;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.15);
+  overflow: hidden;
+}
+
+.continue-media-mesh {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, transparent 80%);
+}
+
+.continue-play-icon {
+  position: absolute;
+  color: white;
+  opacity: 0.8;
+  z-index: 10;
+}
+
+.continue-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: rgba(255,255,255,0.25);
+  overflow: hidden;
+}
+
+.continue-progress-fill {
+  height: 100%;
+  background-color: var(--primary);
+}
+
+.continue-title {
+  font-size: 12.5px;
+  font-weight: 800;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-primary);
+}
+
+.dark-theme .continue-title {
+  color: white;
+}
+
+.continue-meta {
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+.dark-theme .continue-meta {
+  color: var(--text-muted);
+}
+
+/* Popular Workouts list */
+.popular-workout-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.popular-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.popular-media-thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background-color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.1);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.popular-thumb-mesh {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(0, 86, 198, 0.2) 0%, transparent 80%);
+}
+
+.popular-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.popular-title {
+  font-size: 13.5px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--text-primary);
+}
+
+.dark-theme .popular-title {
+  color: white;
+}
+
+.popular-meta {
+  font-size: 10.5px;
+  color: var(--text-secondary);
+}
+
+.dark-theme .popular-meta {
+  color: var(--text-muted);
+}
+
+.popular-play-btn-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: var(--primary-light);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  padding-left: 2px;
+}
+
+.dark-theme .popular-play-btn-circle {
+  background-color: rgba(0, 86, 198, 0.15);
+  color: #60a5fa;
+}
+
+.popular-workout-card:hover .popular-play-btn-circle {
+  background-color: var(--primary);
+  color: white;
+  transform: scale(1.05);
+}
+
+.dark-theme .popular-workout-card:hover .popular-play-btn-circle {
+  background-color: #3b82f6;
+  color: white;
+}
 
 
