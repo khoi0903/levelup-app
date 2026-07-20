@@ -6575,3 +6575,66 @@ p {
   line-height: 1.45;
   margin: 0;
 }
+
+/* V2 Premium Bottom Navigation Footer */
+.bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: #ffffff;
+  border-top: 1.5px solid #f1f5f9;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 8px;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.03);
+  z-index: 100;
+}
+
+.nav-item-figma {
+  background: none;
+  border: none;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.nav-item-figma:hover {
+  color: #0f172a;
+}
+
+.nav-item-figma.active {
+  color: #0056c6;
+}
+
+.center-capsule-item {
+  background: #0056c6 !important;
+  color: #ffffff !important;
+  width: 58px;
+  height: 38px;
+  border-radius: 99px;
+  box-shadow: 0 4px 12px rgba(0, 86, 198, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.center-capsule-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 86, 198, 0.45);
+}
+
+.icon-wrapper-figma {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
