@@ -23,6 +23,7 @@ export default function App() {
   const [activePage, setActivePage] = useState('welcome'); // welcome, login, onboarding, pricing, dashboard, etc.
   
   // App settings & profile
+  const [userName, setUserName] = useState('Đinh Khôi');
   const [isDark, setIsDark] = useState(false);
   const [reminderTime, setReminderTime] = useState('06:00');
   const [coachVoice, setCoachVoice] = useState('empathetic');
@@ -81,7 +82,8 @@ export default function App() {
   };
 
   const handleUpdateSettings = (key, value) => {
-    if (key === 'isDark') setIsDark(value);
+    if (key === 'userName') setUserName(value);
+    else if (key === 'isDark') setIsDark(value);
     else if (key === 'reminderTime') setReminderTime(value);
     else if (key === 'coachVoice') setCoachVoice(value);
     else if (key === 'notificationsEnabled') setNotificationsEnabled(value);
@@ -131,7 +133,7 @@ export default function App() {
           />
         );
       case 'onboarding':
-        return <Onboarding onComplete={handleOnboardingComplete} />;
+        return <Onboarding onComplete={handleOnboardingComplete} onBack={() => setActivePage('welcome')} />;
       case 'pricing':
         return (
           <Pricing
@@ -144,7 +146,7 @@ export default function App() {
       case 'dashboard':
         return (
           <Dashboard
-            userName="Alex"
+            userName={userName}
             activeStreak={activeStreak}
             onStartWorkout={() => setActivePage('workouts')}
             setActivePage={setActivePage}
@@ -155,7 +157,7 @@ export default function App() {
       case 'coach':
         return <AICoach userGoal={userGoal} isDark={isDark} />;
       case 'community':
-        return <Community userName="Alex" userXp={xp} />;
+        return <Community userName={userName} userXp={xp} />;
       case 'progress':
         return (
           <Progress
@@ -170,7 +172,7 @@ export default function App() {
       case 'profile':
         return (
           <Profile
-            userName="Alex"
+            userName={userName}
             userGoal={userGoal}
             reminderTime={reminderTime}
             coachVoice={coachVoice}

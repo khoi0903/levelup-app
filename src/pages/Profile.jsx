@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   Settings, ArrowLeft, Award, Flame, MapPin, Zap, Sun, Trophy, 
   Lock, RefreshCw, Sparkles, CreditCard, Moon, Bell, Volume2, 
-  ChevronRight, Calendar, Activity
+  ChevronRight, Calendar, Activity, TrendingUp, DollarSign, X
 } from 'lucide-react';
 
 export default function Profile({
@@ -21,6 +21,7 @@ export default function Profile({
   level = 4
 }) {
   const [showSettings, setShowSettings] = useState(false);
+  const [showFinanceModal, setShowFinanceModal] = useState(false);
 
   const goalNames = {
     consistency: 'Xây dựng sự Kỷ luật',
@@ -72,9 +73,15 @@ export default function Profile({
           <div className="profile-avatar-large">
             {userName.substring(0, 2).toUpperCase()}
           </div>
-          <div className="profile-user-text">
-            <h3 className="profile-user-name" style={{ fontSize: '16px' }}>{userName}</h3>
-            <span className="profile-user-role">Người đam mê tập luyện</span>
+          <div className="profile-user-text" style={{ flex: 1 }}>
+            <input
+              type="text"
+              className="profile-name-edit-input"
+              value={userName}
+              onChange={(e) => onUpdateSettings('userName', e.target.value)}
+              placeholder="Nhập tên của bạn"
+            />
+            <span className="profile-user-role">Thành viên LevelUp Pro</span>
           </div>
         </div>
 
@@ -137,9 +144,9 @@ export default function Profile({
           </div>
         </div>
 
-        {/* Subscription */}
+        {/* Subscription & Finance */}
         <div className="settings-section-container">
-          <h4 className="settings-section-title">Đăng ký & Thanh toán</h4>
+          <h4 className="settings-section-title">Đăng ký & Mô Hình Tài Chính</h4>
           <div className="settings-cards-list">
             <div className="setting-card card" onClick={() => setActivePage('pricing')}>
               <div className="setting-card-left">
@@ -153,8 +160,129 @@ export default function Profile({
               </div>
               <span className="setting-edit-text subscription">Nâng cấp <ChevronRight size={14} /></span>
             </div>
+
+            {/* Finance Forecast Button */}
+            <div className="setting-card card" onClick={() => setShowFinanceModal(true)}>
+              <div className="setting-card-left">
+                <div className="setting-icon-wrapper goal" style={{ backgroundColor: '#ECFDF5', color: '#10B981' }}>
+                  <TrendingUp size={16} color="#10B981" />
+                </div>
+                <div className="setting-details">
+                  <span className="setting-label">Báo cáo Tài chính LevelUp</span>
+                  <span className="setting-value" style={{ color: '#10B981', fontWeight: 700 }}>Dự phóng 2026 - 2028</span>
+                </div>
+              </div>
+              <span className="setting-edit-text" style={{ color: '#10B981' }}>Xem chi tiết <ChevronRight size={14} /></span>
+            </div>
           </div>
         </div>
+
+        {/* Finance Forecast Modal Overlay */}
+        {showFinanceModal && (
+          <div className="modal-overlay fade-in" onClick={() => setShowFinanceModal(false)}>
+            <div className="modal-content-card" onClick={(e) => e.stopPropagation()}>
+              <div className="modal-header-row">
+                <div className="modal-title-left">
+                  <TrendingUp size={20} color="#10B981" />
+                  <h3 className="modal-title-text">Finance Level Up</h3>
+                </div>
+                <button className="close-btn-icon" onClick={() => setShowFinanceModal(false)}>
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="modal-body-scroll">
+                <p className="modal-subtext">Báo cáo Dự phóng Tài chính 3 năm (2026 - 2028) theo mô hình kinh doanh cập nhật.</p>
+
+                {/* Years Row */}
+                <div className="years-summary-grid">
+                  <div className="year-box">
+                    <span className="year-lbl">NĂM 2026</span>
+                    <strong className="year-val">833,6 Triệu ₫</strong>
+                    <span className="year-profit">LN: 449,3 Tr ₫</span>
+                  </div>
+                  <div className="year-box highlight">
+                    <span className="year-lbl">NĂM 2027</span>
+                    <strong className="year-val">1,00 Tỷ ₫</strong>
+                    <span className="year-profit">LN: 554,2 Tr ₫</span>
+                  </div>
+                  <div className="year-box">
+                    <span className="year-lbl">NĂM 2028</span>
+                    <strong className="year-val">1,20 Tỷ ₫</strong>
+                    <span className="year-profit">LN: 692,6 Tr ₫</span>
+                  </div>
+                </div>
+
+                {/* Financial Table */}
+                <div className="financial-table-block">
+                  <h4 className="table-heading">Báo Cáo Thu Nhập Dự Phóng (P&L)</h4>
+                  <table className="pnl-table">
+                    <thead>
+                      <tr>
+                        <th>Chỉ số (VND)</th>
+                        <th>2026</th>
+                        <th>2027</th>
+                        <th>2028</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="row-bold">
+                        <td>Tổng Doanh Thu Thuần</td>
+                        <td>833.6M</td>
+                        <td>1,000M</td>
+                        <td>1,200M</td>
+                      </tr>
+                      <tr>
+                        <td>Giá vốn hàng bán (COGS)</td>
+                        <td>113.0M</td>
+                        <td>135.6M</td>
+                        <td>162.7M</td>
+                      </tr>
+                      <tr className="row-green">
+                        <td>Lợi Nhuận Gộp (Gross)</td>
+                        <td>720.6M</td>
+                        <td>864.7M</td>
+                        <td>1,037M</td>
+                      </tr>
+                      <tr>
+                        <td>Marketing & Quảng cáo</td>
+                        <td>172.0M</td>
+                        <td>172.0M</td>
+                        <td>172.0M</td>
+                      </tr>
+                      <tr>
+                        <td>Thuế TNDN (CIT 20%)</td>
+                        <td>112.3M</td>
+                        <td>138.5M</td>
+                        <td>173.1M</td>
+                      </tr>
+                      <tr className="row-main-accent">
+                        <td>Lợi Nhuận Ròng (Net)</td>
+                        <td>449.3M</td>
+                        <td>554.2M</td>
+                        <td>692.6M</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Streams Info */}
+                <div className="streams-info-card">
+                  <h4 className="table-heading">3 Dòng Doanh Thu Chính (Revenue Streams)</h4>
+                  <ul className="streams-list">
+                    <li><strong>Stream 1 (Affiliate E-commerce):</strong> Chiết khấu đơn hàng thực phẩm bổ sung, phụ kiện tập luyện.</li>
+                    <li><strong>Stream 2 (In-app Ads & Surveys):</strong> Quảng cáo tài trợ & khảo sát nhận thưởng +100 XP.</li>
+                    <li><strong>Stream 3 (Subscriptions):</strong> Gói đăng ký LevelUp Pro (49k/tháng) & LevelUp Squad (399k/tháng).</li>
+                  </ul>
+                </div>
+              </div>
+
+              <button className="btn btn-primary w-full mt-3" onClick={() => setShowFinanceModal(false)}>
+                Đóng Báo Cáo
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Preferences */}
         <div className="settings-section-container">

@@ -1,37 +1,29 @@
 import React, { useState } from 'react';
-import { CalendarRange, Zap, Dumbbell, Heart } from 'lucide-react';
+import { Calendar, Zap, Maximize2, Activity, ArrowLeft } from 'lucide-react';
 
-export default function Onboarding({ onComplete }) {
-  const [selectedGoal, setSelectedGoal] = useState(null);
+export default function Onboarding({ onComplete, onBack }) {
+  const [selectedGoal, setSelectedGoal] = useState('consistency');
 
   const goals = [
     {
       id: 'consistency',
-      title: 'Xây dựng sự Kỷ luật',
-      description: 'Bám sát lịch trình & duy trì thói quen tập luyện',
-      icon: CalendarRange,
-      color: 'blue'
+      title: 'Xây dựng kỷ luật',
+      icon: Calendar,
     },
     {
       id: 'energy',
-      title: 'Tăng cường Năng lượng',
-      description: 'Cảm thấy năng động và tràn đầy sức sống hơn',
+      title: 'Tăng cường năng lượng',
       icon: Zap,
-      color: 'orange'
     },
     {
       id: 'strength',
-      title: 'Cải thiện Sức mạnh',
-      description: 'Phát triển cơ bắp & tăng cường sức chịu đựng',
-      icon: Dumbbell,
-      color: 'purple'
+      title: 'Cải thiện sức mạnh',
+      icon: Maximize2,
     },
     {
       id: 'better_feel',
-      title: 'Sức khỏe & Tinh thần',
-      description: 'Cải thiện giấc ngủ, giảm căng thẳng & mệt mỏi',
-      icon: Heart,
-      color: 'green'
+      title: 'Sức khỏe và Tinh thần',
+      icon: Activity,
     }
   ];
 
@@ -43,11 +35,13 @@ export default function Onboarding({ onComplete }) {
 
   return (
     <div className="onboarding-screen fade-in">
-      <div className="onboarding-progress">
-        <div className="progress-step-text">BƯỚC 1 / 2</div>
-        <div className="progress-track-full">
-          <div className="progress-bar-fill" style={{ width: '50%' }}></div>
-        </div>
+      {/* Step Header Navigation */}
+      <div className="onboarding-header-nav-row">
+        <button className="back-btn-icon" onClick={onBack} aria-label="Quay lại">
+          <ArrowLeft size={18} />
+        </button>
+        <span className="step-indicator-text">BƯỚC 1/2</span>
+        <div style={{ width: 28 }}></div>
       </div>
 
       <div className="onboarding-intro">
@@ -57,34 +51,28 @@ export default function Onboarding({ onComplete }) {
         </p>
       </div>
 
-      <div className="goals-list">
+      <div className="goals-list-figma">
         {goals.map((goal) => {
           const Icon = goal.icon;
           const isSelected = selectedGoal === goal.id;
           return (
             <div
               key={goal.id}
-              className={`goal-card ${isSelected ? 'selected' : ''}`}
+              className={`goal-figma-card ${isSelected ? 'selected' : ''}`}
               onClick={() => setSelectedGoal(goal.id)}
             >
-              <div className={`goal-icon-wrapper ${goal.color}`}>
-                <Icon size={24} />
+              <div className="goal-figma-icon-wrapper">
+                <Icon size={22} color="#0056C6" />
               </div>
-              <div className="goal-info">
-                <div className="goal-title">{goal.title}</div>
-                <div className="goal-desc">{goal.description}</div>
-              </div>
-              <div className="goal-selector">
-                <div className="selector-circle"></div>
-              </div>
+              <span className="goal-figma-title">{goal.title}</span>
             </div>
           );
         })}
       </div>
 
-      <div className="onboarding-actions">
+      <div className="onboarding-actions-static">
         <button
-          className="btn btn-primary"
+          className="btn btn-primary w-full"
           disabled={!selectedGoal}
           onClick={handleContinue}
         >

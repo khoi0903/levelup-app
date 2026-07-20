@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Users, Trophy, Flame, ChevronRight, MessageSquare, ThumbsUp, Send } from 'lucide-react';
+import { Users, Trophy, Flame, ChevronRight, MessageSquare, ThumbsUp, Send, ShoppingBag, Gift, ExternalLink, FileText, Tag } from 'lucide-react';
 
 export default function Community({ userName = 'Alex', userXp = 1680 }) {
   const [activeTab, setActiveTab] = useState('leaderboard'); // 'leaderboard' or 'squads'
@@ -59,13 +59,19 @@ export default function Community({ userName = 'Alex', userXp = 1680 }) {
           className={`tab-btn ${activeTab === 'leaderboard' ? 'active' : ''}`}
           onClick={() => setActiveTab('leaderboard')}
         >
-          Bảng Xếp Hạng
+          BXH
         </button>
         <button
           className={`tab-btn ${activeTab === 'squads' ? 'active' : ''}`}
           onClick={() => setActiveTab('squads')}
         >
           Nhóm Của Tôi
+        </button>
+        <button
+          className={`tab-btn ${activeTab === 'affiliate' ? 'active' : ''}`}
+          onClick={() => setActiveTab('affiliate')}
+        >
+          Ưu Đãi & Ads
         </button>
       </div>
 
@@ -135,7 +141,7 @@ export default function Community({ userName = 'Alex', userXp = 1680 }) {
             </div>
           </div>
         </div>
-      ) : (
+      ) : activeTab === 'squads' ? (
         <div className="tab-content fade-in">
           {/* Squads List */}
           <div className="squads-list-container">
@@ -159,6 +165,77 @@ export default function Community({ userName = 'Alex', userXp = 1680 }) {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      ) : (
+        <div className="tab-content fade-in">
+          {/* Stream 1: Affiliate Products */}
+          <div className="affiliate-section card">
+            <div className="section-header-row">
+              <ShoppingBag size={18} color="#0056C6" />
+              <h3 className="section-title-standard" style={{ margin: 0, marginLeft: 8 }}>Sản Phẩm Đổi Ưu Đãi (Affiliate Shop)</h3>
+            </div>
+            <p className="section-subtext">Nhận chiết khấu độc quyền khi hoàn thành mục tiêu đếm bước chân.</p>
+
+            <div className="products-grid">
+              {/* Product 1 */}
+              <div className="product-card-item">
+                <div className="product-tag-badge">GIẢM 15%</div>
+                <h4 className="product-title">Whey Protein ISO 100 (2.2kg)</h4>
+                <div className="product-price-row">
+                  <span className="price-main">1.450.000 VNĐ</span>
+                  <span className="price-old">1.700.000 VNĐ</span>
+                </div>
+                <p className="product-desc">Tăng cơ giảm mỡ chuẩn WADA. Hoàn 5% XP khi mua qua LevelUp.</p>
+                <button 
+                  className="btn btn-primary btn-sm"
+                  onClick={() => alert('Mã "LEVELUP15" đã được chép vào bộ nhớ tạm. Đang chuyển tới cửa hàng đối tác...')}
+                >
+                  Nhận Mã & Mua Ngay <ExternalLink size={12} style={{ marginLeft: 4 }} />
+                </button>
+              </div>
+
+              {/* Product 2 */}
+              <div className="product-card-item">
+                <div className="product-tag-badge badge-red">TẶNG VOUCHER 500K</div>
+                <h4 className="product-title">Đồng Hồ Garmin Forerunner 55</h4>
+                <div className="product-price-row">
+                  <span className="price-main">4.490.000 VNĐ</span>
+                  <span className="price-old">4.990.000 VNĐ</span>
+                </div>
+                <p className="product-desc">Đo nhịp tim, GPS chính xác. Tương thích đồng bộ bước chân LevelUp.</p>
+                <button 
+                  className="btn btn-primary btn-sm"
+                  onClick={() => alert('Mã "GARMINLEVELUP" đã được chép vào bộ nhớ tạm. Đang chuyển tới cửa hàng đối tác...')}
+                >
+                  Nhận Mã & Mua Ngay <ExternalLink size={12} style={{ marginLeft: 4 }} />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Stream 2: Surveys & Rewarded Ads */}
+          <div className="survey-section card">
+            <div className="section-header-row">
+              <Gift size={18} color="#FA5A15" />
+              <h3 className="section-title-standard" style={{ margin: 0, marginLeft: 8 }}>Khảo Sát & Nhận Thưởng (Rewarded Ads)</h3>
+            </div>
+            
+            <div className="reward-survey-box">
+              <div className="reward-info">
+                <FileText size={24} color="#0056C6" />
+                <div className="reward-text-block">
+                  <h4 className="reward-title">Khảo sát thói quen tập luyện (30s)</h4>
+                  <p className="reward-sub">Hoàn thành nhận ngay +100 XP & Vouchers giảm giá</p>
+                </div>
+              </div>
+              <button 
+                className="btn btn-secondary btn-sm"
+                onClick={() => alert('Thành công! 🎉 Cảm ơn bạn đã tham gia khảo sát. Bạn nhận được +100 XP!')}
+              >
+                Làm Khảo Sát (+100 XP)
+              </button>
+            </div>
           </div>
         </div>
       )}
