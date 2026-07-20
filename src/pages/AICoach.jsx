@@ -120,7 +120,7 @@ export default function AICoach({ userName = 'Tâm', userGoal = 'consistency', i
   };
 
   return (
-    <div className="coach-chat-page fade-in">
+    <div className={`coach-chat-page ${coachView === 'chat' ? 'chat-mode-active' : ''} fade-in`}>
       
       {/* ================= VIEW 1: COACH DASHBOARD ================= */}
       {coachView === 'dashboard' && (
