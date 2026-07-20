@@ -36,11 +36,20 @@ export default function Onboarding({ onComplete, onBack }) {
   return (
     <div className="onboarding-screen fade-in">
       {/* Step Header Navigation */}
-      <div className="onboarding-header-nav-row">
-        <button className="back-btn-icon" onClick={onBack} aria-label="Quay lại">
+      <div className="onboarding-header-nav-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px 8px 20px', boxSizing: 'border-box' }}>
+        <button className="back-btn-icon" onClick={onBack} aria-label="Quay lại" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
           <ArrowLeft size={18} />
         </button>
-        <span className="step-indicator-text">BƯỚC 1/4</span>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+          <span className="step-indicator-text" style={{ fontSize: '10px', fontWeight: '800', color: '#94a3b8', letterSpacing: '0.05em' }}>BƯỚC 1/5</span>
+          <div className="figma-dots-indicator" style={{ display: 'flex', gap: '4px' }}>
+            <span style={{ width: '16px', height: '6px', borderRadius: '99px', background: '#0056c6' }}></span>
+            <span style={{ width: '6px', height: '6px', borderRadius: '99px', background: '#cbd5e1' }}></span>
+            <span style={{ width: '6px', height: '6px', borderRadius: '99px', background: '#cbd5e1' }}></span>
+            <span style={{ width: '6px', height: '6px', borderRadius: '99px', background: '#cbd5e1' }}></span>
+            <span style={{ width: '6px', height: '6px', borderRadius: '99px', background: '#cbd5e1' }}></span>
+          </div>
+        </div>
         <div style={{ width: 28 }}></div>
       </div>
 

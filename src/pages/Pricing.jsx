@@ -33,14 +33,23 @@ export default function Pricing({ onSelectPlan, currentPlan = 'free', fromProfil
   return (
     <div className="pricing-screen fade-in">
       {/* Header Navigation */}
-      <div className="pricing-header-row">
-        <button className="back-btn-icon" onClick={onBack} aria-label="Quay lại">
+      <div className="pricing-header-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: fromProfile ? '16px 20px 8px 20px' : '16px 20px 8px 20px', boxSizing: 'border-box' }}>
+        <button className="back-btn-icon" onClick={onBack} aria-label="Quay lại" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
           <ArrowLeft size={18} />
         </button>
         {fromProfile ? (
           <span className="step-indicator-text" style={{ fontSize: '13px', fontWeight: '800' }}>Đổi gói dịch vụ</span>
         ) : (
-          <span className="step-indicator-text">BƯỚC 2/4</span>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+            <span className="step-indicator-text" style={{ fontSize: '10px', fontWeight: '800', color: '#94a3b8', letterSpacing: '0.05em' }}>BƯỚC 2/5</span>
+            <div className="figma-dots-indicator" style={{ display: 'flex', gap: '4px' }}>
+              <span style={{ width: '6px', height: '6px', borderRadius: '99px', background: '#cbd5e1' }}></span>
+              <span style={{ width: '16px', height: '6px', borderRadius: '99px', background: '#0056c6' }}></span>
+              <span style={{ width: '6px', height: '6px', borderRadius: '99px', background: '#cbd5e1' }}></span>
+              <span style={{ width: '6px', height: '6px', borderRadius: '99px', background: '#cbd5e1' }}></span>
+              <span style={{ width: '6px', height: '6px', borderRadius: '99px', background: '#cbd5e1' }}></span>
+            </div>
+          </div>
         )}
         <div style={{ width: 28 }}></div>
       </div>
