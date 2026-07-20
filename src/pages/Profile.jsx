@@ -15,6 +15,7 @@ export default function Profile({
   onLogout,
   setActivePage,
   onUpdateSettings,
+  onNavigateToPricing,
   reminderTime = '17:30',
   coachVoice = 'empathetic',
   isDark = false,
@@ -312,7 +313,7 @@ export default function Profile({
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             
             {/* Subscription packages */}
-            <div className="goal-card-box-v2" onClick={() => { setShowSettings(false); setActivePage('pricing'); }} style={{ cursor: 'pointer' }}>
+            <div className="goal-card-box-v2" onClick={() => { setShowSettings(false); onNavigateToPricing(); }} style={{ cursor: 'pointer' }}>
               <div className="goal-card-left-v2">
                 <div className="goal-icon-circle-v2">
                   <CreditCard size={16} color="#d97706" />
@@ -554,7 +555,7 @@ export default function Profile({
       </div>
 
       {/* 4. Subscription Card (LevelUp Pro) */}
-      <div className="sub-card-v2" onClick={() => setActivePage('pricing')}>
+      <div className="sub-card-v2" onClick={onNavigateToPricing}>
         <div className="sub-left-v2">
           <div className="sub-icon-bg-v2">
             <Shield size={18} color="#0056C6" />

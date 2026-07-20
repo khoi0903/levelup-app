@@ -24,6 +24,7 @@ export default function App() {
   const [userGoal, setUserGoal] = useState(null);
   const [currentPlan, setCurrentPlan] = useState('free');
   const [activePage, setActivePage] = useState('welcome'); // welcome, login, onboarding, pricing, dashboard, etc.
+  const [pricingFromProfile, setPricingFromProfile] = useState(false);
   
   // App settings & profile
   const [userName, setUserName] = useState('Tâm');
@@ -200,10 +201,20 @@ export default function App() {
       case 'pricing':
         return (
           <Pricing
-            onSelectPlan={handlePricingSelect}
+            onSelectPlan={(plan) => {
+              handlePricingSelect(plan);
+              setPricingFromProfile(false);
+            }}
             currentPlan={currentPlan}
-            fromProfile={isOnboarded}
-            onBack={isOnboarded ? () => setActivePage('profile') : () => setActivePage('onboarding')}
+            fromProfile={pricingFromProfile}
+            onBack={() => {
+              if (pricingFromProfile) {
+                setActivePage('profile');
+              } else {
+                setActivePage('onboarding');
+              }
+              setPricingFromProfile(false);
+            }}
           />
         );
       case 'health_sync':
@@ -275,6 +286,10 @@ export default function App() {
             xp={xp}
             level={level}
             personalStats={personalStats}
+            onNavigateToPricing={() => {
+              setPricingFromProfile(true);
+              setActivePage('pricing');
+            }}
           />
         );
       default:
