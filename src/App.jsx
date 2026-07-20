@@ -12,6 +12,7 @@ import AICoach from './pages/AICoach';
 import Community from './pages/Community';
 import Progress from './pages/Progress';
 import Profile from './pages/Profile';
+import PersonalInfo from './pages/PersonalInfo';
 import Welcome from './pages/Welcome';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -32,6 +33,25 @@ export default function App() {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [soundsEnabled, setSoundsEnabled] = useState(false);
   
+  // Dynamic Personal Info Stats for AI Coach
+  const [personalStats, setPersonalStats] = useState({
+    gender: 'Nam',
+    age: 25,
+    height: 175,
+    weight: 70,
+    chest: 90,
+    waist: 70,
+    hips: 95,
+    bmi: 22.9,
+    restingHeartRate: 70,
+    bodyFat: 15,
+    musclePercent: 45,
+    caloriesIn: 2000,
+    caloriesOut: 2200,
+    sleepHours: 8,
+    waterIntake: 2000
+  });
+  
   // Fitness Stats
   const [xp, setXp] = useState(1680);
   const [level, setLevel] = useState(4);
@@ -51,6 +71,11 @@ export default function App() {
     } else {
       setActivePage('health_sync');
     }
+  };
+
+  const handlePersonalInfoSave = (stats) => {
+    setPersonalStats(stats);
+    setActivePage('schedule_setup');
   };
 
   const handleScheduleComplete = ({ reminderTime, coachVoice }) => {
@@ -101,6 +126,7 @@ export default function App() {
     else if (key === 'notificationsEnabled') setNotificationsEnabled(value);
     else if (key === 'soundsEnabled') setSoundsEnabled(value);
     else if (key === 'userGoal') setUserGoal(value);
+    else if (key === 'personalStats') setPersonalStats(value);
   };
 
   const handleResetOnboarding = () => {
@@ -113,6 +139,23 @@ export default function App() {
       setActiveStreak(5);
       setXp(1680);
       setLevel(4);
+      setPersonalStats({
+        gender: 'Nam',
+        age: 25,
+        height: 175,
+        weight: 70,
+        chest: 90,
+        waist: 70,
+        hips: 95,
+        bmi: 22.9,
+        restingHeartRate: 70,
+        bodyFat: 15,
+        musclePercent: 45,
+        caloriesIn: 2000,
+        caloriesOut: 2200,
+        sleepHours: 8,
+        waterIntake: 2000
+      });
     }
   };
 
@@ -166,16 +209,24 @@ export default function App() {
       case 'health_sync':
         return (
           <HealthSync
-            onNext={() => setActivePage('schedule_setup')}
-            onSkip={() => setActivePage('schedule_setup')}
+            onNext={() => setActivePage('personal_info')}
+            onSkip={() => setActivePage('personal_info')}
             onBack={() => setActivePage('pricing')}
+          />
+        );
+      case 'personal_info':
+        return (
+          <PersonalInfo
+            stats={personalStats}
+            onSave={handlePersonalInfoSave}
+            onBack={() => setActivePage('health_sync')}
           />
         );
       case 'schedule_setup':
         return (
           <ScheduleSetup
             onComplete={handleScheduleComplete}
-            onBack={() => setActivePage('health_sync')}
+            onBack={() => setActivePage('personal_info')}
             initialTime={reminderTime}
             initialVoice={coachVoice}
           />
@@ -192,7 +243,7 @@ export default function App() {
       case 'workouts':
         return <Workouts onWorkoutComplete={handleWorkoutComplete} />;
       case 'coach':
-        return <AICoach userName={userName} userGoal={userGoal} isDark={isDark} />;
+        return <AICoach userName={userName} personalStats={personalStats} userGoal={userGoal} isDark={isDark} />;
       case 'community':
         return <Community userName={userName} userXp={xp} />;
       case 'progress':
@@ -223,6 +274,7 @@ export default function App() {
             setActivePage={setActivePage}
             xp={xp}
             level={level}
+            personalStats={personalStats}
           />
         );
       default:

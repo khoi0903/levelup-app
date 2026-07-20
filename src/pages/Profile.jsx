@@ -19,7 +19,8 @@ export default function Profile({
   coachVoice = 'empathetic',
   isDark = false,
   notificationsEnabled = true,
-  soundsEnabled = false
+  soundsEnabled = false,
+  personalStats = {}
 }) {
   const [showSettings, setShowSettings] = useState(false);
   const [showGoalModal, setShowGoalModal] = useState(false);
@@ -170,6 +171,136 @@ export default function Profile({
                   </select>
                 </div>
               </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Section: Chỉ số sinh học */}
+        <div className="goal-section-v2" style={{ marginBottom: '20px' }}>
+          <h4 className="goal-title-v2" style={{ fontSize: '12px', textTransform: 'uppercase', color: '#64748B', letterSpacing: '0.05em' }}>Chỉ số sinh học</h4>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            
+            {/* Giới tính */}
+            <div className="goal-card-box-v2" style={{ cursor: 'default' }}>
+              <div className="goal-card-left-v2">
+                <span className="goal-name-text-v2" style={{ fontSize: '13px' }}>Giới tính</span>
+              </div>
+              <select
+                className="coach-voice-select"
+                value={personalStats.gender || 'Nam'}
+                onChange={(e) => {
+                  if (onUpdateSettings) {
+                    onUpdateSettings('personalStats', { ...personalStats, gender: e.target.value });
+                  }
+                }}
+                style={{ border: 'none', background: 'transparent', fontSize: '13px', fontWeight: '800', color: '#0f172a', outline: 'none', cursor: 'pointer' }}
+              >
+                <option value="Nam">Nam</option>
+                <option value="Nữ">Nữ</option>
+                <option value="Khác">Khác</option>
+              </select>
+            </div>
+
+            {/* Tuổi */}
+            <div className="goal-card-box-v2" style={{ cursor: 'default' }}>
+              <div className="goal-card-left-v2">
+                <span className="goal-name-text-v2" style={{ fontSize: '13px' }}>Tuổi</span>
+              </div>
+              <input
+                type="number"
+                value={personalStats.age || 25}
+                onChange={(e) => {
+                  if (onUpdateSettings) {
+                    onUpdateSettings('personalStats', { ...personalStats, age: Number(e.target.value) });
+                  }
+                }}
+                style={{ width: '60px', textAlign: 'right', border: 'none', background: 'transparent', fontSize: '13px', fontWeight: '800', color: '#0f172a', outline: 'none' }}
+              />
+            </div>
+
+            {/* Chiều cao */}
+            <div className="goal-card-box-v2" style={{ cursor: 'default' }}>
+              <div className="goal-card-left-v2">
+                <span className="goal-name-text-v2" style={{ fontSize: '13px' }}>Chiều cao (cm)</span>
+              </div>
+              <input
+                type="number"
+                value={personalStats.height || 175}
+                onChange={(e) => {
+                  if (onUpdateSettings) {
+                    const h = Number(e.target.value);
+                    const w = personalStats.weight || 70;
+                    const hM = h / 100;
+                    const bmi = (w / (hM * hM)).toFixed(1);
+                    onUpdateSettings('personalStats', { ...personalStats, height: h, bmi: Number(bmi) });
+                  }
+                }}
+                style={{ width: '60px', textAlign: 'right', border: 'none', background: 'transparent', fontSize: '13px', fontWeight: '800', color: '#0f172a', outline: 'none' }}
+              />
+            </div>
+
+            {/* Cân nặng */}
+            <div className="goal-card-box-v2" style={{ cursor: 'default' }}>
+              <div className="goal-card-left-v2">
+                <span className="goal-name-text-v2" style={{ fontSize: '13px' }}>Cân nặng (kg)</span>
+              </div>
+              <input
+                type="number"
+                value={personalStats.weight || 70}
+                onChange={(e) => {
+                  if (onUpdateSettings) {
+                    const w = Number(e.target.value);
+                    const h = personalStats.height || 175;
+                    const hM = h / 100;
+                    const bmi = (w / (hM * hM)).toFixed(1);
+                    onUpdateSettings('personalStats', { ...personalStats, weight: w, bmi: Number(bmi) });
+                  }
+                }}
+                style={{ width: '60px', textAlign: 'right', border: 'none', background: 'transparent', fontSize: '13px', fontWeight: '800', color: '#0f172a', outline: 'none' }}
+              />
+            </div>
+
+            {/* BMI */}
+            <div className="goal-card-box-v2" style={{ cursor: 'default', background: '#f8fafc' }}>
+              <div className="goal-card-left-v2">
+                <span className="goal-name-text-v2" style={{ fontSize: '13px', color: '#64748b' }}>BMI (tự động tính)</span>
+              </div>
+              <span style={{ fontSize: '13px', fontWeight: '800', color: '#64748b' }}>{personalStats.bmi || 22.9}</span>
+            </div>
+
+            {/* Nhịp tim nghỉ ngơi */}
+            <div className="goal-card-box-v2" style={{ cursor: 'default' }}>
+              <div className="goal-card-left-v2">
+                <span className="goal-name-text-v2" style={{ fontSize: '13px' }}>Nhịp tim nghỉ ngơi (bpm)</span>
+              </div>
+              <input
+                type="number"
+                value={personalStats.restingHeartRate || 70}
+                onChange={(e) => {
+                  if (onUpdateSettings) {
+                    onUpdateSettings('personalStats', { ...personalStats, restingHeartRate: Number(e.target.value) });
+                  }
+                }}
+                style={{ width: '60px', textAlign: 'right', border: 'none', background: 'transparent', fontSize: '13px', fontWeight: '800', color: '#0f172a', outline: 'none' }}
+              />
+            </div>
+
+            {/* Phần trăm mỡ */}
+            <div className="goal-card-box-v2" style={{ cursor: 'default' }}>
+              <div className="goal-card-left-v2">
+                <span className="goal-name-text-v2" style={{ fontSize: '13px' }}>Phần trăm mỡ (%)</span>
+              </div>
+              <input
+                type="number"
+                value={personalStats.bodyFat || 15}
+                onChange={(e) => {
+                  if (onUpdateSettings) {
+                    onUpdateSettings('personalStats', { ...personalStats, bodyFat: Number(e.target.value) });
+                  }
+                }}
+                style={{ width: '60px', textAlign: 'right', border: 'none', background: 'transparent', fontSize: '13px', fontWeight: '800', color: '#0f172a', outline: 'none' }}
+              />
             </div>
 
           </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Sparkles, Send, Flame, Play, Volume2, Award, Zap, Heart, TrendingUp, HelpCircle, Bot, Activity } from 'lucide-react';
 
-export default function AICoach({ userName = 'Tâm', userGoal = 'consistency', isDark }) {
+export default function AICoach({ userName = 'Tâm', personalStats = {}, userGoal = 'consistency', isDark }) {
   const [coachView, setCoachView] = useState('dashboard'); // 'dashboard', 'chat', 'performance'
   const [performanceTab, setPerformanceTab] = useState('today'); // 'today', 'week'
   const [selectedVoice, setSelectedVoice] = useState('alex'); // 'alex', 'sarah'
@@ -279,15 +279,15 @@ export default function AICoach({ userName = 'Tâm', userGoal = 'consistency', i
           <div className="chat-metrics-spec-bar">
             <div className="spec-item">
               <span className="spec-lbl">Chỉ số hiện tại</span>
-              <span className="spec-val">72.5 kg</span>
+              <span className="spec-val">{personalStats.weight || 72.5} kg</span>
             </div>
             <div className="spec-item">
               <span className="spec-lbl">BMI</span>
-              <span className="spec-val">23.4</span>
+              <span className="spec-val">{personalStats.bmi || 23.4}</span>
             </div>
             <div className="spec-item">
               <span className="spec-lbl">Mỡ cơ thể</span>
-              <span className="spec-val">18%</span>
+              <span className="spec-val">{personalStats.bodyFat || 18}%</span>
             </div>
           </div>
 
