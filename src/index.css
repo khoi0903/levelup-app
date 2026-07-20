@@ -7363,3 +7363,52 @@ p {
   color: #94a3b8;
   margin-top: 4px;
 }
+
+/* Figma V2 Dashboard Dark Mode Styles */
+.dark-theme .figma-greeting-title,
+.dark-theme .streak-card-title,
+.dark-theme .figma-section-title-bold,
+.dark-theme .stat-card-value,
+.dark-theme .heart-value,
+.dark-theme .workout-thumb-title,
+.dark-theme .challenge-card-title {
+  color: #ffffff !important;
+}
+
+.dark-theme .streak-card-subtitle,
+.dark-theme .challenge-card-sub,
+.dark-theme .workout-thumb-desc,
+.dark-theme .stat-card-label,
+.dark-theme .heart-label {
+  color: #94a3b8 !important;
+}
+
+.dark-theme .figma-dash-streak-card {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+.dark-theme .figma-stat-card-item {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+.dark-theme .figma-heart-rate-card {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+.dark-theme .figma-workout-thumbnail-card {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+.dark-theme .figma-challenge-card {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+.dark-theme .bottom-nav {
+  background: #0f172a !important;
+  border-top-color: #1e293b !important;
+}
