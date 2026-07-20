@@ -7414,3 +7414,39 @@ p {
   background: #0f172a !important;
   border-top-color: #1e293b !important;
 }
+
+/* AI Coach V2 Chat Dark Mode Styling */
+.dark-theme .chat-metrics-spec-bar {
+  background: #1e293b !important;
+}
+
+.dark-theme .spec-lbl {
+  color: #60a5fa !important;
+}
+
+.dark-theme .spec-val {
+  color: #ffffff !important;
+}
+
+.dark-theme .chat-bubble-row-v2.aura .chat-bubble-content-v2 {
+  background: #1e293b !important;
+  color: #f8fafc !important;
+  border: 1px solid #334155 !important;
+}
+
+.dark-theme .chat-bubble-row-v2.user .chat-bubble-content-v2 {
+  background: #0056c6 !important;
+  color: #ffffff !important;
+}
+
+.dark-theme .chat-input-bar-v2 {
+  background: #1e293b !important;
+}
+
+.dark-theme .chat-text-input-v2 {
+  color: #ffffff !important;
+}
+
+.dark-theme .chat-bubble-time-v2 {
+  color: #64748b !important;
+}
