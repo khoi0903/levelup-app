@@ -304,7 +304,7 @@ export default function App() {
     }
   };
 
-  const isAuthOrOnboarding = ['welcome', 'login', 'register', 'onboarding', 'pricing', 'health_sync', 'schedule_setup'].includes(activePage);
+  const isAuthOrOnboarding = ['welcome', 'login', 'register', 'onboarding', 'pricing', 'health_sync', 'personal_info', 'schedule_setup'].includes(activePage);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
