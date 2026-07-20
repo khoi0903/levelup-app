@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   Award, Flame, Zap, Shield, BookOpen, Target, LogOut, Lock, 
-  ChevronRight, Award as BadgeIcon, Swords, Dna
+  ChevronRight, Swords, Dna, Settings, ArrowLeft, Volume2, Sparkles, X, Check
 } from 'lucide-react';
 
 export default function Profile({
@@ -11,8 +11,13 @@ export default function Profile({
   xp = 850,
   level = 4,
   onResetOnboarding,
-  setActivePage
+  setActivePage,
+  onUpdateSettings
 }) {
+  const [showSettings, setShowSettings] = useState(false);
+  const [showGoalModal, setShowGoalModal] = useState(false);
+  const [tempGoal, setTempGoal] = useState(userGoal);
+
   const goalNames = {
     consistency: 'Xây dựng kỉ luật',
     energy: 'Tăng cường năng lượng',
@@ -26,7 +31,6 @@ export default function Profile({
     squad: 'LevelUp Squad'
   };
 
-  // Static badge assets matching Figma V2 screenshot
   const figmaBadges = [
     { id: 'newbie', name: 'Người mới', icon: Dna, colorClass: 'blue-circle' },
     { id: 'patient', name: 'Kiên trì', icon: BookOpen, colorClass: 'yellow-circle' },
@@ -34,12 +38,115 @@ export default function Profile({
     { id: 'upcoming', name: 'Sắp tới', icon: Lock, colorClass: 'locked-circle', locked: true }
   ];
 
+  const handleSaveGoal = () => {
+    if (onUpdateSettings) {
+      onUpdateSettings('userGoal', tempGoal);
+    }
+    setShowGoalModal(false);
+  };
+
+  // ================= VIEW 1: SETTINGS WINDOW =================
+  if (showSettings) {
+    return (
+      <div className="profile-page-v2 settings-view fade-in">
+        <div className="settings-header-row" style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+          <button className="back-btn-icon" onClick={() => setShowSettings(false)} aria-label="Quay lại" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+            <ArrowLeft size={18} />
+          </button>
+          <h2 className="settings-page-title" style={{ fontSize: '18px', fontWeight: '800', margin: 0 }}>Cài đặt hồ sơ</h2>
+        </div>
+
+        {/* User Info Card */}
+        <div className="sub-card-v2" style={{ cursor: 'default', flexDirection: 'column', alignItems: 'stretch', gap: '12px' }}>
+          <span className="sub-lbl-v2">THÔNG TIN CÁ NHÂN</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div className="avatar-container-v2" style={{ width: '48px', height: '48px', margin: 0 }}>
+              <img 
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" 
+                alt="Profile Avatar" 
+                className="avatar-img-v2"
+              />
+            </div>
+            <div style={{ flex: 1 }}>
+              <input
+                type="text"
+                className="profile-name-edit-input-v2"
+                value={userName}
+                onChange={(e) => onUpdateSettings && onUpdateSettings('userName', e.target.value)}
+                style={{
+                  background: '#f1f5f9',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '6px 12px',
+                  fontSize: '14px',
+                  fontWeight: '800',
+                  color: '#0f172a',
+                  width: '100%',
+                  outline: 'none'
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Configurations Section */}
+        <div className="goal-section-v2">
+          <h4 className="goal-title-v2" style={{ fontSize: '12px', textTransform: 'uppercase', color: '#64748B' }}>Tùy chọn huấn luyện</h4>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div className="goal-card-box-v2" onClick={() => { setTempGoal(userGoal); setShowGoalModal(true); }} style={{ cursor: 'pointer' }}>
+              <div className="goal-card-left-v2">
+                <div className="goal-icon-circle-v2">
+                  <Sparkles size={16} color="#0056C6" />
+                </div>
+                <div>
+                  <span className="sub-lbl-v2" style={{ display: 'block', fontSize: '9px' }}>MỤC TIÊU LUYỆN TẬP</span>
+                  <span className="goal-name-text-v2" style={{ fontSize: '13px' }}>{goalNames[userGoal]}</span>
+                </div>
+              </div>
+              <ChevronRight size={16} color="#64748B" />
+            </div>
+
+            <div className="goal-card-box-v2" style={{ cursor: 'default' }}>
+              <div className="goal-card-left-v2">
+                <div className="goal-icon-circle-v2">
+                  <Volume2 size={16} color="#0056C6" />
+                </div>
+                <div>
+                  <span className="sub-lbl-v2" style={{ display: 'block', fontSize: '9px' }}>GIỌNG NÓI COACH</span>
+                  <span className="goal-name-text-v2" style={{ fontSize: '13px' }}>Aura (Đồng cảm, nâng đỡ)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* App Reset actions */}
+        <button 
+          className="logout-btn-v2" 
+          onClick={onResetOnboarding}
+          style={{ background: '#f8fafc', borderColor: '#cbd5e1', color: '#64748b', marginTop: '24px' }}
+        >
+          <span>Thiết lập lại Onboarding từ đầu</span>
+        </button>
+      </div>
+    );
+  }
+
+  // ================= VIEW 2: MAIN ACHIEVEMENTS VIEW =================
   return (
     <div className="profile-page-v2 fade-in">
       
-      {/* 1. Header Title */}
-      <div className="profile-header-v2">
+      {/* 1. Header Title with Settings gear */}
+      <div className="profile-header-v2" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2 className="profile-brand-title">LevelUp</h2>
+        <button 
+          className="settings-gear-btn-v2" 
+          onClick={() => setShowSettings(true)}
+          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}
+          aria-label="Cài đặt"
+        >
+          <Settings size={20} color="#0056C6" />
+        </button>
       </div>
 
       {/* 2. User Profile Info */}
@@ -158,7 +265,7 @@ export default function Profile({
             </div>
             <span className="goal-name-text-v2">{goalNames[userGoal] || 'Xây dựng kỉ luật'}</span>
           </div>
-          <button className="goal-change-btn-v2" onClick={onResetOnboarding}>
+          <button className="goal-change-btn-v2" onClick={() => { setTempGoal(userGoal); setShowGoalModal(true); }}>
             Thay đổi mục tiêu
           </button>
         </div>
@@ -169,6 +276,48 @@ export default function Profile({
         <LogOut size={16} />
         <span>Đăng xuất</span>
       </button>
+
+      {/* ================= GOAL CHANGE MODAL OVERLAY ================= */}
+      {showGoalModal && (
+        <div className="modal-overlay fade-in" style={{ zIndex: 1000 }} onClick={() => setShowGoalModal(false)}>
+          <div className="modal-content-card" style={{ padding: '20px' }} onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <div className="modal-title-left" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Target size={20} color="#0056C6" />
+                <h3 className="modal-title-text" style={{ fontSize: '16px', fontWeight: '800', margin: 0 }}>Đổi mục tiêu tập luyện</h3>
+              </div>
+              <button className="close-btn-icon" onClick={() => setShowGoalModal(false)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+                <X size={20} />
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '20px' }}>
+              {Object.entries(goalNames).map(([key, name]) => {
+                const isSelected = tempGoal === key;
+                return (
+                  <div 
+                    key={key} 
+                    className={`goal-card-box-v2 ${isSelected ? 'selected' : ''}`}
+                    onClick={() => setTempGoal(key)}
+                    style={{ 
+                      cursor: 'pointer',
+                      border: isSelected ? '1.5px solid #0056C6' : '1.5px solid #e2e8f0',
+                      background: isSelected ? '#ebf3ff' : '#ffffff'
+                    }}
+                  >
+                    <span style={{ fontSize: '13px', fontWeight: '800', color: isSelected ? '#0056C6' : '#0f172a' }}>{name}</span>
+                    {isSelected && <Check size={16} color="#0056C6" />}
+                  </div>
+                );
+              })}
+            </div>
+
+            <button className="btn btn-primary w-full" onClick={handleSaveGoal}>
+              Lưu mục tiêu
+            </button>
+          </div>
+        </div>
+      )}
 
     </div>
   );
