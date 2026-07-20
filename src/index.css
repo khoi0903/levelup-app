@@ -2022,8 +2022,9 @@ p {
 }
 
 .coach-chat-page.chat-mode-active {
-  overflow-y: hidden !important;
-  padding-bottom: 0px !important;
+  height: calc(100% - 76px);
+  overflow: hidden !important;
+  padding-bottom: 4px !important;
 }
 
 .coach-chat-header {
@@ -7127,6 +7128,12 @@ p {
 .chat-send-btn-v2:disabled {
   background: #cbd5e1;
   cursor: not-allowed;
+}
+
+.coach-chat-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 /* Performance View V2 */
