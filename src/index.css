@@ -7548,3 +7548,32 @@ p {
   border-color: #334155 !important;
   color: #ffffff !important;
 }
+
+/* Profile Achievements Page Dark Mode Compatibility */
+.dark-theme .achievements-user-name,
+.dark-theme .rank-name-badge,
+.dark-theme .monthly-stat-val,
+.dark-theme .badge-name-label {
+  color: #ffffff !important;
+}
+
+.dark-theme .achievements-user-role,
+.dark-theme .rank-badge-percent,
+.dark-theme .rank-card-footer,
+.dark-theme .monthly-stat-label,
+.dark-theme .badge-desc-label,
+.dark-theme .section-link {
+  color: #cbd5e1 !important;
+}
+
+.dark-theme .monthly-stat-card,
+.dark-theme .badge-item-card,
+.dark-theme .rank-card {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+.dark-theme .stat-icon-wrapper-circle {
+  background-color: #334155 !important;
+  color: #f8fafc !important;
+}
