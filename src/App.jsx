@@ -100,6 +100,7 @@ export default function App() {
     else if (key === 'coachVoice') setCoachVoice(value);
     else if (key === 'notificationsEnabled') setNotificationsEnabled(value);
     else if (key === 'soundsEnabled') setSoundsEnabled(value);
+    else if (key === 'userGoal') setUserGoal(value);
   };
 
   const handleResetOnboarding = () => {

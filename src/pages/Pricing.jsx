@@ -37,7 +37,11 @@ export default function Pricing({ onSelectPlan, currentPlan = 'free', fromProfil
         <button className="back-btn-icon" onClick={onBack} aria-label="Quay lại">
           <ArrowLeft size={18} />
         </button>
-        <span className="step-indicator-text">BƯỚC 2/4</span>
+        {fromProfile ? (
+          <span className="step-indicator-text" style={{ fontSize: '13px', fontWeight: '800' }}>Đổi gói dịch vụ</span>
+        ) : (
+          <span className="step-indicator-text">BƯỚC 2/4</span>
+        )}
         <div style={{ width: 28 }}></div>
       </div>
 

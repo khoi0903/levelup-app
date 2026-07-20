@@ -87,7 +87,7 @@ export default function Profile({
                 width: '100%'
               }}
             />
-            <span className="profile-user-role" style={{ fontSize: '11px', color: '#64748B', fontWeight: '750', paddingLeft: '4px' }}>Thành viên LevelUp Pro</span>
+            <span className="profile-user-role" style={{ fontSize: '11px', color: '#64748B', fontWeight: '750', paddingLeft: '4px' }}>Thành viên {planNames[currentPlan]}</span>
           </div>
         </div>
 
@@ -433,8 +433,12 @@ export default function Profile({
           </div>
         </div>
         <div className="sub-price-v2">
-          <span className="price-val">49.000 VNĐ</span>
-          <span className="price-lbl">/tháng</span>
+          <span className="price-val">
+            {currentPlan === 'free' ? '0 VNĐ' : currentPlan === 'pro' ? '49.000 VNĐ' : '399.000 VNĐ'}
+          </span>
+          <span className="price-lbl">
+            {currentPlan === 'squad' ? '/năm' : '/tháng'}
+          </span>
         </div>
       </div>
 
