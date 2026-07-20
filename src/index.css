@@ -8076,3 +8076,28 @@ p {
   background: rgba(239, 68, 68, 0.08) !important;
   border-color: rgba(239, 68, 68, 0.2) !important;
 }
+
+/* Settings V2 Dark Mode Compatibility Overrides */
+.dark-theme .settings-page-title,
+.dark-theme .modal-title-text,
+.dark-theme .table-heading,
+.dark-theme .pnl-table th,
+.dark-theme .pnl-table td {
+  color: #ffffff !important;
+}
+
+.dark-theme .reminder-time-input,
+.dark-theme .coach-voice-select,
+.dark-theme .profile-name-edit-input-v2 {
+  background-color: #334155 !important;
+  color: #ffffff !important;
+}
+
+.dark-theme .modal-subtext,
+.dark-theme .pnl-table th {
+  color: #94a3b8 !important;
+}
+
+.dark-theme .pnl-table tr {
+  border-color: #334155 !important;
+}
