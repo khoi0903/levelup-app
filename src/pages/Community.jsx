@@ -155,7 +155,13 @@ export default function Community({ userName = 'Alex', userXp = 1680 }) {
                   <span className="squad-members-count"><Users size={12} /> {squad.members} thành viên</span>
                 </div>
                 <p className="squad-description">{squad.desc}</p>
-                <div className="squad-card-actions">
+                <div className="squad-card-actions" style={{ gap: '8px', display: 'flex' }}>
+                  <button 
+                    className="btn btn-secondary btn-sm-squad"
+                    onClick={() => setSelectedSquad(squad)}
+                  >
+                    Xem hoạt động
+                  </button>
                   <button 
                     className={`btn ${squad.joined ? 'btn-outline' : 'btn-primary'} btn-sm-squad`}
                     onClick={() => handleToggleSquad(squad.id)}
@@ -236,6 +242,63 @@ export default function Community({ userName = 'Alex', userXp = 1680 }) {
                 Làm Khảo Sát (+100 XP)
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Group Detail & Activity Stream Modal */}
+      {selectedSquad && (
+        <div className="modal-overlay fade-in" onClick={() => setSelectedSquad(null)}>
+          <div className="modal-content-card" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header-row">
+              <div className="modal-title-left">
+                <Users size={20} color="#0056C6" />
+                <h3 className="modal-title-text">{selectedSquad.name}</h3>
+              </div>
+              <button className="close-btn-icon" onClick={() => setSelectedSquad(null)}>
+                ✕
+              </button>
+            </div>
+
+            <div className="modal-body-scroll">
+              <div className="squad-modal-banner">
+                <span className="squad-modal-tag">{selectedSquad.tag}</span>
+                <p className="squad-modal-desc">{selectedSquad.desc}</p>
+                <div className="squad-stat-row">
+                  <span>🔥 Chuỗi nhóm: <strong>12 ngày</strong></span>
+                  <span>👥 Thành viên: <strong>{selectedSquad.members} người</strong></span>
+                </div>
+              </div>
+
+              <h4 className="table-heading" style={{ marginTop: '16px' }}>Nhật ký hoạt động nhóm (Activity Stream)</h4>
+              <div className="activity-stream-list">
+                <div className="activity-item">
+                  <div className="act-avatar">SL</div>
+                  <div className="act-content">
+                    <strong>Sarah L.</strong> đã hoàn thành bài tập <em>Full Body Flow</em> (+150 XP)
+                    <span className="act-time">10 phút trước</span>
+                  </div>
+                </div>
+                <div className="activity-item">
+                  <div className="act-avatar accent">A</div>
+                  <div className="act-content">
+                    <strong>{userName}</strong> đã hoàn thành mục tiêu 10k bước chân (+100 XP)
+                    <span className="act-time">1 giờ trước</span>
+                  </div>
+                </div>
+                <div className="activity-item">
+                  <div className="act-avatar secondary">TM</div>
+                  <div className="act-content">
+                    <strong>Toby M.</strong> đã gửi lời nhắn: "Cố lên cả nhóm phòng 4 ơi! 🚀"
+                    <span className="act-time">3 giờ trước</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button className="btn btn-primary w-full mt-3" onClick={() => setSelectedSquad(null)}>
+              Đóng Chi Tiết Nhóm
+            </button>
           </div>
         </div>
       )}

@@ -4,6 +4,8 @@ import Header from './components/Header';
 import BottomNav from './components/BottomNav';
 import Onboarding from './pages/Onboarding';
 import Pricing from './pages/Pricing';
+import HealthSync from './pages/HealthSync';
+import ScheduleSetup from './pages/ScheduleSetup';
 import Dashboard from './pages/Dashboard';
 import Workouts from './pages/Workouts';
 import AICoach from './pages/AICoach';
@@ -141,6 +143,23 @@ export default function App() {
             currentPlan={currentPlan}
             fromProfile={isOnboarded}
             onBack={isOnboarded ? () => setActivePage('profile') : () => setActivePage('onboarding')}
+          />
+        );
+      case 'health_sync':
+        return (
+          <HealthSync
+            onNext={() => setActivePage('schedule_setup')}
+            onSkip={() => setActivePage('schedule_setup')}
+            onBack={() => setActivePage('pricing')}
+          />
+        );
+      case 'schedule_setup':
+        return (
+          <ScheduleSetup
+            onComplete={handleScheduleComplete}
+            onBack={() => setActivePage('health_sync')}
+            initialTime={reminderTime}
+            initialVoice={coachVoice}
           />
         );
       case 'dashboard':
