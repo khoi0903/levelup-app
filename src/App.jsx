@@ -111,7 +111,7 @@ export default function App() {
       case 'welcome':
         return (
           <Welcome
-            onSignUpEmail={() => setActivePage('onboarding')}
+            onSignUpEmail={() => setActivePage('register')}
             onNavigateToLogin={() => setActivePage('login')}
           />
         );
@@ -130,12 +130,12 @@ export default function App() {
               setIsOnboarded(true);
               setActivePage('dashboard');
             }}
-            onNavigateToSignUp={() => setActivePage('onboarding')}
+            onNavigateToSignUp={() => setActivePage('register')}
             onBack={() => setActivePage('welcome')}
           />
         );
       case 'onboarding':
-        return <Onboarding onComplete={handleOnboardingComplete} onBack={() => setActivePage('welcome')} />;
+        return <Onboarding onComplete={handleOnboardingComplete} onBack={() => setActivePage('register')} />;
       case 'pricing':
         return (
           <Pricing
@@ -226,12 +226,13 @@ export default function App() {
       <div className="quick-demo-switcher">
         <span className="demo-label">Chuyển nhanh màn hình Figma:</span>
         <button className={`demo-chip ${activePage === 'welcome' ? 'active' : ''}`} onClick={() => setActivePage('welcome')}>1. Welcome</button>
-        <button className={`demo-chip ${activePage === 'login' ? 'active' : ''}`} onClick={() => setActivePage('login')}>2. Login</button>
-        <button className={`demo-chip ${activePage === 'onboarding' ? 'active' : ''}`} onClick={() => setActivePage('onboarding')}>3. Mục tiêu (1/4)</button>
-        <button className={`demo-chip ${activePage === 'pricing' ? 'active' : ''}`} onClick={() => setActivePage('pricing')}>4. Gói dịch vụ (2/4)</button>
-        <button className={`demo-chip ${activePage === 'health_sync' ? 'active' : ''}`} onClick={() => setActivePage('health_sync')}>5. Sức khỏe (3/4)</button>
-        <button className={`demo-chip ${activePage === 'schedule_setup' ? 'active' : ''}`} onClick={() => setActivePage('schedule_setup')}>6. Lịch tập (4/4)</button>
-        <button className={`demo-chip ${activePage === 'dashboard' ? 'active' : ''}`} onClick={() => { setIsOnboarded(true); setActivePage('dashboard'); }}>7. Dashboard</button>
+        <button className={`demo-chip ${activePage === 'register' ? 'active' : ''}`} onClick={() => setActivePage('register')}>2. Đăng ký</button>
+        <button className={`demo-chip ${activePage === 'login' ? 'active' : ''}`} onClick={() => setActivePage('login')}>3. Đăng nhập</button>
+        <button className={`demo-chip ${activePage === 'onboarding' ? 'active' : ''}`} onClick={() => setActivePage('onboarding')}>4. Mục tiêu (1/4)</button>
+        <button className={`demo-chip ${activePage === 'pricing' ? 'active' : ''}`} onClick={() => setActivePage('pricing')}>5. Gói dịch vụ (2/4)</button>
+        <button className={`demo-chip ${activePage === 'health_sync' ? 'active' : ''}`} onClick={() => setActivePage('health_sync')}>6. Sức khỏe (3/4)</button>
+        <button className={`demo-chip ${activePage === 'schedule_setup' ? 'active' : ''}`} onClick={() => setActivePage('schedule_setup')}>7. Lịch tập (4/4)</button>
+        <button className={`demo-chip ${activePage === 'dashboard' ? 'active' : ''}`} onClick={() => { setIsOnboarded(true); setActivePage('dashboard'); }}>8. Dashboard</button>
       </div>
 
       <MobileFrame isDark={isDark}>
