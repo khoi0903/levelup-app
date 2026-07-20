@@ -15,10 +15,13 @@ export default function PersonalInfo({ stats = {}, onSave, onBack }) {
   const [restingHeartRate, setRestingHeartRate] = useState(stats.restingHeartRate || 70);
   const [bodyFat, setBodyFat] = useState(stats.bodyFat || 15);
   const [musclePercent, setMusclePercent] = useState(stats.musclePercent || 45);
-  const [caloriesIn, setCaloriesIn] = useState(stats.caloriesIn || 2000);
-  const [caloriesOut, setCaloriesOut] = useState(stats.caloriesOut || 2200);
   const [sleepHours, setSleepHours] = useState(stats.sleepHours || 8);
   const [waterIntake, setWaterIntake] = useState(stats.waterIntake || 2000);
+
+  // Newly requested inputs
+  const [activityLevel, setActivityLevel] = useState(stats.activityLevel || 'Trung bình');
+  const [goal, setGoal] = useState(stats.goal || 'Tăng cơ');
+  const [workoutLocation, setWorkoutLocation] = useState(stats.workoutLocation || 'Phòng gym');
 
   const calculateBmi = (w, h) => {
     if (w && h) {
@@ -43,7 +46,8 @@ export default function PersonalInfo({ stats = {}, onSave, onBack }) {
       gender, age, height, weight,
       chest, waist, hips,
       bmi, restingHeartRate, bodyFat, musclePercent,
-      caloriesIn, caloriesOut, sleepHours, waterIntake
+      sleepHours, waterIntake,
+      activityLevel, goal, workoutLocation
     });
   };
 
@@ -223,33 +227,54 @@ export default function PersonalInfo({ stats = {}, onSave, onBack }) {
           </div>
         </div>
 
-        {/* Calo In and Calo Out */}
-        <div className="stat-double-row">
-          <div className="stat-input-group flex-1">
-            <label className="stat-input-label">Calo nạp vào</label>
-            <div className="input-with-unit-box">
-              <input
-                type="number"
-                className="stat-number-input inline-input"
-                value={caloriesIn}
-                onChange={(e) => setCaloriesIn(Number(e.target.value))}
-              />
-              <span className="input-unit-label">kcal</span>
-            </div>
-          </div>
+        {/* Mức độ hoạt động */}
+        <div className="stat-input-group">
+          <label className="stat-input-label">Mức độ hoạt động</label>
+          <select
+            value={activityLevel}
+            onChange={(e) => setActivityLevel(e.target.value)}
+            className="stat-number-input"
+            style={{ width: '100%', height: '44px', background: '#ffffff', border: '1.5px solid #e2e8f0', borderRadius: '12px', padding: '0 12px', fontSize: '13.5px', fontWeight: '800', color: '#0f172a', cursor: 'pointer', outline: 'none' }}
+          >
+            <option value="Ít vận động">Ít vận động</option>
+            <option value="Vận động nhẹ">Vận động nhẹ</option>
+            <option value="Trung bình">Trung bình (Bình thường)</option>
+            <option value="Năng động">Năng động</option>
+            <option value="Rất năng động">Rất năng động</option>
+          </select>
+        </div>
 
-          <div className="stat-input-group flex-1">
-            <label className="stat-input-label">Calo tiêu thụ</label>
-            <div className="input-with-unit-box">
-              <input
-                type="number"
-                className="stat-number-input inline-input"
-                value={caloriesOut}
-                onChange={(e) => setCaloriesOut(Number(e.target.value))}
-              />
-              <span className="input-unit-label">kcal</span>
-            </div>
-          </div>
+        {/* Mục tiêu cá nhân */}
+        <div className="stat-input-group">
+          <label className="stat-input-label">Mục tiêu cá nhân</label>
+          <select
+            value={goal}
+            onChange={(e) => setGoal(e.target.value)}
+            className="stat-number-input"
+            style={{ width: '100%', height: '44px', background: '#ffffff', border: '1.5px solid #e2e8f0', borderRadius: '12px', padding: '0 12px', fontSize: '13.5px', fontWeight: '800', color: '#0f172a', cursor: 'pointer', outline: 'none' }}
+          >
+            <option value="Giảm cân">Giảm cân</option>
+            <option value="Tăng cơ">Tăng cơ</option>
+            <option value="Giữ dáng">Giữ dáng</option>
+            <option value="Tăng sức bền">Tăng sức bền</option>
+            <option value="Duy trì kỷ luật">Duy trì kỷ luật</option>
+          </select>
+        </div>
+
+        {/* Nơi tập chính */}
+        <div className="stat-input-group">
+          <label className="stat-input-label">Nơi tập chính</label>
+          <select
+            value={workoutLocation}
+            onChange={(e) => setWorkoutLocation(e.target.value)}
+            className="stat-number-input"
+            style={{ width: '100%', height: '44px', background: '#ffffff', border: '1.5px solid #e2e8f0', borderRadius: '12px', padding: '0 12px', fontSize: '13.5px', fontWeight: '800', color: '#0f172a', cursor: 'pointer', outline: 'none' }}
+          >
+            <option value="Tại nhà">Tại nhà</option>
+            <option value="Phòng gym">Phòng gym</option>
+            <option value="Ngoài trời">Ngoài trời</option>
+            <option value="Kết hợp">Kết hợp</option>
+          </select>
         </div>
 
         {/* Sleep Hours and Water Intake */}

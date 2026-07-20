@@ -5,6 +5,9 @@ import {
 } from 'lucide-react';
 
 export default function HealthSync({ onNext, onSkip, onBack }) {
+  const [appleConnected, setAppleConnected] = useState(true);
+  const [googleConnected, setGoogleConnected] = useState(false);
+
   // Toggle states matching Figma Screen 3
   const [permissions, setPermissions] = useState({
     bodyComp: true,
@@ -127,7 +130,32 @@ export default function HealthSync({ onNext, onSkip, onBack }) {
         </ul>
       </div>
 
+      {/* Apple / Android Health Connect Options */}
+      <h4 style={{ fontSize: '11px', fontWeight: '800', color: '#94a3b8', letterSpacing: '0.05em', margin: '0 0 10px 0', textTransform: 'uppercase' }}>KẾT NỐI HỆ THỐNG</h4>
+      <div style={{ display: 'flex', gap: '10px', marginBottom: '16px' }}>
+        <div className="health-connect-card" onClick={() => setAppleConnected(!appleConnected)} style={{
+          flex: 1, padding: '12px', borderRadius: '16px', border: appleConnected ? '1.5px solid #0056C6' : '1.5px solid #e2e8f0', background: appleConnected ? '#ebf3ff' : '#ffffff', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', boxSizing: 'border-box'
+        }}>
+          <span style={{ fontSize: '20px' }}>🍎</span>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+            <strong style={{ fontSize: '11.5px', color: '#0f172a', display: 'block' }}>Apple Health</strong>
+            <span style={{ fontSize: '9px', color: '#64748b' }}>{appleConnected ? 'Đã kết nối' : 'Nhấp kết nối'}</span>
+          </div>
+        </div>
+
+        <div className="health-connect-card" onClick={() => setGoogleConnected(!googleConnected)} style={{
+          flex: 1, padding: '12px', borderRadius: '16px', border: googleConnected ? '1.5px solid #0056C6' : '1.5px solid #e2e8f0', background: googleConnected ? '#ebf3ff' : '#ffffff', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', boxSizing: 'border-box'
+        }}>
+          <span style={{ fontSize: '20px' }}>🤖</span>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+            <strong style={{ fontSize: '11.5px', color: '#0f172a', display: 'block' }}>Google Fit</strong>
+            <span style={{ fontSize: '9px', color: '#64748b' }}>{googleConnected ? 'Đã kết nối' : 'Nhấp kết nối'}</span>
+          </div>
+        </div>
+      </div>
+
       {/* Permissions Toggle List */}
+      <h4 style={{ fontSize: '11px', fontWeight: '800', color: '#94a3b8', letterSpacing: '0.05em', margin: '0 0 10px 0', textTransform: 'uppercase' }}>CHỈ SỐ SỨC KHỎE CHI TIẾT</h4>
       <div className="figma-perm-list">
         {permissionItems.map((item) => {
           const Icon = item.icon;

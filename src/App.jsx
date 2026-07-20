@@ -48,10 +48,11 @@ export default function App() {
     restingHeartRate: 70,
     bodyFat: 15,
     musclePercent: 45,
-    caloriesIn: 2000,
-    caloriesOut: 2200,
     sleepHours: 8,
-    waterIntake: 2000
+    waterIntake: 2000,
+    activityLevel: 'Trung bình',
+    goal: 'Tăng cơ',
+    workoutLocation: 'Phòng gym'
   });
   
   // Fitness Stats

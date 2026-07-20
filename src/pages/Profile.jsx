@@ -312,6 +312,71 @@ export default function Profile({
               />
             </div>
 
+            {/* Mức độ hoạt động */}
+            <div className="goal-card-box-v2" style={{ cursor: 'default' }}>
+              <div className="goal-card-left-v2">
+                <span className="goal-name-text-v2" style={{ fontSize: '13px' }}>Mức độ hoạt động</span>
+              </div>
+              <select
+                value={personalStats.activityLevel || 'Trung bình'}
+                onChange={(e) => {
+                  if (onUpdateSettings) {
+                    onUpdateSettings('personalStats', { ...personalStats, activityLevel: e.target.value });
+                  }
+                }}
+                style={{ border: 'none', background: 'transparent', fontSize: '13px', fontWeight: '800', color: '#0f172a', outline: 'none', cursor: 'pointer', textAlign: 'right' }}
+              >
+                <option value="Ít vận động">Ít vận động</option>
+                <option value="Vận động nhẹ">Vận động nhẹ</option>
+                <option value="Trung bình">Trung bình</option>
+                <option value="Năng động">Năng động</option>
+                <option value="Rất năng động">Rất năng động</option>
+              </select>
+            </div>
+
+            {/* Mục tiêu cá nhân */}
+            <div className="goal-card-box-v2" style={{ cursor: 'default' }}>
+              <div className="goal-card-left-v2">
+                <span className="goal-name-text-v2" style={{ fontSize: '13px' }}>Mục tiêu cá nhân</span>
+              </div>
+              <select
+                value={personalStats.goal || 'Tăng cơ'}
+                onChange={(e) => {
+                  if (onUpdateSettings) {
+                    onUpdateSettings('personalStats', { ...personalStats, goal: e.target.value });
+                  }
+                }}
+                style={{ border: 'none', background: 'transparent', fontSize: '13px', fontWeight: '800', color: '#0f172a', outline: 'none', cursor: 'pointer', textAlign: 'right' }}
+              >
+                <option value="Giảm cân">Giảm cân</option>
+                <option value="Tăng cơ">Tăng cơ</option>
+                <option value="Giữ dáng">Giữ dáng</option>
+                <option value="Tăng sức bền">Tăng sức bền</option>
+                <option value="Duy trì kỷ luật">Duy trì kỷ luật</option>
+              </select>
+            </div>
+
+            {/* Nơi tập chính */}
+            <div className="goal-card-box-v2" style={{ cursor: 'default' }}>
+              <div className="goal-card-left-v2">
+                <span className="goal-name-text-v2" style={{ fontSize: '13px' }}>Nơi tập chính</span>
+              </div>
+              <select
+                value={personalStats.workoutLocation || 'Phòng gym'}
+                onChange={(e) => {
+                  if (onUpdateSettings) {
+                    onUpdateSettings('personalStats', { ...personalStats, workoutLocation: e.target.value });
+                  }
+                }}
+                style={{ border: 'none', background: 'transparent', fontSize: '13px', fontWeight: '800', color: '#0f172a', outline: 'none', cursor: 'pointer', textAlign: 'right' }}
+              >
+                <option value="Tại nhà">Tại nhà</option>
+                <option value="Phòng gym">Phòng gym</option>
+                <option value="Ngoài trời">Ngoài trời</option>
+                <option value="Kết hợp">Kết hợp</option>
+              </select>
+            </div>
+
           </div>
         </div>
 
