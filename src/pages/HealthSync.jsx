@@ -1,98 +1,148 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Activity, Heart, Smartphone, CheckCircle2 } from 'lucide-react';
+import { 
+  Plus, CheckCircle2, Activity, Lightbulb, 
+  BarChart2, Heart, Moon, Footprints, Utensils, Droplets 
+} from 'lucide-react';
 
-export default function HealthSync({ onNext, onSkip, onBack }) {
-  const [googleFitConnected, setGoogleFitConnected] = useState(true);
-  const [garminConnected, setGarminConnected] = useState(false);
+export default function HealthSync({ onNext, onSkip }) {
+  // Toggle states matching Figma Screen 3
+  const [permissions, setPermissions] = useState({
+    bodyComp: true,
+    heartRate: true,
+    sleep: true,
+    activity: true,
+    nutrition: false,
+    water: false,
+  });
+
+  const togglePermission = (key) => {
+    setPermissions((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const permissionItems = [
+    {
+      key: 'bodyComp',
+      title: 'Thành phần cơ thể',
+      sub: 'Cân nặng, BMI, Tỷ lệ mỡ',
+      icon: BarChart2,
+      color: '#0056C6',
+      bg: '#EBF3FF',
+    },
+    {
+      key: 'heartRate',
+      title: 'Nhịp tim',
+      sub: 'Nhịp tim nghỉ ngơi, HRV',
+      icon: Heart,
+      color: '#EF4444',
+      bg: '#FEE2E2',
+    },
+    {
+      key: 'sleep',
+      title: 'Giấc ngủ',
+      sub: 'Thời gian ngủ, các giai đoạn ngủ',
+      icon: Moon,
+      color: '#0056C6',
+      bg: '#EBF3FF',
+    },
+    {
+      key: 'activity',
+      title: 'Hoạt động',
+      sub: 'Số bước, Calo tiêu thụ',
+      icon: Footprints,
+      color: '#D97706',
+      bg: '#FEF3C7',
+    },
+    {
+      key: 'nutrition',
+      title: 'Dinh dưỡng',
+      sub: 'Lượng Calo nạp vào, Macro',
+      icon: Utensils,
+      color: '#10B981',
+      bg: '#D1FAE5',
+    },
+    {
+      key: 'water',
+      title: 'Lượng nước',
+      sub: 'Lượng nước tiêu thụ hàng ngày',
+      icon: Droplets,
+      color: '#F59E0B',
+      bg: '#FEF3C7',
+    },
+  ];
 
   return (
     <div className="onboarding-screen fade-in">
-      {/* Header Navigation */}
-      <div className="onboarding-header-nav-row">
-        <button className="back-btn-icon" onClick={onBack} aria-label="Quay lại">
-          <ArrowLeft size={18} />
-        </button>
-        <span className="step-indicator-text">BƯỚC 3/4</span>
-        <button className="skip-link-btn" onClick={onSkip}>
+      {/* Top Header */}
+      <div className="figma-health-header">
+        <span className="figma-health-logo">LevelUp</span>
+        <button className="figma-skip-btn" onClick={onSkip}>
           Bỏ qua
         </button>
       </div>
 
-      {/* Intro */}
-      <div className="onboarding-intro">
-        <h2 className="onboarding-title">Kết nối dữ liệu sức khỏe</h2>
-        <p className="onboarding-subtitle">
-          Đồng bộ tự động bước chân, nhịp tim & calo tiêu thụ từ thiết bị của bạn.
+      {/* Hero Badge Circle Icon */}
+      <div className="figma-health-badge-circle">
+        <svg width="44" height="44" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11 2V11H2V21H11V30H21V21H30V11H21V2H11Z" fill="#0056C6"/>
+          <path d="M2 16H9.5L12.5 10L16 22L20 13L22.5 16H30" stroke="#EBF3FF" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </div>
+
+      {/* Title & Subtitle */}
+      <div className="figma-health-intro">
+        <h2 className="figma-health-title">Kết nối sức khỏe</h2>
+        <p className="figma-health-sub">
+          Để AI Coach có thể cá nhân hóa lộ trình tập luyện tốt nhất, LevelUp cần bạn cấp quyền truy cập các chỉ số sau:
         </p>
       </div>
 
-      {/* Health App Cards */}
-      <div className="health-connect-cards-list">
-        {/* Google Fit / Apple Health */}
-        <div className={`health-connect-card ${googleFitConnected ? 'connected' : ''}`}>
-          <div className="health-card-left">
-            <div className="health-icon-bg google-fit">
-              <Activity size={22} color="#4285F4" />
-            </div>
-            <div className="health-card-info">
-              <h4 className="health-card-name">Google Fit / Apple Health</h4>
-              <span className="health-card-sub">Đếm bước chân & calo tự động</span>
-            </div>
-          </div>
-          <button
-            className={`btn ${googleFitConnected ? 'btn-outline connected-btn' : 'btn-primary'} btn-sm-connect`}
-            onClick={() => setGoogleFitConnected(!googleFitConnected)}
-          >
-            {googleFitConnected ? (
-              <>
-                <CheckCircle2 size={14} color="#10B981" style={{ marginRight: 4 }} />
-                Đã kết nối
-              </>
-            ) : (
-              'Kết nối ngay'
-            )}
-          </button>
-        </div>
-
-        {/* Garmin / Smartwatch */}
-        <div className={`health-connect-card ${garminConnected ? 'connected' : ''}`}>
-          <div className="health-card-left">
-            <div className="health-icon-bg garmin">
-              <Heart size={22} color="#FA5A15" />
-            </div>
-            <div className="health-card-info">
-              <h4 className="health-card-name">Garmin / Đồng hồ thông minh</h4>
-              <span className="health-card-sub">Đồng bộ nhịp tim & bài tập ngoài trời</span>
-            </div>
-          </div>
-          <button
-            className={`btn ${garminConnected ? 'btn-outline connected-btn' : 'btn-primary'} btn-sm-connect`}
-            onClick={() => setGarminConnected(!garminConnected)}
-          >
-            {garminConnected ? (
-              <>
-                <CheckCircle2 size={14} color="#10B981" style={{ marginRight: 4 }} />
-                Đã kết nối
-              </>
-            ) : (
-              'Kết nối'
-            )}
-          </button>
-        </div>
+      {/* Blue Callout Card */}
+      <div className="figma-reason-card">
+        <h4 className="reason-card-title">Tại sao chúng tôi cần dữ liệu này?</h4>
+        <ul className="reason-list">
+          <li className="reason-item">
+            <CheckCircle2 size={15} color="#0056C6" className="reason-icon" />
+            <span><strong>Theo dõi chính xác:</strong> Cung cấp dữ liệu nền tảng cho mọi phân tích.</span>
+          </li>
+          <li className="reason-item">
+            <Activity size={15} color="#0056C6" className="reason-icon" />
+            <span><strong>Phân tích AI thời gian thực:</strong> Điều chỉnh cường độ bài tập dựa trên thể trạng hiện tại.</span>
+          </li>
+          <li className="reason-item">
+            <Lightbulb size={15} color="#0056C6" className="reason-icon" />
+            <span><strong>Đề xuất bài tập cá nhân:</strong> Lộ trình được thiết kế riêng biệt để đạt hiệu quả tối đa.</span>
+          </li>
+        </ul>
       </div>
 
-      {/* Info Callout */}
-      <div className="health-info-callout">
-        <Smartphone size={20} color="#0056C6" style={{ flexShrink: 0 }} />
-        <p className="health-info-text">
-          LevelUp sẽ tự động đếm bước chân thời gian thực ngay cả khi bạn đóng ứng dụng.
-        </p>
+      {/* Permissions Toggle List */}
+      <div className="figma-perm-list">
+        {permissionItems.map((item) => {
+          const Icon = item.icon;
+          const isChecked = permissions[item.key];
+          return (
+            <div key={item.key} className="figma-perm-card" onClick={() => togglePermission(item.key)}>
+              <div className="perm-left">
+                <div className="perm-icon-wrapper" style={{ backgroundColor: item.bg }}>
+                  <Icon size={18} color={item.color} />
+                </div>
+                <div className="perm-info">
+                  <span className="perm-title">{item.title}</span>
+                  <span className="perm-sub">{item.sub}</span>
+                </div>
+              </div>
+              <div className={`figma-toggle-switch ${isChecked ? 'active' : ''}`}>
+                <div className="toggle-thumb"></div>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
-      {/* Continue Action Button */}
-      <div className="onboarding-actions-static mt-auto">
+      {/* Bottom Action Button */}
+      <div className="onboarding-actions-static mt-3">
         <button className="btn btn-primary w-full" onClick={onNext}>
-          Tiếp tục
+          Tiếp tục →
         </button>
       </div>
     </div>

@@ -1,126 +1,154 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Clock, Volume2, Calendar, Check } from 'lucide-react';
+import { ArrowLeft, Sun, Droplets, Activity, Edit3 } from 'lucide-react';
 
-export default function ScheduleSetup({ onComplete, onBack, initialTime = '06:00', initialVoice = 'empathetic' }) {
-  const [selectedDays, setSelectedDays] = useState(['T2', 'T3', 'T5', 'T7']);
-  const [reminderTime, setReminderTime] = useState(initialTime);
-  const [coachVoice, setCoachVoice] = useState(initialVoice);
+export default function ScheduleSetup({ onComplete, onBack, initialTime = '17:30 - 18:30', initialVoice = 'empathetic' }) {
+  const [selectedDay, setSelectedDay] = useState(14); // T4 14 is default active in Figma Screen 4
+  const [reminders, setReminders] = useState({
+    morning: true,
+    water: true,
+    yoga: false,
+  });
 
-  const weekDays = [
-    { id: 'T2', label: 'T2' },
-    { id: 'T3', label: 'T3' },
-    { id: 'T4', label: 'T4' },
-    { id: 'T5', label: 'T5' },
-    { id: 'T6', label: 'T6' },
-    { id: 'T7', label: 'T7' },
-    { id: 'CN', label: 'CN' },
-  ];
-
-  const toggleDay = (dayId) => {
-    if (selectedDays.includes(dayId)) {
-      setSelectedDays(selectedDays.filter((d) => d !== dayId));
-    } else {
-      setSelectedDays([...selectedDays, dayId]);
-    }
+  const toggleReminder = (key) => {
+    setReminders((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
+  const datesList = [
+    { dayName: 'T2', dateNum: 12 },
+    { dayName: 'T3', dateNum: 13 },
+    { dayName: 'T4', dateNum: 14, active: true },
+    { dayName: 'T5', dateNum: 15, selected: true },
+  ];
+
   const handleFinish = () => {
-    onComplete({ selectedDays, reminderTime, coachVoice });
+    onComplete({
+      selectedDay,
+      reminders,
+      reminderTime: initialTime,
+      coachVoice: initialVoice,
+    });
   };
 
   return (
     <div className="onboarding-screen fade-in">
-      {/* Header Navigation */}
-      <div className="onboarding-header-nav-row">
+      {/* Header Navigation with Dots Indicator */}
+      <div className="figma-schedule-header">
         <button className="back-btn-icon" onClick={onBack} aria-label="Quay lại">
           <ArrowLeft size={18} />
         </button>
-        <span className="step-indicator-text">BƯỚC 4/4</span>
+        <div className="figma-dots-indicator">
+          <span className="dot"></span>
+          <span className="dot"></span>
+          <span className="dot"></span>
+          <span className="dot active"></span>
+        </div>
         <div style={{ width: 28 }}></div>
       </div>
 
-      {/* Intro */}
-      <div className="onboarding-intro">
-        <h2 className="onboarding-title">Thiết lập lịch tập luyện</h2>
-        <p className="onboarding-subtitle">
-          Chọn số ngày tập mỗi tuần và giờ nhắc nhở lý tưởng của bạn.
+      {/* Title & Subtitle */}
+      <div className="figma-schedule-intro">
+        <h2 className="figma-schedule-title">Thiết lập lịch tập</h2>
+        <p className="figma-schedule-sub">
+          Chọn thời gian và nhắc nhở để AI Coach chuẩn bị lộ trình tốt nhất cho bạn.
         </p>
       </div>
 
-      {/* Days Selection Section */}
-      <div className="schedule-block card">
-        <div className="schedule-label-row">
-          <Calendar size={16} color="#0056C6" />
-          <h4 className="schedule-section-label">Các ngày tập trong tuần ({selectedDays.length} ngày)</h4>
+      {/* Calendar Card Container */}
+      <div className="figma-calendar-card">
+        <div className="calendar-card-top">
+          <span className="month-year-label">THÁNG 7 2026</span>
+          <div className="calendar-nav-arrows">
+            <span>&lt;</span>
+            <span>&gt;</span>
+          </div>
         </div>
-        <div className="days-picker-row">
-          {weekDays.map((day) => {
-            const isSelected = selectedDays.includes(day.id);
+
+        {/* Horizontal Dates Picker */}
+        <div className="figma-dates-row">
+          {datesList.map((item) => {
+            const isCurrentActive = selectedDay === item.dateNum;
             return (
-              <button
-                key={day.id}
-                type="button"
-                className={`day-circle-btn ${isSelected ? 'active' : ''}`}
-                onClick={() => toggleDay(day.id)}
+              <div
+                key={item.dateNum}
+                className={`figma-date-card ${isCurrentActive ? 'active' : ''} ${item.selected ? 'selected' : ''}`}
+                onClick={() => setSelectedDay(item.dateNum)}
               >
-                {day.label}
-              </button>
+                <span className="date-day-name">{item.dayName}</span>
+                <span className="date-day-num">{item.dateNum}</span>
+                {isCurrentActive && <div className="date-green-dot"></div>}
+              </div>
             );
           })}
         </div>
-      </div>
 
-      {/* Daily Reminder Time Picker */}
-      <div className="schedule-block card">
-        <div className="schedule-label-row">
-          <Clock size={16} color="#FA5A15" />
-          <h4 className="schedule-section-label">Giờ nhắc nhở hàng ngày</h4>
-        </div>
-        <div className="time-picker-wrapper">
-          <input
-            type="time"
-            className="time-picker-input"
-            value={reminderTime}
-            onChange={(e) => setReminderTime(e.target.value)}
-          />
-        </div>
-      </div>
-
-      {/* AI Coach Voice Tone Selector */}
-      <div className="schedule-block card">
-        <div className="schedule-label-row">
-          <Volume2 size={16} color="#8B5CF6" />
-          <h4 className="schedule-section-label">Giọng nói Huấn luyện viên AI Aura</h4>
-        </div>
-        <div className="voice-options-list">
-          <div
-            className={`voice-card-option ${coachVoice === 'empathetic' ? 'selected' : ''}`}
-            onClick={() => setCoachVoice('empathetic')}
-          >
-            <div className="voice-info">
-              <span className="voice-title">Aura (Đồng cảm & Nhẹ nhàng)</span>
-              <span className="voice-desc">Động viên nhẹ nhàng, phù hợp cho người mới bắt đầu.</span>
-            </div>
-            {coachVoice === 'empathetic' && <Check size={16} color="#0056C6" />}
-          </div>
-
-          <div
-            className={`voice-card-option ${coachVoice === 'tough_love' ? 'selected' : ''}`}
-            onClick={() => setCoachVoice('tough_love')}
-          >
-            <div className="voice-info">
-              <span className="voice-title">Aura (Kỷ luật & Nghiêm khắc)</span>
-              <span className="voice-desc">Nghiêm túc, thúc đẩy giới hạn bản thân bứt phá.</span>
-            </div>
-            {coachVoice === 'tough_love' && <Check size={16} color="#0056C6" />}
+        {/* Ideal Time Block */}
+        <div className="figma-time-row">
+          <span className="time-label">Thời gian tập lý tưởng</span>
+          <div className="time-badge-pill">
+            <span>{initialTime}</span>
+            <Edit3 size={13} color="#0056C6" />
           </div>
         </div>
       </div>
 
-      {/* Complete Action Button */}
-      <div className="onboarding-actions-static mt-auto" style={{ marginTop: '20px' }}>
+      {/* Reminders Section Heading */}
+      <h4 className="figma-section-heading">NHẮC NHỞ THÔNG MINH</h4>
+
+      {/* Reminder Toggle List */}
+      <div className="figma-reminders-list">
+        {/* Morning Start */}
+        <div className="figma-reminder-card" onClick={() => toggleReminder('morning')}>
+          <div className="reminder-left">
+            <div className="reminder-icon-bg sun">
+              <Sun size={18} color="#0056C6" />
+            </div>
+            <div className="reminder-info">
+              <span className="reminder-title">Khởi động sáng</span>
+              <span className="reminder-sub">06:30 hằng ngày</span>
+            </div>
+          </div>
+          <div className={`figma-toggle-switch ${reminders.morning ? 'active' : ''}`}>
+            <div className="toggle-thumb"></div>
+          </div>
+        </div>
+
+        {/* Water Intake */}
+        <div className="figma-reminder-card" onClick={() => toggleReminder('water')}>
+          <div className="reminder-left">
+            <div className="reminder-icon-bg water">
+              <Droplets size={18} color="#0056C6" />
+            </div>
+            <div className="reminder-info">
+              <span className="reminder-title">Uống nước</span>
+              <span className="reminder-sub">Mỗi 2 giờ</span>
+            </div>
+          </div>
+          <div className={`figma-toggle-switch ${reminders.water ? 'active' : ''}`}>
+            <div className="toggle-thumb"></div>
+          </div>
+        </div>
+
+        {/* Relaxing Yoga */}
+        <div className="figma-reminder-card" onClick={() => toggleReminder('yoga')}>
+          <div className="reminder-left">
+            <div className="reminder-icon-bg yoga">
+              <Activity size={18} color="#0056C6" />
+            </div>
+            <div className="reminder-info">
+              <span className="reminder-title">Yoga thư giãn</span>
+              <span className="reminder-sub">21:00 trước khi ngủ</span>
+            </div>
+          </div>
+          <div className={`figma-toggle-switch ${reminders.yoga ? 'active' : ''}`}>
+            <div className="toggle-thumb"></div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Action Button */}
+      <div className="onboarding-actions-static mt-auto">
         <button className="btn btn-primary w-full" onClick={handleFinish}>
-          Hoàn tất & Bắt đầu tập luyện
+          Hoàn tất thiết lập →
         </button>
       </div>
     </div>

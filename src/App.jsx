@@ -25,7 +25,7 @@ export default function App() {
   const [activePage, setActivePage] = useState('welcome'); // welcome, login, onboarding, pricing, dashboard, etc.
   
   // App settings & profile
-  const [userName, setUserName] = useState('Đinh Khôi');
+  const [userName, setUserName] = useState('Tâm');
   const [isDark, setIsDark] = useState(false);
   const [reminderTime, setReminderTime] = useState('06:00');
   const [coachVoice, setCoachVoice] = useState('empathetic');
@@ -51,6 +51,13 @@ export default function App() {
     } else {
       setActivePage('health_sync');
     }
+  };
+
+  const handleScheduleComplete = ({ reminderTime, coachVoice }) => {
+    if (reminderTime) setReminderTime(reminderTime);
+    if (coachVoice) setCoachVoice(coachVoice);
+    setIsOnboarded(true);
+    setActivePage('dashboard');
   };
 
   const handleWorkoutComplete = (gainedXp) => {
@@ -239,25 +246,14 @@ export default function App() {
       </div>
 
       <MobileFrame isDark={isDark}>
-        {!isAuthOrOnboarding && (
-          <Header
-            userName={userName}
-            userXp={xp}
-            userLevel={level}
-            activeStreak={activeStreak}
-            isDark={isDark}
-            onNotificationClick={() => alert('Không có thông báo mới!')}
-          />
-        )}
-
         <main className="app-content">
           {renderPage()}
         </main>
 
         {!isAuthOrOnboarding && (
           <BottomNav
-            activeTab={activePage}
-            setActiveTab={setActivePage}
+            activePage={activePage}
+            setActivePage={setActivePage}
             isDark={isDark}
           />
         )}

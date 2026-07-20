@@ -1,179 +1,286 @@
-import React from 'react';
-import { Calendar, Award, Flame, Sun, Trophy, Lock } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowLeft, Flame, Award, Calendar, CheckCircle2, ChevronRight, Lock, Sparkles, Zap, Shield, HelpCircle } from 'lucide-react';
 
 export default function Progress({ 
-  xp = 1680, 
-  maxXp = 2000, 
+  xp = 850, 
+  maxXp = 1200, 
   level = 4, 
-  checkInHistory = [], 
+  checkInHistory = [12, 13, 14, 15, 17], 
   onToggleCheckIn,
-  activeStreak = 5
+  activeStreak = 12,
+  setActivePage
 }) {
-  const xpPercentage = (xp / maxXp) * 100;
+  const [activeTab, setActiveTab] = useState('achievements'); // 'achievements', 'level', 'calendar'
 
-  // Real calendar generation for the current month
-  const today = new Date();
-  const currentYear = today.getFullYear();
-  const currentMonth = today.getMonth();
-  
-  const monthNames = [
-    "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
-    "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
-  ];
-  
-  const currentMonthName = `${monthNames[currentMonth]} ${currentYear}`;
-  const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
-  const days = Array.from({ length: totalDays }, (_, i) => i + 1);
-  
-  const firstDayIndex = new Date(currentYear, currentMonth, 1).getDay();
-  // Map JS getDay (0=Sun, 1=Mon, ..., 6=Sat) to (Mon=0, ..., Sun=6)
-  const startOffset = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
-  const emptySpacers = Array.from({ length: startOffset });
+  // Current Calendar Month parameters matching Figma (Tháng 7, 2026)
+  const totalDays = 31;
+  const daysList = Array.from({ length: totalDays }, (_, i) => i + 1);
 
-  const milestones = [
+  // Milestones list for "Thành tích" tab matching Figma V2
+  const achievements = [
     {
-      id: 'streak_5',
-      title: 'Chuỗi 5 ngày',
-      desc: 'Tập luyện 5 ngày liên tiếp.',
+      id: 'consistent_soldier',
+      title: 'Chiến binh bền bỉ',
+      desc: 'Tập liên tiếp 5 ngày.',
       status: 'completed',
-      progress: '5/5',
-      icon: Flame,
-      color: 'orange'
+      xpReward: '+200 XP',
+      color: '#FA5A15',
+      bg: '#FFF0EA',
     },
     {
-      id: 'early_bird',
-      title: 'Tập sớm',
-      desc: 'Hoàn thành bài tập trước 7 AM.',
+      id: 'speedy',
+      title: 'Siêu tốc độ',
+      desc: 'Hoàn thành bài tập HIIT x3.',
       status: 'completed',
-      progress: '1/1',
-      icon: Sun,
-      color: 'blue'
+      xpReward: '+150 XP',
+      color: '#10B981',
+      bg: '#D1FAE5',
     },
     {
-      id: 'consistency_king',
-      title: 'Kỷ Luật Thép',
-      desc: 'Điểm danh 30 ngày tập luyện.',
-      status: 'progress',
-      progress: `${checkInHistory.length}/30`,
-      icon: Trophy,
-      color: 'purple'
-    },
-    {
-      id: 'heavy_lifter',
-      title: 'Cực Hạn Sức Mạnh',
-      desc: 'Hoàn thành 15 bài tập tạ.',
+      id: 'early_riser',
+      title: 'Vượt giới hạn',
+      desc: 'Tập luyện sớm trước 6 AM.',
       status: 'locked',
-      progress: '0/15',
-      icon: Lock,
-      color: 'gray'
+      xpReward: '+100 XP',
+      color: '#94A3B8',
+      bg: '#F1F5F9',
     }
   ];
 
   return (
-    <div className="progress-page fade-in">
-      <div className="page-title-section">
-        <h2 className="page-title">Hành trình của bạn</h2>
-        <p className="page-subtitle">Theo dõi sự kỷ luật và thành quả của bạn.</p>
+    <div className="progress-page-v2 fade-in">
+      {/* Header Row */}
+      <div className="figma-progress-header">
+        <button className="back-btn-icon" onClick={() => setActivePage('dashboard')} aria-label="Quay lại">
+          <ArrowLeft size={18} />
+        </button>
+        <span className="figma-progress-title">Chuỗi</span>
+        <div style={{ width: 28 }}></div>
       </div>
 
-      {/* Level Summary Dashboard */}
-      <div className="level-summary-card card">
-        <div className="level-gauge-row">
-          <div className="level-gauge-text-block">
-            <span className="level-label-large">Cấp độ hiện tại</span>
-            <h3 className="level-number-large">Cấp {level}</h3>
-            <span className="xp-fraction">{xp} / {maxXp} XP</span>
-          </div>
-          <div className="level-circle-progress">
-            <svg width="70" height="70" viewBox="0 0 36 36" className="circular-chart">
-              <path className="circle-bg"
-                d="M18 2.0845
-                  a 15.9155 15.9155 0 0 1 0 31.831
-                  a 15.9155 15.9155 0 0 1 0 -31.831"
-              />
-              <path className="circle-fill"
-                strokeDasharray={`${xpPercentage}, 100`}
-                d="M18 2.0845
-                  a 15.9155 15.9155 0 0 1 0 31.831
-                  a 15.9155 15.9155 0 0 1 0 -31.831"
-              />
-            </svg>
-            <div className="circle-percentage-text">{Math.round(xpPercentage)}%</div>
-          </div>
-        </div>
-        <div className="level-progress-bar-details">
-          <div className="xp-details-track">
-            <div className="xp-details-bar" style={{ width: `${xpPercentage}%` }}></div>
-          </div>
-        </div>
+      {/* Tabs Row */}
+      <div className="figma-progress-tabs">
+        <button
+          className={`progress-tab-btn ${activeTab === 'achievements' ? 'active' : ''}`}
+          onClick={() => setActiveTab('achievements')}
+        >
+          Thành tích
+        </button>
+        <button
+          className={`progress-tab-btn ${activeTab === 'level' ? 'active' : ''}`}
+          onClick={() => setActiveTab('level')}
+        >
+          Cấp độ
+        </button>
+        <button
+          className={`progress-tab-btn ${activeTab === 'calendar' ? 'active' : ''}`}
+          onClick={() => setActiveTab('calendar')}
+        >
+          Lịch
+        </button>
       </div>
 
-      {/* Consistency Grid */}
-      <div className="consistency-grid-section card">
-        <div className="section-header-row">
-          <div className="section-title-wrapper" style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-            <Calendar size={16} className="text-primary" />
-            <h3 className="section-title" style={{ margin: 0 }}>Lịch kỷ luật</h3>
-            <span className="current-month-label" style={{ fontSize: '12px', opacity: 0.75 }}>({currentMonthName})</span>
-          </div>
-          <div className="grid-streak-text">
-            🔥 {activeStreak} ngày liên tiếp
-          </div>
-        </div>
-        <p className="grid-instruction">Chạm vào ô ngày để đánh dấu điểm danh tập luyện.</p>
+      {/* TAB CONTENT: 成就 - THÀNH TÍCH (Figma Screen 2) */}
+      {activeTab === 'achievements' && (
+        <div className="tab-content-v2 fade-in">
+          {/* Total Calo stats container */}
+          <div className="figma-total-stats-card card">
+            <span className="total-stats-label">TỔNG CALO TIÊU THỤ</span>
+            <div className="total-stats-value-row">
+              <span className="total-value-num">2,450</span>
+              <span className="total-value-unit">kcal</span>
+              <div className="pulse-icon-bg">
+                <Flame size={14} color="#FA5A15" fill="#FA5A15" />
+              </div>
+            </div>
+            <p className="total-stats-percentage">+12% so với tuần trước</p>
 
-        <div className="calendar-grid">
-          {/* Weekday headers */}
-          {['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map((wDay) => (
-            <div key={wDay} className="grid-weekday-header">{wDay}</div>
-          ))}
+            <div className="stats-sub-row">
+              <div className="sub-stat-col">
+                <span className="sub-label">BUỔI TẬP</span>
+                <span className="sub-val"><strong>5</strong> / 7 ngày</span>
+              </div>
+              <div className="sub-stat-col">
+                <span className="sub-label">THỜI GIAN</span>
+                <span className="sub-val"><strong>320</strong> phút</span>
+              </div>
+            </div>
+          </div>
+
+          <h4 className="figma-section-title-bold" style={{ margin: '20px 0 12px 0' }}>Huy hiệu tuần này</h4>
           
-          {/* Empty cells for offset */}
-          {emptySpacers.map((_, idx) => (
-            <div key={`empty-${idx}`} className="grid-day-cell-empty"></div>
-          ))}
-          
-          {/* Real day cells */}
-          {days.map((day) => {
-            const isCompleted = checkInHistory.includes(day);
-            const isToday = day === today.getDate();
-            return (
-              <button
-                key={day}
-                className={`grid-day-cell ${isCompleted ? 'completed animate-pop' : ''} ${isToday ? 'today' : ''}`}
-                onClick={() => onToggleCheckIn(day)}
-                aria-label={`Ngày ${day}`}
-              >
-                {day}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Milestones / Badges List */}
-      <div className="milestones-section">
-        <h3 className="section-title-standard">Cột mốc & Thành tích</h3>
-        <div className="milestones-grid">
-          {milestones.map((ms) => {
-            const Icon = ms.icon;
-            return (
-              <div key={ms.id} className={`milestone-card card ${ms.status}`}>
-                <div className={`milestone-icon-wrapper ${ms.color}`}>
-                  <Icon size={18} />
+          <div className="figma-achievements-list">
+            {achievements.map((item) => (
+              <div key={item.id} className="figma-achievement-card card">
+                <div className="ach-left">
+                  <div className="ach-icon-wrapper" style={{ backgroundColor: item.bg }}>
+                    <Award size={18} color={item.color} />
+                  </div>
+                  <div className="ach-info">
+                    <span className="ach-title">{item.title}</span>
+                    <span className="ach-desc">{item.desc}</span>
+                  </div>
                 </div>
-                <div className="milestone-details">
-                  <h4 className="milestone-title">{ms.title}</h4>
-                  <p className="milestone-desc">{ms.desc}</p>
-                </div>
-                <div className="milestone-status-badge">
-                  <span className="milestone-progress-text">{ms.progress}</span>
+                <div className="ach-right-status">
+                  {item.status === 'completed' ? (
+                    <span className="xp-reward-pill completed">{item.xpReward}</span>
+                  ) : (
+                    <div className="lock-icon-bg"><Lock size={12} color="#94A3B8" /></div>
+                  )}
                 </div>
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* TAB CONTENT: 等级 - CẤP ĐỘ (Figma Screen 3) */}
+      {activeTab === 'level' && (
+        <div className="tab-content-v2 fade-in">
+          {/* Level Badge Card */}
+          <div className="figma-level-badge-card card">
+            <div className="level-badge-left">
+              <span className="level-badge-sub">CẤP ĐỘ HIỆN TẠI</span>
+              <h3 className="level-badge-main-title">Vàng</h3>
+              <p className="level-badge-next-xp">
+                Còn <strong style={{ color: '#FA5A15' }}>350 XP</strong> tới Bạch Kim 
+                <span className="xp-fraction-small">850 / 1200 XP</span>
+              </p>
+            </div>
+            <div className="level-medal-wrapper">
+              <div className="medal-icon-bg">🏆</div>
+            </div>
+
+            {/* Custom linear progress track */}
+            <div className="level-progress-bar-v2" style={{ marginTop: '16px' }}>
+              <div className="level-progress-fill-v2" style={{ width: '70.8%' }}></div>
+            </div>
+
+            <div className="level-stats-footer-row">
+              <div className="level-footer-col">
+                <span className="level-footer-label">Chuỗi dài nhất</span>
+                <span className="level-footer-val">42 ngày</span>
+              </div>
+              <div className="level-footer-col">
+                <span className="level-footer-label">Tổng XP</span>
+                <span className="level-footer-val">9.4k</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="figma-section-header" style={{ marginTop: '20px', marginBottom: '12px' }}>
+            <h3 className="figma-section-title-bold">Đặc quyền cấp độ</h3>
+            <button className="figma-view-all-link">Xem tất cả</button>
+          </div>
+
+          {/* Level Privileges list */}
+          <div className="figma-privilege-list">
+            <div className="privilege-card card">
+              <div className="priv-left">
+                <div className="priv-icon-bg"><Sparkles size={16} color="#10B981" /></div>
+                <div className="priv-info">
+                  <span className="priv-title">Hệ số XP x1.2</span>
+                  <span className="priv-sub">Nhận thêm XP cho mỗi bài tập hoàn thành.</span>
+                </div>
+              </div>
+              <CheckCircle2 size={16} color="#10B981" />
+            </div>
+
+            <div className="privilege-card card">
+              <div className="priv-left">
+                <div className="priv-icon-bg"><Shield size={16} color="#10B981" /></div>
+                <div className="priv-info">
+                  <span className="priv-title">Bảo vệ chuỗi 24h</span>
+                  <span className="priv-sub">Tự động kích hoạt khi bạn lỡ một ngày.</span>
+                </div>
+              </div>
+              <CheckCircle2 size={16} color="#10B981" />
+            </div>
+
+            <div className="privilege-card card locked">
+              <div className="priv-left">
+                <div className="priv-icon-bg"><Lock size={16} color="#94A3B8" /></div>
+                <div className="priv-info">
+                  <span className="priv-title">Biểu tượng Bạch Kim</span>
+                  <span className="priv-sub">Mở khóa diện mạo hồ sơ độc quyền.</span>
+                </div>
+              </div>
+              <span className="priv-lock-text">Cấp 5</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TAB CONTENT: 日历 - LỊCH (Figma Screen 4) */}
+      {activeTab === 'calendar' && (
+        <div className="tab-content-v2 fade-in">
+          {/* Calendar Picker Card */}
+          <div className="figma-calendar-picker-card card">
+            <div className="calendar-card-top">
+              <span className="month-year-label">Tháng 7, 2026</span>
+              <div className="calendar-nav-arrows">
+                <span>&lt;</span>
+                <span>&gt;</span>
+              </div>
+            </div>
+
+            {/* Custom Grid */}
+            <div className="figma-calendar-month-grid">
+              {['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map((wDay) => (
+                <div key={wDay} className="month-grid-header">{wDay}</div>
+              ))}
+
+              {/* Pad offset for start of month (e.g. Month starts on Wednesday) */}
+              <div className="month-grid-cell empty"></div>
+              <div className="month-grid-cell empty"></div>
+
+              {daysList.map((day) => {
+                const isCompleted = checkInHistory.includes(day);
+                const isFigmaHighlighted = day === 14 || day === 15;
+                const isBlueCheck = [1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26].includes(day);
+
+                return (
+                  <button
+                    key={day}
+                    className={`month-grid-cell ${isBlueCheck ? 'figma-checked' : ''} ${isFigmaHighlighted ? 'figma-active' : ''}`}
+                    onClick={() => onToggleCheckIn(day)}
+                  >
+                    {day}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Quick Metrics Row */}
+          <div className="figma-metrics-row">
+            <div className="metric-box blue card">
+              <div className="metric-icon-bg"><Flame size={15} color="#0056C6" fill="#0056C6" /></div>
+              <span className="metric-title-small">Chuỗi hiện tại</span>
+              <span className="metric-value-bold">{activeStreak} ngày</span>
+            </div>
+
+            <div className="metric-box green card">
+              <div className="metric-icon-bg"><Calendar size={15} color="#10B981" /></div>
+              <span className="metric-title-small">Tổng trong tháng</span>
+              <span className="metric-value-bold">22 buổi</span>
+            </div>
+          </div>
+
+          {/* Records Trophy Box */}
+          <div className="figma-trophy-message-box card">
+            <div className="trophy-box-left">
+              <div className="trophy-badge-icon">🏆</div>
+              <div className="trophy-text-col">
+                <h4 className="trophy-box-title">Đang phá kỷ lục!</h4>
+                <p className="trophy-box-sub">
+                  Bạn đã tập luyện liên tục 12 ngày qua. Chỉ cần 3 ngày nữa để nhận huy chương "Kiên Trì Bền Bỉ"!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

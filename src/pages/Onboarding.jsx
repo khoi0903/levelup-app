@@ -40,7 +40,7 @@ export default function Onboarding({ onComplete, onBack }) {
         <button className="back-btn-icon" onClick={onBack} aria-label="Quay lại">
           <ArrowLeft size={18} />
         </button>
-        <span className="step-indicator-text">BƯỚC 1/2</span>
+        <span className="step-indicator-text">BƯỚC 1/4</span>
         <div style={{ width: 28 }}></div>
       </div>
 

@@ -1,113 +1,134 @@
 import React from 'react';
-import { Check, Star, Users, HelpCircle, ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Check, Users, Lock, CheckCircle2 } from 'lucide-react';
 
 export default function Pricing({ onSelectPlan, currentPlan = 'free', fromProfile = false, onBack }) {
-  const plans = [
-    {
-      id: 'free',
-      name: 'LevelUp Free',
-      price: '0VNĐ',
-      period: 'tháng',
-      features: [
-        'Chat cơ bản với AI Coach (giới hạn)',
-        '3 giáo án tập luyện cơ bản',
-        'Tham gia nhóm cộng đồng chung'
-      ],
-      icon: HelpCircle,
-      recommended: false,
-      buttonText: 'Bắt đầu miễn phí'
-    },
-    {
-      id: 'pro',
-      name: 'LevelUp Pro',
-      price: '49.000VNĐ',
-      period: 'tháng',
-      badge: 'MOST POPULAR',
-      badgeColor: 'orange',
-      features: [
-        'Unlimited AI coaching (Aura)',
-        'Personalized adaptive plans',
-        'Advanced analytics',
-        'Exclusive challenges',
-        'No ads'
-      ],
-      icon: Star,
-      recommended: true,
-      buttonText: 'Nâng cấp ngay'
-    },
-    {
-      id: 'squad',
-      name: 'LevelUp Squad',
-      price: '399.000VNĐ',
-      period: 'năm',
-      badge: 'Save 30%',
-      badgeColor: 'green',
-      features: [
-        'All Pro features for you and a friend.'
-      ],
-      icon: Users,
-      recommended: false,
-      buttonText: 'Chọn nhóm'
-    }
-  ];
-
   return (
     <div className="pricing-screen fade-in">
+      {/* Header Navigation */}
       <div className="pricing-header-row">
         <button className="back-btn-icon" onClick={onBack} aria-label="Quay lại">
           <ArrowLeft size={18} />
         </button>
-        <span className="step-indicator-text">BƯỚC 2/2</span>
+        <span className="step-indicator-text">BƯỚC 2/4</span>
         <div style={{ width: 28 }}></div>
       </div>
 
-      <div className="pricing-intro">
+      {/* Intro */}
+      <div className="pricing-intro text-center">
         <h2 className="pricing-title">Chọn gói dịch vụ của bạn</h2>
         <p className="pricing-subtitle">
           Mở khóa toàn bộ tiềm năng tập luyện với gói dịch vụ phù hợp nhất.
         </p>
       </div>
 
-      <div className="plans-list">
-        {plans.map((plan) => {
-          const isCurrent = currentPlan === plan.id;
-          return (
-            <div
-              key={plan.id}
-              className={`plan-card ${isCurrent ? 'selected' : ''} ${plan.recommended ? 'recommended' : ''}`}
-            >
-              {plan.badge && (
-                <div className={`plan-badge-figma ${plan.badgeColor === 'orange' ? 'badge-orange' : 'badge-green'}`}>
-                  {plan.badge}
-                </div>
-              )}
-              
-              <div className="plan-card-top">
-                <h3 className="plan-name-figma">{plan.name}</h3>
-                <div className="plan-price-figma">
-                  <span className="price-num">{plan.price}</span>
-                  <span className="price-sub">/{plan.period}</span>
-                </div>
-              </div>
+      {/* Plans Stack */}
+      <div className="figma-plans-stack">
+        {/* Card 1: LevelUp Free */}
+        <div className="figma-plan-card free-card">
+          <h3 className="figma-plan-title">LevelUp Free</h3>
+          <div className="figma-plan-price-row">
+            <span className="figma-price-amount">0VNĐ</span>
+            <span className="figma-price-period">/tháng</span>
+          </div>
 
-              <ul className="plan-features">
-                {plan.features.map((feature, idx) => (
-                  <li key={idx} className="feature-item">
-                    <Check size={14} className="check-icon" />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
+          <ul className="figma-plan-features">
+            <li>
+              <CheckCircle2 size={16} color="#64748B" className="feature-check" />
+              <span>Chat cơ bản với AI Coach (giới hạn)</span>
+            </li>
+            <li>
+              <CheckCircle2 size={16} color="#64748B" className="feature-check" />
+              <span>3 giáo án tập luyện cơ bản</span>
+            </li>
+            <li>
+              <CheckCircle2 size={16} color="#64748B" className="feature-check" />
+              <span>Tham gia nhóm cộng đồng chung</span>
+            </li>
+          </ul>
 
-              <button
-                className={`btn ${plan.recommended ? 'btn-primary' : 'btn-outline'} plan-card-btn w-full`}
-                onClick={() => onSelectPlan(plan.id)}
-              >
-                {fromProfile && isCurrent ? 'Gói hiện tại' : plan.buttonText}
-              </button>
-            </div>
-          );
-        })}
+          <button
+            className="figma-plan-btn outline-btn w-full"
+            onClick={() => onSelectPlan('free')}
+          >
+            {fromProfile && currentPlan === 'free' ? 'Gói hiện tại' : 'Bắt đầu miễn phí'}
+          </button>
+        </div>
+
+        {/* Card 2: LevelUp Pro (Blue Hero Card) */}
+        <div className="figma-plan-card pro-hero-card">
+          <div className="pro-card-header">
+            <h3 className="figma-plan-title text-white">LevelUp Pro</h3>
+            <span className="figma-badge-orange">PHỔ BIẾN NHẤT</span>
+          </div>
+
+          <div className="figma-plan-price-row text-white">
+            <span className="figma-price-amount">49.000VNĐ</span>
+            <span className="figma-price-period text-white-70">/tháng</span>
+          </div>
+
+          <ul className="figma-plan-features text-white">
+            <li>
+              <CheckCircle2 size={16} color="#FFFFFF" className="feature-check" />
+              <span>Không giới hạn chat AI Coach (Aura)</span>
+            </li>
+            <li>
+              <CheckCircle2 size={16} color="#FFFFFF" className="feature-check" />
+              <span>Lộ trình tập luyện cá nhân hóa</span>
+            </li>
+            <li>
+              <CheckCircle2 size={16} color="#FFFFFF" className="feature-check" />
+              <span>Phân tích tiến trình nâng cao</span>
+            </li>
+            <li>
+              <CheckCircle2 size={16} color="#FFFFFF" className="feature-check" />
+              <span>Thử thách đặc quyền hàng tuần</span>
+            </li>
+            <li>
+              <CheckCircle2 size={16} color="#FFFFFF" className="feature-check" />
+              <span>Không bị gián đoạn bởi quảng cáo</span>
+            </li>
+          </ul>
+
+          <button
+            className="figma-plan-btn solid-white-btn w-full"
+            onClick={() => onSelectPlan('pro')}
+          >
+            {fromProfile && currentPlan === 'pro' ? 'Gói hiện tại' : 'Nâng cấp ngay'}
+          </button>
+        </div>
+
+        {/* Card 3: LevelUp Squad */}
+        <div className="figma-plan-card squad-card">
+          <div className="squad-card-header">
+            <h3 className="figma-plan-title">LevelUp Squad</h3>
+            <span className="figma-badge-green">TIẾT KIỆM 30%</span>
+          </div>
+
+          <div className="figma-plan-price-row">
+            <span className="figma-price-amount">399.000VNĐ</span>
+            <span className="figma-price-period">/năm</span>
+          </div>
+
+          <ul className="figma-plan-features">
+            <li className="squad-feature-item">
+              <Users size={18} color="#059669" className="feature-check" />
+              <span>Toàn bộ tính năng bản Pro dành cho bạn & đồng đội.</span>
+            </li>
+          </ul>
+
+          <button
+            className="figma-plan-btn outline-btn w-full"
+            onClick={() => onSelectPlan('squad')}
+          >
+            {fromProfile && currentPlan === 'squad' ? 'Gói hiện tại' : 'Chọn nhóm'}
+          </button>
+        </div>
+      </div>
+
+      {/* Bottom Secure Disclaimer */}
+      <div className="figma-pricing-secure-footer">
+        <Lock size={13} color="#64748B" />
+        <span>Hủy bất cứ lúc nào. Thanh toán bảo mật.</span>
       </div>
     </div>
   );
