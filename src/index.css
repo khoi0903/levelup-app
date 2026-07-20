@@ -2012,20 +2012,15 @@ p {
 .coach-chat-page {
   display: flex;
   flex-direction: column;
-  position: absolute;
-  top: 12px;
-  bottom: 64px;
-  left: 0;
-  right: 0;
-  padding: 12px 12px 4px 12px;
-  overflow-y: auto;
+  position: relative;
+  min-height: 100%;
+  padding: 12px 10px;
   background: #f8fafc;
+  border-radius: 16px;
 }
 
 .coach-chat-page.chat-mode-active {
-  height: calc(100% - 76px);
-  overflow: hidden !important;
-  padding-bottom: 4px !important;
+  min-height: calc(100vh - 120px);
   background: #f8fafc;
 }
 
@@ -7158,7 +7153,12 @@ p {
 .coach-chat-view {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  flex: 1;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 16px;
+  border: 1.5px solid #e2e8f0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
 }
 
 /* Performance View V2 */

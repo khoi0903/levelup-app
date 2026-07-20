@@ -150,7 +150,16 @@ Chỉ trả lời đúng trọng tâm câu hỏi, không tự nhiên liệt kê 
   };
 
   return (
-    <div className={`coach-chat-page ${coachView === 'chat' ? 'chat-mode-active' : ''} fade-in`}>
+    <div 
+      className={`coach-chat-page ${isDark ? 'dark-theme' : ''} ${coachView === 'chat' ? 'chat-mode-active' : ''} fade-in`}
+      style={{
+        minHeight: '100%',
+        background: isDark ? '#0f172a' : '#f8fafc',
+        borderRadius: '16px',
+        padding: '12px 8px',
+        boxSizing: 'border-box'
+      }}
+    >
       
       {/* ================= VIEW 1: COACH DASHBOARD ================= */}
       {coachView === 'dashboard' && (
