@@ -828,28 +828,30 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
                 )}
               </div>
 
-              <div style={{ flex: 1 }}>
-                <h5 style={{ fontSize: '13.5px', fontWeight: '850', margin: '0 0 2px 0', color: '#0f172a' }}>{session.sessionName}</h5>
-                <div style={{ fontSize: '11px', color: '#64748b', fontWeight: '750', marginBottom: '2px' }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <h5 style={{ fontSize: '13.5px', fontWeight: '850', margin: '0 0 2px 0', color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {session.sessionName}
+                </h5>
+                <div style={{ fontSize: '11px', color: '#64748b', fontWeight: '750', marginBottom: '2px', whiteSpace: 'nowrap' }}>
                   <span>{session.duration} phút</span>
                   <span> • </span>
                   <span>{session.exercises.length} bài tập</span>
                   <span> • </span>
                   <span>{session.kcal} kcal</span>
                 </div>
-                <div style={{ fontSize: '10.5px', color: '#94a3b8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '200px' }}>
+                <div style={{ fontSize: '10.5px', color: '#94a3b8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   Bài: {session.exercises.map(e => e.name).join(', ')}
                 </div>
               </div>
 
-              <div>
+              <div style={{ flexShrink: 0, whiteSpace: 'nowrap' }}>
                 {session.completed ? (
-                  <span style={{ fontSize: '10px', fontWeight: '800', background: '#d1fae5', color: '#059669', padding: '4px 8px', borderRadius: '99px' }}>
-                    Đã tập ✅
+                  <span style={{ fontSize: '11px', fontWeight: '800', background: '#d1fae5', color: '#047857', padding: '5px 10px', borderRadius: '99px', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                    Đã tập <CheckCircle2 size={13} color="#047857" />
                   </span>
                 ) : session.isCurrent ? (
-                  <button className="btn btn-primary" style={{ padding: '6px 12px', fontSize: '11.5px', borderRadius: '10px', fontWeight: '800' }}>
-                    Tập ➔
+                  <button className="btn btn-primary" style={{ padding: '6px 14px', fontSize: '11.5px', borderRadius: '10px', fontWeight: '800', whiteSpace: 'nowrap' }}>
+                    Tập ngay ➔
                   </button>
                 ) : (
                   <ChevronRight size={18} color="#94a3b8" />

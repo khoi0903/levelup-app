@@ -28,7 +28,6 @@ export default function BottomNav({ activePage, setActivePage, isDark }) {
               <IconComponent 
                 size={item.isCenter ? 20 : 22} 
                 strokeWidth={isActive ? 2.5 : 2} 
-                style={item.isCenter ? { transform: 'rotate(-45deg)' } : {}}
               />
             </div>
           </button>
