@@ -12,6 +12,7 @@ export default function Profile({
   xp = 850,
   level = 4,
   onResetOnboarding,
+  onLogout,
   setActivePage,
   onUpdateSettings,
   reminderTime = '17:30',
@@ -518,7 +519,7 @@ export default function Profile({
       </div>
 
       {/* 9. Logout Button */}
-      <button className="logout-btn-v2" onClick={onResetOnboarding}>
+      <button className="logout-btn-v2" onClick={onLogout}>
         <LogOut size={16} />
         <span>Đăng xuất</span>
       </button>

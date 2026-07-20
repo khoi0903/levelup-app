@@ -116,6 +116,13 @@ export default function App() {
     }
   };
 
+  const handleLogout = () => {
+    if (window.confirm('Bạn có chắc chắn muốn đăng xuất khỏi tài khoản không?')) {
+      setIsOnboarded(false);
+      setActivePage('welcome');
+    }
+  };
+
   // Render components based on state
   const renderPage = () => {
     switch (activePage) {
@@ -212,6 +219,7 @@ export default function App() {
             soundsEnabled={soundsEnabled}
             onUpdateSettings={handleUpdateSettings}
             onResetOnboarding={handleResetOnboarding}
+            onLogout={handleLogout}
             setActivePage={setActivePage}
             xp={xp}
             level={level}
