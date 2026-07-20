@@ -8402,3 +8402,33 @@ p {
   background: #10b981 !important;
   margin-top: 2px !important;
 }
+
+/* Workouts Page V2 Dark Mode Compatibility */
+.dark-theme .location-card-figma {
+  border: 1px solid #334155;
+}
+
+.dark-theme .gym-program-card,
+.dark-theme .gym-split-card,
+.dark-theme .star-rating-box {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+.dark-theme .gym-program-card h4,
+.dark-theme .gym-split-card h4,
+.dark-theme .star-rating-box span,
+.dark-theme .routine-banner-image h3,
+.dark-theme .workouts-page-v2 h3,
+.dark-theme .workouts-page-v2 h5 {
+  color: #ffffff !important;
+}
+
+.dark-theme .grid-cell-item {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+.dark-theme .grid-cell-item span {
+  color: #ffffff !important;
+}
