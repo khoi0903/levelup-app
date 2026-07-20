@@ -269,47 +269,64 @@ Hãy tư vấn đúng thời lượng (${s.workoutDuration || '30 phút'}), nơi
         </div>
       )}
 
-      {/* ================= VIEW 2: ACTIVE CHAT SCREEN ================= */}
+      {/* ================= VIEW 2: ACTIVE CHAT SCREEN (FULL SCREEN) ================= */}
       {coachView === 'chat' && (
-        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, background: '#ffffff', borderRadius: '20px', padding: '14px', border: '1.5px solid #e2e8f0', boxShadow: '0 4px 16px rgba(0,0,0,0.04)' }}>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          margin: '-12px -8px -12px -8px',
+          padding: '12px 14px 14px 14px',
+          background: '#ffffff',
+          minHeight: 'calc(100vh - 90px)',
+          height: '100%',
+          boxSizing: 'border-box'
+        }}>
           
-          {/* Header */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '12px', borderBottom: '1.5px solid #f1f5f9', marginBottom: '12px' }}>
+          {/* Top Header */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '10px', borderBottom: '1.5px solid #f1f5f9', marginBottom: '10px' }}>
             <button 
               onClick={() => setCoachView('dashboard')}
-              style={{ background: '#f1f5f9', border: 'none', width: '32px', height: '32px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+              style={{ background: '#f1f5f9', border: 'none', width: '36px', height: '36px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
             >
               <ArrowLeft size={18} color="#0f172a" />
             </button>
             <div style={{ textAlign: 'center' }}>
-              <h3 style={{ fontSize: '15px', fontWeight: '900', margin: 0, color: '#0f172a' }}>LevelUp Coach</h3>
-              <span style={{ fontSize: '10.5px', color: '#10b981', fontWeight: '800' }}>● Đang trực tuyến</span>
+              <h3 style={{ fontSize: '16px', fontWeight: '900', margin: 0, color: '#0f172a' }}>LevelUp Coach</h3>
+              <span style={{ fontSize: '11px', color: '#10b981', fontWeight: '800' }}>● Đang trực tuyến</span>
             </div>
-            <div style={{ width: 32 }}></div>
+            <div style={{ width: 36 }}></div>
           </div>
 
           {/* User Spec Chips Bar */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', background: '#ebf3ff', borderRadius: '12px', padding: '8px 12px', marginBottom: '12px', gap: '6px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', background: '#f1f5f9', borderRadius: '14px', padding: '8px 12px', marginBottom: '12px', gap: '6px' }}>
             <div style={{ textAlign: 'center', flex: 1 }}>
-              <span style={{ fontSize: '9px', fontWeight: '800', color: '#64748b' }}>Cân nặng</span>
-              <div style={{ fontSize: '12px', fontWeight: '900', color: '#0056c6' }}>{personalStats.weight || 70} kg</div>
+              <span style={{ fontSize: '9.5px', fontWeight: '800', color: '#64748b' }}>Cân nặng</span>
+              <div style={{ fontSize: '12.5px', fontWeight: '900', color: '#0056c6' }}>{personalStats.weight || 70} kg</div>
             </div>
             <div style={{ textAlign: 'center', flex: 1 }}>
-              <span style={{ fontSize: '9px', fontWeight: '800', color: '#64748b' }}>BMI</span>
-              <div style={{ fontSize: '12px', fontWeight: '900', color: '#0056c6' }}>{personalStats.bmi || 22.9}</div>
+              <span style={{ fontSize: '9.5px', fontWeight: '800', color: '#64748b' }}>BMI</span>
+              <div style={{ fontSize: '12.5px', fontWeight: '900', color: '#0056c6' }}>{personalStats.bmi || 22.9}</div>
             </div>
             <div style={{ textAlign: 'center', flex: 1 }}>
-              <span style={{ fontSize: '9px', fontWeight: '800', color: '#64748b' }}>Mục tiêu</span>
-              <div style={{ fontSize: '12px', fontWeight: '900', color: '#0056c6', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{personalStats.goal || 'Tăng cơ'}</div>
+              <span style={{ fontSize: '9.5px', fontWeight: '800', color: '#64748b' }}>Mục tiêu</span>
+              <div style={{ fontSize: '12.5px', fontWeight: '900', color: '#0056c6', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{personalStats.goal || 'Tăng cơ'}</div>
             </div>
             <div style={{ textAlign: 'center', flex: 1 }}>
-              <span style={{ fontSize: '9px', fontWeight: '800', color: '#64748b' }}>Thời gian</span>
-              <div style={{ fontSize: '12px', fontWeight: '900', color: '#0056c6' }}>{personalStats.workoutDuration || '30p'}</div>
+              <span style={{ fontSize: '9.5px', fontWeight: '800', color: '#64748b' }}>Thời gian</span>
+              <div style={{ fontSize: '12.5px', fontWeight: '900', color: '#0056c6' }}>{personalStats.workoutDuration || '30p'}</div>
             </div>
           </div>
 
-          {/* Chat Messages Log */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', flex: 1, minHeight: '340px', maxHeight: '480px', overflowY: 'auto', padding: '8px', background: '#f8fafc', borderRadius: '14px', border: '1px solid #e2e8f0', marginBottom: '12px' }}>
+          {/* Chat Messages Log (Edge-to-Edge Scrollable) */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px',
+            flex: 1,
+            overflowY: 'auto',
+            padding: '8px 4px 16px 4px',
+            marginBottom: '8px'
+          }}>
             {messages.map((msg) => (
               <div 
                 key={msg.id}
@@ -321,23 +338,23 @@ Hãy tư vấn đúng thời lượng (${s.workoutDuration || '30 phút'}), nơi
                 }}
               >
                 {msg.sender === 'aura' && (
-                  <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'linear-gradient(135deg, #0056c6 0%, #1e40af 100%)', color: '#ffffff', fontSize: '11px', fontWeight: '900', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'linear-gradient(135deg, #0056c6 0%, #1e40af 100%)', color: '#ffffff', fontSize: '12px', fontWeight: '900', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0 3px 8px rgba(0,86,198,0.25)' }}>
                     A
                   </div>
                 )}
                 
                 <div style={{
-                  maxWidth: '82%',
-                  padding: '10px 14px',
-                  borderRadius: msg.sender === 'user' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
+                  maxWidth: '84%',
+                  padding: '12px 16px',
+                  borderRadius: msg.sender === 'user' ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
                   background: msg.sender === 'user' ? 'linear-gradient(135deg, #0056c6 0%, #0284c7 100%)' : '#ffffff',
                   color: msg.sender === 'user' ? '#ffffff' : '#0f172a',
                   border: msg.sender === 'aura' ? '1.5px solid #cbd5e1' : 'none',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                  boxShadow: msg.sender === 'aura' ? '0 4px 14px rgba(15,23,42,0.06)' : '0 4px 12px rgba(0,86,198,0.25)',
                   fontSize: '13.5px'
                 }}>
                   {msg.sender === 'aura' ? renderAuraFormattedText(msg.text) : <span>{msg.text}</span>}
-                  <div style={{ fontSize: '9px', textAlign: 'right', marginTop: '4px', opacity: 0.8, color: msg.sender === 'user' ? '#ffffff' : '#64748b', fontWeight: '600' }}>
+                  <div style={{ fontSize: '9px', textAlign: 'right', marginTop: '4px', opacity: 0.85, color: msg.sender === 'user' ? '#ffffff' : '#64748b', fontWeight: '600' }}>
                     {msg.time}
                   </div>
                 </div>
@@ -346,10 +363,10 @@ Hãy tư vấn đúng thời lượng (${s.workoutDuration || '30 phút'}), nơi
 
             {isTyping && (
               <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#0056c6', color: '#ffffff', fontSize: '11px', fontWeight: '900', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#0056c6', color: '#ffffff', fontSize: '12px', fontWeight: '900', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   A
                 </div>
-                <div style={{ background: '#ffffff', border: '1px solid #cbd5e1', padding: '8px 14px', borderRadius: '16px', fontSize: '12px', color: '#64748b', fontWeight: '700' }}>
+                <div style={{ background: '#ffffff', border: '1.5px solid #cbd5e1', padding: '10px 16px', borderRadius: '18px', fontSize: '12.5px', color: '#64748b', fontWeight: '700' }}>
                   Coach Aura đang nhập...
                 </div>
               </div>
@@ -357,8 +374,8 @@ Hãy tư vấn đúng thời lượng (${s.workoutDuration || '30 phút'}), nơi
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input Box */}
-          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          {/* Full Width Bottom Input Bar */}
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', paddingTop: '6px' }}>
             <input 
               type="text"
               placeholder="Nhập tin nhắn cho Coach Aura..."
@@ -367,11 +384,11 @@ Hãy tư vấn đúng thời lượng (${s.workoutDuration || '30 phút'}), nơi
               onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
               style={{
                 flex: 1,
-                height: '42px',
+                height: '44px',
                 borderRadius: '99px',
                 border: '1.5px solid #cbd5e1',
-                padding: '0 16px',
-                fontSize: '13px',
+                padding: '0 18px',
+                fontSize: '13.5px',
                 fontWeight: '600',
                 color: '#0f172a',
                 outline: 'none',
@@ -381,8 +398,8 @@ Hãy tư vấn đúng thời lượng (${s.workoutDuration || '30 phút'}), nơi
             <button
               onClick={() => handleSendMessage()}
               style={{
-                width: '42px',
-                height: '42px',
+                width: '44px',
+                height: '44px',
                 borderRadius: '50%',
                 background: 'linear-gradient(135deg, #0056c6 0%, #1e40af 100%)',
                 border: 'none',
@@ -391,10 +408,11 @@ Hãy tư vấn đúng thời lượng (${s.workoutDuration || '30 phút'}), nơi
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer',
-                boxShadow: '0 4px 10px rgba(0,86,198,0.3)'
+                boxShadow: '0 4px 10px rgba(0,86,198,0.3)',
+                flexShrink: 0
               }}
             >
-              <Send size={16} color="#ffffff" />
+              <Send size={18} color="#ffffff" />
             </button>
           </div>
         </div>
