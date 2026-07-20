@@ -7379,7 +7379,9 @@ p {
 .dark-theme .challenge-card-sub,
 .dark-theme .workout-thumb-desc,
 .dark-theme .stat-card-label,
-.dark-theme .heart-label {
+.dark-theme .heart-label,
+.dark-theme .stat-card-unit,
+.dark-theme .heart-unit {
   color: #94a3b8 !important;
 }
 
