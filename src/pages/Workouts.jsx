@@ -833,7 +833,8 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
                     boxShadow: session.isCurrent ? '0 4px 12px rgba(0,86,198,0.35)' : 'none',
                     display: 'flex',
                     alignItems: 'center',
-                    justify: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
                     flexShrink: 0
                   }}>
                     {session.completed ? (
@@ -841,20 +842,22 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
                     ) : session.isCurrent ? (
                       <Flame size={20} color="#ffffff" fill="#ffffff" />
                     ) : (
-                      <span style={{ fontSize: '15px', fontWeight: '850', color: '#0056c6' }}>{sessionNumber}</span>
+                      <span style={{ fontSize: '15px', fontWeight: '850', color: '#0056c6', lineHeight: 1, display: 'block', textAlign: 'center' }}>
+                        {sessionNumber}
+                      </span>
                     )}
                   </div>
 
                   {/* Middle Content */}
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <h5 style={{ fontSize: '14px', fontWeight: '850', margin: '0 0 3px 0', color: '#0f172a', lineHeight: '1.3' }}>
+                  <div style={{ flex: 1, minWidth: 0, paddingRight: '4px' }}>
+                    <h5 style={{ fontSize: '13.5px', fontWeight: '850', margin: '0 0 3px 0', color: '#0f172a', lineHeight: '1.3' }}>
                       {session.sessionName}
                     </h5>
-                    <div style={{ fontSize: '11px', color: '#64748b', fontWeight: '750', marginBottom: '2px', whiteSpace: 'nowrap' }}>
+                    <div style={{ fontSize: '11px', color: '#64748b', fontWeight: '750', marginBottom: '2px', display: 'flex', alignItems: 'center', gap: '4px', flexWrap: 'wrap' }}>
                       <span>{session.duration} phút</span>
-                      <span> • </span>
+                      <span>•</span>
                       <span>{session.exercises.length} bài tập</span>
-                      <span> • </span>
+                      <span>•</span>
                       <span>{session.kcal} kcal</span>
                     </div>
                     <div style={{ fontSize: '10.5px', color: '#94a3b8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -863,13 +866,13 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
                   </div>
 
                   {/* Right Status Badge / Action */}
-                  <div style={{ flexShrink: 0, whiteSpace: 'nowrap' }}>
+                  <div style={{ flexShrink: 0, marginLeft: '4px' }}>
                     {session.completed ? (
                       <span style={{ fontSize: '11px', fontWeight: '800', background: '#d1fae5', color: '#047857', padding: '5px 10px', borderRadius: '99px', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                         Đã tập <CheckCircle2 size={13} color="#047857" />
                       </span>
                     ) : session.isCurrent ? (
-                      <button className="btn btn-primary" style={{ padding: '7px 14px', fontSize: '11.5px', borderRadius: '12px', fontWeight: '800', whiteSpace: 'nowrap', boxShadow: '0 4px 10px rgba(0,86,198,0.25)' }}>
+                      <button className="btn btn-primary" style={{ padding: '6px 12px', fontSize: '11px', borderRadius: '10px', fontWeight: '800', whiteSpace: 'nowrap', boxShadow: '0 4px 10px rgba(0,86,198,0.25)' }}>
                         Tập ngay ➔
                       </button>
                     ) : (
