@@ -31,6 +31,35 @@ export default function Workouts({ onWorkoutComplete }) {
   // Rating state
   const [userRating, setUserRating] = useState(5);
 
+  // Refs and helper for mouse drag-to-scroll horizontal containers on desktop
+  const gymScrollRef = React.useRef(null);
+  const homeScrollRef = React.useRef(null);
+
+  const attachDragEvents = (ref) => {
+    const onMouseDown = (e) => {
+      ref.current.isDown = true;
+      ref.current.startX = e.pageX - ref.current.offsetLeft;
+      ref.current.scrollLeftStart = ref.current.scrollLeft;
+    };
+    const onMouseLeave = () => {
+      ref.current.isDown = false;
+    };
+    const onMouseUp = () => {
+      ref.current.isDown = false;
+    };
+    const onMouseMove = (e) => {
+      if (!ref.current || !ref.current.isDown) return;
+      e.preventDefault();
+      const x = e.pageX - ref.current.offsetLeft;
+      const walk = (x - ref.current.startX) * 1.5;
+      ref.current.scrollLeft = ref.current.scrollLeftStart - walk;
+    };
+    return { onMouseDown, onMouseLeave, onMouseUp, onMouseMove };
+  };
+
+  const gymDrag = attachDragEvents(gymScrollRef);
+  const homeDrag = attachDragEvents(homeScrollRef);
+
   const startPlayer = (title, exercises, kcal) => {
     setSelectedRoutineTitle(title);
     setSelectedRoutineExercises(exercises);
@@ -221,7 +250,7 @@ export default function Workouts({ onWorkoutComplete }) {
         </div>
 
         {/* Horizontal scroll cards */}
-        <div className="horizontal-scroll-row" style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '12px', scrollbarWidth: 'none', marginBottom: '16px' }}>
+        <div ref={gymScrollRef} className="horizontal-scroll-row" {...gymDrag} style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '12px', scrollbarWidth: 'none', marginBottom: '16px' }}>
           
           {/* Card 1: 4 weeks muscle routine */}
           <div className="gym-program-card card" onClick={() => {
@@ -326,7 +355,7 @@ export default function Workouts({ onWorkoutComplete }) {
         </div>
 
         {/* Horizontal scroll cards */}
-        <div className="horizontal-scroll-row" style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '12px', scrollbarWidth: 'none', marginBottom: '16px' }}>
+        <div ref={homeScrollRef} className="horizontal-scroll-row" {...homeDrag} style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '12px', scrollbarWidth: 'none', marginBottom: '16px' }}>
           
           {/* Card 1: Warmup */}
           <div className="gym-program-card card" onClick={() => startPlayer('Khởi động buổi sáng', [
