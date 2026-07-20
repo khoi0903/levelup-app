@@ -16,8 +16,8 @@ export default function ScheduleSetup({ onComplete, onBack, initialTime = '17:30
   const datesList = [
     { dayName: 'T2', dateNum: 12 },
     { dayName: 'T3', dateNum: 13 },
-    { dayName: 'T4', dateNum: 14, active: true },
-    { dayName: 'T5', dateNum: 15, selected: true },
+    { dayName: 'T4', dateNum: 14 },
+    { dayName: 'T5', dateNum: 15 },
   ];
 
   const handleFinish = () => {
@@ -70,8 +70,9 @@ export default function ScheduleSetup({ onComplete, onBack, initialTime = '17:30
             return (
               <div
                 key={item.dateNum}
-                className={`figma-date-card ${isCurrentActive ? 'active' : ''} ${item.selected ? 'selected' : ''}`}
+                className={`figma-date-card ${isCurrentActive ? 'active' : ''}`}
                 onClick={() => setSelectedDay(item.dateNum)}
+                style={{ cursor: 'pointer' }}
               >
                 <span className="date-day-name">{item.dayName}</span>
                 <span className="date-day-num">{item.dateNum}</span>

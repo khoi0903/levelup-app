@@ -6639,6 +6639,7 @@ p {
   justify-content: center;
 }
 
-.center-capsule-item svg {
-  transform: rotate(-45deg);
+.center-capsule-item svg,
+.center-capsule-item .icon-wrapper-figma svg {
+  transform: rotate(-45deg) !important;
 }
