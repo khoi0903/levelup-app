@@ -1,22 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowLeft, Sparkles, Send, Flame, Play, Volume2, Award, Zap, Heart, TrendingUp, HelpCircle, Bot, Activity } from 'lucide-react';
+import { ArrowLeft, Send, Flame, Volume2, Bot, Sparkles, Activity, ShieldAlert, CheckCircle2, ChevronRight } from 'lucide-react';
 
 export default function AICoach({ userName = 'Tâm', personalStats = {}, userGoal = 'consistency', isDark }) {
   const [coachView, setCoachView] = useState('dashboard'); // 'dashboard', 'chat', 'performance'
-  const [performanceTab, setPerformanceTab] = useState('today'); // 'today', 'week'
-  const [selectedVoice, setSelectedVoice] = useState('alex'); // 'alex', 'sarah'
+  const [performanceTab, setPerformanceTab] = useState('today');
+  const [selectedVoice, setSelectedVoice] = useState('alex');
 
-  // Chat message list
+  // Messages list
   const [messages, setMessages] = useState([
     {
       id: 1,
       sender: 'aura',
-      text: `Chào ${userName}! Tôi là Coach Aura của bạn 💪 Mục tiêu "${personalStats.goal || 'Tăng cơ'}" của bạn đã được ghi nhận. Hôm nay bạn muốn bắt đầu từ đâu?`,
+      text: `Chào ${userName}! Tôi là Coach Aura — HLV AI cá nhân của bạn 💪\n\nMục tiêu **"${personalStats.goal || 'Tăng cơ'}"** và thông tin tập luyện của bạn đã được ghi nhận. Hôm nay bạn muốn hỏi hoặc bắt đầu từ đâu?`,
       time: '08:00'
     }
   ]);
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef(null);
+
   // API Keys List for rotation
   const apiKeysList = [
     import.meta.env.VITE_GEMINI_API_KEY,
@@ -32,7 +34,7 @@ export default function AICoach({ userName = 'Tâm', personalStats = {}, userGoa
     }
   }, [messages, isTyping, coachView]);
 
-  // Build dynamic system prompt from user's personal data (Step 4 Onboarding Memory)
+  // System prompt based on user Step 4 onboarding variables
   const buildSystemPrompt = () => {
     const s = personalStats;
     const bmi = s.bmi || (s.weight && s.height ? (s.weight / ((s.height / 100) ** 2)).toFixed(1) : 'Chưa có');
@@ -53,23 +55,22 @@ QUY TẮC FORMAT (bắt buộc):
 - Kết thúc bằng 1 câu động viên ngắn
 - KHÔNG dùng # heading, không dùng bảng
 
-=== HỒ SƠ & DỮ LIỆU CÁ NHÂN NGƯỜI DÙNG (TỪ ĐĂNG KÝ BƯỚC 4) ===
+=== HỒ SƠ & DỮ LIỆU CÁ NHÂN NGƯỜI DÙNG ===
 - Tên: ${userName}
 - Giới tính: ${s.gender || 'Nam'} | Tuổi: ${s.age || 25} tuổi
 - Chiều cao: ${s.height || 175} cm | Cân nặng: ${s.weight || 70} kg | BMI: ${bmi}
-- Số đo 3 vòng (Ngực/Eo/Mông): ${s.chest || 90}/${s.waist || 70}/${s.hips || 95} cm
-- Nhịp tim nghỉ ngơi: ${s.restingHeartRate || 70} bpm
+- Số đo 3 vòng: ${s.chest || 90}/${s.waist || 70}/${s.hips || 95} cm
+- Nhịp tim nghỉ: ${s.restingHeartRate || 70} bpm
 
-=== MỤC TIÊU & THÓI QUEN TẬP LUYỆN (AI CẦN GHI NHỚ) ===
+=== MỤC TIÊU & THÓI QUEN TẬP LUYỆN ===
 - Mục tiêu chính: ${s.goal || 'Tăng cơ'}
-- Mức độ vận động hiện tại: ${s.activityLevel || '3-4 ngày/tuần'}
-- Thời gian có thể tập mỗi buổi: ${s.workoutDuration || '30 phút'}
+- Mức độ vận động: ${s.activityLevel || '3-4 ngày/tuần'}
+- Thời gian có thể tập: ${s.workoutDuration || '30 phút'}
 - Nơi tập chính: ${s.workoutLocation || 'Phòng gym'}
-- Vùng cơ cần tập trung cải thiện: ${improvementStr}
-- Tiền sử chấn thương (CẦN NÉ / LƯU Ý KHI TƯ VẤN): ${injuryStr}
+- Vùng cơ cần cải thiện: ${improvementStr}
+- Tiền sử chấn thương (CẦN NÉ KHI GỢI Ý BÀI TẬP): ${injuryStr}
 
-Hãy luôn tư vấn phù hợp với đúng thời lượng tập (${s.workoutDuration || '30 phút'}), địa điểm (${s.workoutLocation || 'Phòng gym'}), vùng cần cải thiện (${improvementStr}) và tuyệt đối chú ý an toàn cho các chấn thương (${injuryStr}).
-Chỉ trả lời đúng trọng tâm câu hỏi, không tự nhiên liệt kê lại bảng thông tin trên nếu người dùng không hỏi.`;
+Hãy tư vấn đúng thời lượng (${s.workoutDuration || '30 phút'}), nơi tập (${s.workoutLocation || 'Phòng gym'}), ưu tiên vùng (${improvementStr}) và đảm bảo an toàn cho chấn thương (${injuryStr}).`;
   };
 
   const callGeminiWithKey = async (key, updatedMessages) => {
@@ -96,14 +97,15 @@ Chỉ trả lời đúng trọng tâm câu hỏi, không tự nhiên liệt kê 
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.error?.message || `Lỗi API (${response.status})`);
+      throw new Error(errorData.error?.message || `API Error (${response.status})`);
     }
 
     const data = await response.json();
     return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
   };
 
-  const handleSendMessage = async (text) => {
+  const handleSendMessage = async (textToSend) => {
+    const text = textToSend || inputText;
     if (!text.trim()) return;
 
     const now = new Date();
@@ -121,14 +123,13 @@ Chỉ trả lời đúng trọng tâm câu hỏi, không tự nhiên liệt kê 
     setInputText('');
     setIsTyping(true);
 
-    // Try keys sequentially
     let responseText = '';
     for (const key of apiKeysList) {
       try {
         responseText = await callGeminiWithKey(key, updatedMessages);
         if (responseText) break;
       } catch (err) {
-        console.warn('API key failed, trying next fallback key...', err.message);
+        console.warn('API Key retry fallback:', err.message);
       }
     }
 
@@ -136,445 +137,282 @@ Chỉ trả lời đúng trọng tâm câu hỏi, không tự nhiên liệt kê 
     if (responseText) {
       setMessages(prev => [...prev, { id: Date.now() + 1, sender: 'aura', text: responseText, time: timeStr }]);
     } else {
-      // Offline / fallback response
+      // Intelligent Offline Fallback
       setMessages(prev => [
         ...prev,
         {
           id: Date.now() + 1,
           sender: 'aura',
-          text: `Cảm ơn ${userName}! Mình đã ghi nhận câu hỏi. Hãy tiếp tục duy trì thói quen tập luyện ${personalStats.workoutDuration || '30 phút'} mỗi buổi để đạt mục tiêu ${personalStats.goal || 'Tăng cơ'} nhé! 💪`,
+          text: `Cảm ơn ${userName}! Mình đã nhận được câu hỏi.\n\n💪 **Lời khuyên cho mục tiêu ${personalStats.goal || 'Tăng cơ'}**:\n- Duy trì tập đúng **${personalStats.workoutDuration || '30 phút'}** mỗi buổi tại **${personalStats.workoutLocation || 'Phòng gym'}**.\n- Tập trung cho vùng **${Array.isArray(personalStats.improvementAreas) ? personalStats.improvementAreas.join(', ') : 'Toàn thân'}**.\n- Hãy chú ý bổ sung đủ protein và nghỉ ngơi hợp lý nhé! 🔥`,
           time: timeStr
         }
       ]);
     }
   };
 
+  const renderAuraFormattedText = (rawText) => {
+    if (!rawText) return null;
+    const lines = rawText.split('\n');
+
+    return lines.map((line, idx) => {
+      const trimmed = line.trim();
+      if (!trimmed) return <div key={idx} style={{ height: '6px' }} />;
+
+      const parseBold = (str) => {
+        const parts = str.split(/\*\*(.*?)\*\*/g);
+        return parts.map((part, i) =>
+          i % 2 === 1 ? <strong key={i} style={{ fontWeight: '800', color: '#0f172a' }}>{part}</strong> : part
+        );
+      };
+
+      if (trimmed.startsWith('- ') || trimmed.startsWith('• ')) {
+        const content = trimmed.replace(/^[-•]\s*/, '');
+        return (
+          <div key={idx} style={{ display: 'flex', gap: '6px', marginBottom: '4px', alignItems: 'flex-start' }}>
+            <span style={{ color: '#0056c6', fontWeight: '900', flexShrink: 0 }}>•</span>
+            <span>{parseBold(content)}</span>
+          </div>
+        );
+      }
+
+      return (
+        <div key={idx} style={{ marginBottom: '4px', lineHeight: '1.5' }}>
+          {parseBold(trimmed)}
+        </div>
+      );
+    });
+  };
+
   return (
     <div 
-      className={`coach-chat-page ${isDark ? 'dark-theme' : ''} ${coachView === 'chat' ? 'chat-mode-active' : ''} fade-in`}
+      className="coach-page-wrapper fade-in"
       style={{
-        minHeight: '100%',
-        background: isDark ? '#0f172a' : '#f8fafc',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '14px',
+        padding: '12px 10px',
+        background: '#f8fafc',
         borderRadius: '16px',
-        padding: '12px 8px',
+        minHeight: '100%',
         boxSizing: 'border-box'
       }}
     >
-      
       {/* ================= VIEW 1: COACH DASHBOARD ================= */}
       {coachView === 'dashboard' && (
-        <div className="coach-dashboard-view fade-in">
-          {/* Welcome Card */}
-          <div className="coach-welcome-card card">
-            <div className="coach-card-header-row">
-              <div className="coach-avatar-large">
-                <Bot size={22} color="#ffffff" />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+          
+          {/* Main Welcome Hero */}
+          <div className="card" style={{ padding: '18px', borderRadius: '20px', background: '#ffffff', border: '1.5px solid #e2e8f0', boxShadow: '0 4px 14px rgba(0,86,198,0.06)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+              <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: 'linear-gradient(135deg, #0056c6 0%, #1e40af 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 10px rgba(0,86,198,0.3)' }}>
+                <Bot size={24} color="#ffffff" />
               </div>
-              <div className="coach-header-text">
-                <h3 className="coach-name-v2">LevelUp Coach</h3>
-                <span className="coach-status-green">Đang kết nối</span>
+              <div>
+                <h3 style={{ fontSize: '16px', fontWeight: '900', margin: 0, color: '#0f172a' }}>LevelUp Coach Aura</h3>
+                <span style={{ fontSize: '11px', color: '#10b981', fontWeight: '800', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#10b981' }}></span> Đang kết nối AI
+                </span>
               </div>
             </div>
-            
-            <p className="coach-bubble-intro-text">
-              Chào bạn! Dựa trên dữ liệu phục hồi, hôm nay bạn đang ở trạng thái tốt. Bạn muốn tập trung vào mục tiêu nào hôm nay?
+
+            <p style={{ fontSize: '13px', color: '#475569', margin: '0 0 14px 0', lineHeight: '1.55' }}>
+              Chào {userName}! Tôi là Coach Aura. Tôi sẵn sàng hỗ trợ bạn theo đuổi mục tiêu **{personalStats.goal || 'Tăng cơ'}** với lộ trình **{personalStats.workoutDuration || '30 phút'}** tại **{personalStats.workoutLocation || 'Phòng gym'}**.
             </p>
 
-            {/* Quick Reply Badges based on user goal */}
-            <div className="coach-quick-badges-row">
-              {(personalStats.goal === 'Giảm cân' || personalStats.goal === 'Tăng sức bền') && (
-                <>
-                  <button className="badge-pill-btn" onClick={() => { setCoachView('chat'); handleSendMessage('Cardio nhẹ hôm nay'); }}>Cardio nhẹ</button>
-                  <button className="badge-pill-btn" onClick={() => { setCoachView('chat'); handleSendMessage('Kế hoạch giảm cân cho tôi'); }}>Kế hoạch giảm cân</button>
-                </>
-              )}
-              {(personalStats.goal === 'Tăng cơ' || personalStats.goal === 'Giữ dáng') && (
-                <>
-                  <button className="badge-pill-btn" onClick={() => { setCoachView('chat'); handleSendMessage('Tập ngực hôm nay'); }}>Tập ngực</button>
-                  <button className="badge-pill-btn" onClick={() => { setCoachView('chat'); handleSendMessage('Chế độ ăn tăng cơ'); }}>Chế độ ăn</button>
-                </>
-              )}
-              {!personalStats.goal && (
-                <>
-                  <button className="badge-pill-btn" onClick={() => { setCoachView('chat'); handleSendMessage('Tập ngực'); }}>Tập ngực</button>
-                  <button className="badge-pill-btn" onClick={() => { setCoachView('chat'); handleSendMessage('Cardio nhẹ'); }}>Cardio nhẹ</button>
-                </>
-              )}
+            {/* Quick Action Pills */}
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '14px' }}>
+              <button 
+                onClick={() => { setCoachView('chat'); handleSendMessage('Tư vấn bài tập ngực hôm nay'); }}
+                style={{ padding: '6px 12px', borderRadius: '99px', background: '#ebf3ff', border: '1px solid #bfdbfe', color: '#0056c6', fontSize: '11.5px', fontWeight: '800', cursor: 'pointer' }}
+              >
+                💪 Bài tập hôm nay
+              </button>
+              <button 
+                onClick={() => { setCoachView('chat'); handleSendMessage('Gợi ý thực đơn dinh dưỡng tăng cơ'); }}
+                style={{ padding: '6px 12px', borderRadius: '99px', background: '#ebf3ff', border: '1px solid #bfdbfe', color: '#0056c6', fontSize: '11.5px', fontWeight: '800', cursor: 'pointer' }}
+              >
+                🥗 Thực đơn dinh dưỡng
+              </button>
             </div>
 
-            {/* Simulated Input Field (Clicking redirects to active chat) */}
-            <div className="simulated-input-box" onClick={() => setCoachView('chat')}>
-              <span className="simulated-placeholder">Nhắn tin cho Coach...</span>
-              <div className="simulated-send-btn">
-                <Send size={14} color="#ffffff" />
-              </div>
-            </div>
-          </div>
-
-          {/* Section: Hiệu suất tập */}
-          <div className="figma-dash-section-header" style={{ marginTop: 18 }} onClick={() => setCoachView('performance')}>
-            <h3 className="figma-section-title-bold">Hiệu suất tập</h3>
-            <span className="figma-performance-arrow-link" style={{ fontSize: 12, color: '#0056C6', cursor: 'pointer' }}>Xem chi tiết &gt;</span>
-          </div>
-
-          {/* Performance Card with Chart */}
-          <div className="figma-performance-preview-card card" onClick={() => setCoachView('performance')} style={{ cursor: 'pointer' }}>
-            <div className="performance-score-header">
-              <div className="score-val-block">
-                <span className="score-label-small">ĐIỂM HIỆU SUẤT</span>
-                <span className="score-large-percent">85%</span>
-              </div>
-              <span className="score-change-badge-green">+5% tuần này</span>
-            </div>
-
-            {/* Mini Chart */}
-            <div className="performance-mini-chart">
-              {['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map((day, idx) => (
-                <div key={idx} className="mini-chart-col">
-                  <div className="mini-chart-bar-track">
-                    <div 
-                      className={`mini-chart-bar-fill ${day === 'T7' ? 'active-blue' : ''}`}
-                      style={{ height: day === 'T7' ? '85%' : '55%' }}
-                    ></div>
-                  </div>
-                  <span className="mini-chart-label">{day}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Streak Card ("Chuỗi ngày tập") */}
-          <div className="figma-streak-blue-card card" onClick={() => setCoachView('performance')} style={{ cursor: 'pointer' }}>
-            <div className="streak-blue-left">
-              <Flame size={20} color="#ffffff" fill="#ffffff" />
-              <div className="streak-blue-info">
-                <span className="streak-blue-title">Chuỗi ngày tập</span>
-                <span className="streak-blue-number">12</span>
-                <span className="streak-blue-sub">Ngày liên tiếp!</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Đề xuất cho bạn */}
-          <div className="figma-dash-section-header" style={{ marginTop: 18 }}>
-            <h3 className="figma-section-title-bold">Đề xuất cho bạn</h3>
-          </div>
-
-          <div className="figma-recommend-workout-card card">
-            <div className="recommend-header">
-              <span className="recommend-type">Sức mạnh • 45 phút</span>
-              <h4 className="recommend-title">Tăng cường cơ ngực</h4>
-            </div>
-            <p className="recommend-desc">
-              Bài tập tập trung phát triển thân trên dựa trên phân tích cơ ngực và lực đẩy của bạn hôm nay.
-            </p>
-          </div>
-
-          {/* Giọng nói AI */}
-          <div className="figma-dash-section-header" style={{ marginTop: 18 }}>
-            <h3 className="figma-section-title-bold">Giọng nói AI</h3>
-          </div>
-
-          <div className="figma-voice-selector-card card">
-            <div className="voice-option-row" onClick={() => setSelectedVoice('alex')}>
-              <div className="voice-radio-left">
-                <input 
-                  type="radio" 
-                  checked={selectedVoice === 'alex'} 
-                  onChange={() => setSelectedVoice('alex')} 
-                  className="voice-radio-input"
-                />
-                <div className="voice-text-block">
-                  <span className="voice-name">Alex (Nam)</span>
-                  <span className="voice-style">Năng động, thúc đẩy</span>
-                </div>
-              </div>
-              <Volume2 size={16} color="#64748B" />
-            </div>
-
-            <div className="voice-option-row" onClick={() => setSelectedVoice('sarah')} style={{ borderTop: '1px solid #f1f5f9', paddingTop: 12, marginTop: 12 }}>
-              <div className="voice-radio-left">
-                <input 
-                  type="radio" 
-                  checked={selectedVoice === 'sarah'} 
-                  onChange={() => setSelectedVoice('sarah')} 
-                  className="voice-radio-input"
-                />
-                <div className="voice-text-block">
-                  <span className="voice-name">Sarah (Nữ)</span>
-                  <span className="voice-style">Điềm đạm, ân cần</span>
-                </div>
-              </div>
-              <Volume2 size={16} color="#64748B" />
-            </div>
-
-            <button className="btn btn-outline btn-sm-voice w-full mt-3">
-              + Nghe thử
+            {/* Direct Open Chat Button */}
+            <button 
+              className="btn btn-primary w-full"
+              onClick={() => setCoachView('chat')}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px', borderRadius: '14px', fontSize: '13.5px', fontWeight: '800' }}
+            >
+              Trò chuyện trực tiếp với Coach Aura <ChevronRight size={16} />
             </button>
+          </div>
+
+          {/* Performance Preview Card */}
+          <div className="card" onClick={() => setCoachView('performance')} style={{ padding: '16px', borderRadius: '18px', background: '#ffffff', border: '1.5px solid #e2e8f0', cursor: 'pointer' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+              <div>
+                <span style={{ fontSize: '10px', color: '#94a3b8', fontWeight: '800', letterSpacing: '0.05em' }}>ĐIỂM HIỆU SUẤT TẬP</span>
+                <div style={{ fontSize: '24px', fontWeight: '900', color: '#0056c6' }}>85%</div>
+              </div>
+              <span style={{ fontSize: '11px', fontWeight: '800', background: '#d1fae5', color: '#047857', padding: '4px 10px', borderRadius: '99px' }}>
+                +5% tuần này
+              </span>
+            </div>
+          </div>
+
+          {/* Streak Flame Banner */}
+          <div className="card" onClick={() => setCoachView('performance')} style={{ padding: '16px', borderRadius: '18px', background: 'linear-gradient(135deg, #0056c6 0%, #1e40af 100%)', color: '#ffffff', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '14px' }}>
+            <Flame size={28} color="#ffffff" fill="#ffffff" />
+            <div>
+              <span style={{ fontSize: '11px', opacity: 0.9, fontWeight: '700' }}>Chuỗi ngày duy trì</span>
+              <h4 style={{ fontSize: '20px', fontWeight: '900', margin: 0, color: '#ffffff' }}>12 ngày liên tục! 🔥</h4>
+            </div>
           </div>
         </div>
       )}
 
       {/* ================= VIEW 2: ACTIVE CHAT SCREEN ================= */}
       {coachView === 'chat' && (
-        <div className="coach-chat-view fade-in">
+        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, background: '#ffffff', borderRadius: '20px', padding: '14px', border: '1.5px solid #e2e8f0', boxShadow: '0 4px 16px rgba(0,0,0,0.04)' }}>
+          
           {/* Header */}
-          <div className="figma-chat-header-v2">
-            <button className="back-btn-icon" onClick={() => setCoachView('dashboard')}>
-              <ArrowLeft size={18} />
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '12px', borderBottom: '1.5px solid #f1f5f9', marginBottom: '12px' }}>
+            <button 
+              onClick={() => setCoachView('dashboard')}
+              style={{ background: '#f1f5f9', border: 'none', width: '32px', height: '32px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+            >
+              <ArrowLeft size={18} color="#0f172a" />
             </button>
-            <div className="chat-header-center">
-              <h3 className="chat-title-main">LevelUp Coach</h3>
-              <span className="chat-subtitle-sub">Đang trực tuyến</span>
+            <div style={{ textAlign: 'center' }}>
+              <h3 style={{ fontSize: '15px', fontWeight: '900', margin: 0, color: '#0f172a' }}>LevelUp Coach</h3>
+              <span style={{ fontSize: '10.5px', color: '#10b981', fontWeight: '800' }}>● Đang trực tuyến</span>
             </div>
-            <div style={{ width: 28 }}></div>
+            <div style={{ width: 32 }}></div>
           </div>
 
-          {/* Quick Metrics Spec Bar */}
-          <div className="chat-metrics-spec-bar">
-            <div className="spec-item">
-              <span className="spec-lbl">Cân nặng</span>
-              <span className="spec-val">{personalStats.weight || 72.5} kg</span>
+          {/* User Spec Chips Bar */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', background: '#ebf3ff', borderRadius: '12px', padding: '8px 12px', marginBottom: '12px', gap: '6px' }}>
+            <div style={{ textAlign: 'center', flex: 1 }}>
+              <span style={{ fontSize: '9px', fontWeight: '800', color: '#64748b' }}>Cân nặng</span>
+              <div style={{ fontSize: '12px', fontWeight: '900', color: '#0056c6' }}>{personalStats.weight || 70} kg</div>
             </div>
-            <div className="spec-item">
-              <span className="spec-lbl">BMI</span>
-              <span className="spec-val">
-                {personalStats.bmi || 
-                  (personalStats.weight && personalStats.height
-                    ? (personalStats.weight / ((personalStats.height / 100) ** 2)).toFixed(1)
-                    : '23.4')}
-              </span>
+            <div style={{ textAlign: 'center', flex: 1 }}>
+              <span style={{ fontSize: '9px', fontWeight: '800', color: '#64748b' }}>BMI</span>
+              <div style={{ fontSize: '12px', fontWeight: '900', color: '#0056c6' }}>{personalStats.bmi || 22.9}</div>
             </div>
-            <div className="spec-item">
-              <span className="spec-lbl">Cải thiện</span>
-              <span className="spec-val">{personalStats.improvementAreas?.[0] || 'Bụng'}</span>
+            <div style={{ textAlign: 'center', flex: 1 }}>
+              <span style={{ fontSize: '9px', fontWeight: '800', color: '#64748b' }}>Mục tiêu</span>
+              <div style={{ fontSize: '12px', fontWeight: '900', color: '#0056c6', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{personalStats.goal || 'Tăng cơ'}</div>
             </div>
-            <div className="spec-item">
-              <span className="spec-lbl">Mục tiêu</span>
-              <span className="spec-val" style={{ color: '#0056c6', maxWidth: '70px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{personalStats.goal || 'Tăng cơ'}</span>
+            <div style={{ textAlign: 'center', flex: 1 }}>
+              <span style={{ fontSize: '9px', fontWeight: '800', color: '#64748b' }}>Thời gian</span>
+              <div style={{ fontSize: '12px', fontWeight: '900', color: '#0056c6' }}>{personalStats.workoutDuration || '30p'}</div>
             </div>
           </div>
 
-          {/* Message List Area */}
-          <div className="chat-conversation-box">
+          {/* Chat Messages Log */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', flex: 1, minHeight: '340px', maxHeight: '480px', overflowY: 'auto', padding: '8px', background: '#f8fafc', borderRadius: '14px', border: '1px solid #e2e8f0', marginBottom: '12px' }}>
             {messages.map((msg) => (
-              <div key={msg.id} className={`chat-bubble-row-v2 ${msg.sender}`}>
+              <div 
+                key={msg.id}
+                style={{
+                  display: 'flex',
+                  gap: '8px',
+                  justifyContent: msg.sender === 'user' ? 'flex-end' : 'flex-start',
+                  alignItems: 'flex-end'
+                }}
+              >
                 {msg.sender === 'aura' && (
-                  <div className="chat-aura-avatar-v2">A</div>
+                  <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'linear-gradient(135deg, #0056c6 0%, #1e40af 100%)', color: '#ffffff', fontSize: '11px', fontWeight: '900', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    A
+                  </div>
                 )}
-                <div className="chat-bubble-content-v2">
-                  {msg.sender === 'aura' ? (
-                    <div className="chat-bubble-text-v2 aura-formatted">
-                      {msg.text.split('\n').map((line, lineIdx) => {
-                        const trimmed = line.trim();
-                        if (!trimmed) return <div key={lineIdx} style={{ height: '6px' }} />;
-
-                        // Parse **bold** within a line
-                        const parseBold = (str) => {
-                          const parts = str.split(/\*\*(.*?)\*\*/g);
-                          return parts.map((part, i) =>
-                            i % 2 === 1
-                              ? <strong key={i} style={{ fontWeight: '800', color: '#0f172a' }}>{part}</strong>
-                              : part
-                          );
-                        };
-
-                        // Bullet point line
-                        if (trimmed.startsWith('- ') || trimmed.startsWith('• ')) {
-                          const content = trimmed.replace(/^[-•]\s*/, '');
-                          return (
-                            <div key={lineIdx} style={{ display: 'flex', gap: '6px', marginBottom: '3px', alignItems: 'flex-start' }}>
-                              <span style={{ color: '#0056c6', fontWeight: '900', flexShrink: 0, marginTop: '1px' }}>•</span>
-                              <span style={{ lineHeight: '1.5' }}>{parseBold(content)}</span>
-                            </div>
-                          );
-                        }
-
-                        // Safe check for emoji-led section header
-                        const firstChar = trimmed.codePointAt(0) || 0;
-                        const isEmojiHeader = (firstChar >= 0x1f300 && firstChar <= 0x1f9ff) ||
-                          (firstChar >= 0x2600 && firstChar <= 0x26ff) ||
-                          (firstChar >= 0x2700 && firstChar <= 0x27bf) ||
-                          (firstChar >= 0x1f600 && firstChar <= 0x1f64f);
-
-                        if (isEmojiHeader) {
-                          return (
-                            <div key={lineIdx} style={{ fontWeight: '700', marginBottom: '4px', marginTop: lineIdx > 0 ? '8px' : '0', lineHeight: '1.5' }}>
-                              {parseBold(trimmed)}
-                            </div>
-                          );
-                        }
-
-                        // Normal line
-                        return (
-                          <div key={lineIdx} style={{ marginBottom: '2px', lineHeight: '1.55' }}>
-                            {parseBold(trimmed)}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <span className="chat-bubble-text-v2">{msg.text}</span>
-                  )}
-                  <span className="chat-bubble-time-v2">{msg.time}</span>
+                
+                <div style={{
+                  maxWidth: '82%',
+                  padding: '10px 14px',
+                  borderRadius: msg.sender === 'user' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
+                  background: msg.sender === 'user' ? 'linear-gradient(135deg, #0056c6 0%, #0284c7 100%)' : '#ffffff',
+                  color: msg.sender === 'user' ? '#ffffff' : '#0f172a',
+                  border: msg.sender === 'aura' ? '1.5px solid #cbd5e1' : 'none',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                  fontSize: '13.5px'
+                }}>
+                  {msg.sender === 'aura' ? renderAuraFormattedText(msg.text) : <span>{msg.text}</span>}
+                  <div style={{ fontSize: '9px', textAlign: 'right', marginTop: '4px', opacity: 0.8, color: msg.sender === 'user' ? '#ffffff' : '#64748b', fontWeight: '600' }}>
+                    {msg.time}
+                  </div>
                 </div>
               </div>
             ))}
 
             {isTyping && (
-              <div className="chat-bubble-row-v2 aura">
-                <div className="chat-aura-avatar-v2">A</div>
-                <div className="chat-bubble-content-v2 typing">
-                  <div className="typing-dots">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                  </div>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#0056c6', color: '#ffffff', fontSize: '11px', fontWeight: '900', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  A
+                </div>
+                <div style={{ background: '#ffffff', border: '1px solid #cbd5e1', padding: '8px 14px', borderRadius: '16px', fontSize: '12px', color: '#64748b', fontWeight: '700' }}>
+                  Coach Aura đang nhập...
                 </div>
               </div>
             )}
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Bottom Chat Inputs */}
-          <div className="chat-input-bar-v2">
-            <input
+          {/* Input Box */}
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <input 
               type="text"
-              className="chat-text-input-v2"
-              placeholder="Nhập tin nhắn..."
+              placeholder="Nhập tin nhắn cho Coach Aura..."
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSendMessage(inputText)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+              style={{
+                flex: 1,
+                height: '42px',
+                borderRadius: '99px',
+                border: '1.5px solid #cbd5e1',
+                padding: '0 16px',
+                fontSize: '13px',
+                fontWeight: '600',
+                color: '#0f172a',
+                outline: 'none',
+                background: '#ffffff'
+              }}
             />
-            <button 
-              className="chat-send-btn-v2" 
-              disabled={!inputText.trim()}
-              onClick={() => handleSendMessage(inputText)}
+            <button
+              onClick={() => handleSendMessage()}
+              style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #0056c6 0%, #1e40af 100%)',
+                border: 'none',
+                color: '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                boxShadow: '0 4px 10px rgba(0,86,198,0.3)'
+              }}
             >
-              <Send size={14} color="#ffffff" />
+              <Send size={16} color="#ffffff" />
             </button>
           </div>
         </div>
       )}
 
-      {/* ================= VIEW 3: PERFORMANCE ANALYTICS ================= */}
+      {/* ================= VIEW 3: PERFORMANCE DETAILS ================= */}
       {coachView === 'performance' && (
-        <div className="coach-performance-view fade-in">
-          {/* Header */}
-          <div className="figma-performance-header-v2">
-            <button className="back-btn-icon" onClick={() => setCoachView('dashboard')}>
-              <ArrowLeft size={18} />
+        <div style={{ background: '#ffffff', padding: '16px', borderRadius: '20px', border: '1.5px solid #e2e8f0' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+            <button onClick={() => setCoachView('dashboard')} style={{ background: '#f1f5f9', border: 'none', padding: '6px 12px', borderRadius: '10px', fontWeight: '800', cursor: 'pointer' }}>
+              ← Quay lại
             </button>
-            <h3 className="performance-title-v2">Hiệu suất tập</h3>
-            <div style={{ width: 28 }}></div>
+            <h3 style={{ fontSize: '16px', fontWeight: '900', margin: 0, color: '#0f172a' }}>Chi tiết hiệu suất</h3>
+            <div style={{ width: 40 }}></div>
           </div>
-
-          {/* Navigation Tabs */}
-          <div className="performance-tab-row">
-            <button 
-              className={`performance-tab-btn ${performanceTab === 'today' ? 'active' : ''}`}
-              onClick={() => setPerformanceTab('today')}
-            >
-              Hôm nay
-            </button>
-            <button 
-              className={`performance-tab-btn ${performanceTab === 'week' ? 'active' : ''}`}
-              onClick={() => setPerformanceTab('week')}
-            >
-              Tuần này
-            </button>
-          </div>
-
-          {/* Circular Score Gauge Card */}
-          <div className="performance-circular-score-card card">
-            <span className="gauge-label-top">HIỆU SUẤT TỔNG THỂ</span>
-            
-            {/* Circular Gauge */}
-            <div className="circular-score-gauge-container">
-              <svg width="120" height="120" viewBox="0 0 36 36" className="circular-gauge-svg">
-                <path 
-                  className="gauge-track"
-                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" 
-                  fill="none" 
-                  stroke="#F1F5F9" 
-                  strokeWidth="2.8"
-                />
-                <path 
-                  className="gauge-indicator"
-                  strokeDasharray={performanceTab === 'today' ? "85, 100" : "92, 100"}
-                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" 
-                  fill="none" 
-                  stroke="#0056C6" 
-                  strokeWidth="2.8"
-                  strokeLinecap="round"
-                />
-              </svg>
-              <div className="gauge-center-text">
-                <span className="gauge-score-num">{performanceTab === 'today' ? '85' : '92'}</span>
-                <span className="gauge-score-max">Điểm / 100</span>
-              </div>
-            </div>
-
-            <p className="gauge-assessment-text">
-              Bạn đang làm rất tốt! Duy trì phong độ này nhé.
-            </p>
-
-            {/* Split Metrics Card */}
-            <div className="gauge-metrics-row">
-              <div className="metric-col-card">
-                <div className="metric-title-block">
-                  <Activity size={14} color="#10B981" />
-                  <span>Phục hồi</span>
-                </div>
-                <span className="metric-score-large">{performanceTab === 'today' ? '65%' : '45%'}</span>
-              </div>
-
-              <div className="metric-col-card">
-                <div className="metric-title-block">
-                  <Heart size={14} color="#EF4444" />
-                  <span>HRV</span>
-                </div>
-                <span className="metric-score-large">62 ms</span>
-              </div>
-            </div>
-
-            {/* Footer Recovery Status Card */}
-            <div className="recovery-readiness-footer-box">
-              <span className="rec-lbl">Điểm phục hồi</span>
-              <div className="rec-val-group">
-                <span className="rec-status-tag">Sẵn sàng tập luyện</span>
-                <span className="rec-val-percent">{performanceTab === 'today' ? '92%' : '86%'}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Section Heading: Năng lượng tiêu hao */}
-          <div className="figma-dash-section-header" style={{ marginTop: 20 }}>
-            <h3 className="figma-section-title-bold">Mức tiêu hao năng lượng</h3>
-            <span className="figma-kcal-count" style={{ fontSize: 13, fontWeight: '800', color: '#0056C6' }}>
-              {performanceTab === 'today' ? '465 kcal' : '4680 kcal'}
-            </span>
-          </div>
-
-          {/* Weekly Kcal Chart */}
-          <div className="figma-kcal-chart-card card">
-            <div className="kcal-bar-chart">
-              {['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map((day, idx) => (
-                <div key={idx} className="kcal-chart-col">
-                  <div className="kcal-bar-track">
-                    <div 
-                      className={`kcal-bar-fill ${day === 'T7' ? 'active-blue' : ''}`}
-                      style={{ height: day === 'T7' ? '85%' : '55%' }}
-                    ></div>
-                  </div>
-                  <span className="kcal-chart-label">{day}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+          <p style={{ fontSize: '13px', color: '#64748b' }}>Hệ thống ghi nhận hiệu suất tập luyện và mức độ hồi phục của bạn trong tuần.</p>
         </div>
       )}
-
     </div>
   );
 }
