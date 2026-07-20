@@ -60,6 +60,16 @@ export default function Workouts({ onWorkoutComplete }) {
   const gymDrag = attachDragEvents(gymScrollRef);
   const homeDrag = attachDragEvents(homeScrollRef);
 
+  const [detailsPrevView, setDetailsPrevView] = useState('gym_hub');
+
+  const openRoutineDetails = (title, exercises, kcal, fromView = 'gym_hub') => {
+    setSelectedRoutineTitle(title);
+    setSelectedRoutineExercises(exercises);
+    setSelectedRoutineKcal(kcal);
+    setDetailsPrevView(fromView);
+    setView('details');
+  };
+
   const startPlayer = (title, exercises, kcal) => {
     setSelectedRoutineTitle(title);
     setSelectedRoutineExercises(exercises);
@@ -168,14 +178,11 @@ export default function Workouts({ onWorkoutComplete }) {
           <p className="banner-desc" style={{ fontSize: '11px', opacity: 0.85, margin: '0 0 16px 0', lineHeight: '1.4', color: '#ffffff' }}>Đốt cháy calo tối đa với chuỗi bài tập HIIT cường độ cao phối hợp.</p>
           
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span className="banner-meta" style={{ fontSize: '12px', fontWeight: '800', display: 'flex', alignItems: 'center', gap: '4px', color: '#ffffff' }}>
-              <Clock size={14} /> 15 Phút
-            </span>
-            <button className="btn btn-primary" onClick={() => startPlayer('Toàn thân cấp tốc', [
+              <button className="btn btn-primary" onClick={() => openRoutineDetails('Toàn thân cấp tốc', [
               { id: 1, name: 'Jumping Jacks', category: 'HIIT • Toàn thân', sets: 3, reps: 45, weight: 0 },
               { id: 2, name: 'Burpees', category: 'HIIT • Sức bền', sets: 3, reps: 15, weight: 0 },
               { id: 3, name: 'Mountain Climbers', category: 'Bụng • Core', sets: 3, reps: 40, weight: 0 }
-            ], 220)} style={{ width: 'auto', padding: '8px 16px', fontSize: '13px', background: '#ffffff', color: '#0056c6', borderRadius: '12px', fontWeight: '800' }}>
+            ], 220, 'hub')} style={{ width: 'auto', padding: '8px 16px', fontSize: '13px', background: '#ffffff', color: '#0056c6', borderRadius: '12px', fontWeight: '800' }}>
               Bắt đầu ngay ➔
             </button>
           </div>
@@ -185,10 +192,10 @@ export default function Workouts({ onWorkoutComplete }) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           
           {/* Item 1 */}
-          <div className="popular-workout-card figma-recommend-workout-card card" onClick={() => startPlayer('Yoga Chào Buổi Sáng', [
+          <div className="popular-workout-card figma-recommend-workout-card card" onClick={() => openRoutineDetails('Yoga Chào Buổi Sáng', [
             { id: 1, name: 'Tư thế chào mặt trời', category: 'Yoga • Linh hoạt', sets: 2, reps: 5, weight: 0 },
             { id: 2, name: 'Tư thế chiến binh', category: 'Yoga • Cân bằng', sets: 3, reps: 8, weight: 0 }
-          ], 110)} style={{ cursor: 'pointer', padding: '12px', borderRadius: '16px', display: 'flex', gap: '12px', alignItems: 'center', border: '1.5px solid #e2e8f0' }}>
+          ], 110, 'hub')} style={{ cursor: 'pointer', padding: '12px', borderRadius: '16px', display: 'flex', gap: '12px', alignItems: 'center', border: '1.5px solid #e2e8f0' }}>
             <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=80&q=80" alt="Yoga" style={{ width: '48px', height: '48px', borderRadius: '12px', objectFit: 'cover' }} />
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
               <span style={{ fontSize: '8px', color: '#d97706', fontWeight: '800' }}>PHỔ BIẾN</span>
@@ -199,10 +206,10 @@ export default function Workouts({ onWorkoutComplete }) {
           </div>
 
           {/* Item 2 */}
-          <div className="popular-workout-card figma-recommend-workout-card card" onClick={() => startPlayer('Thử thách Cơ bụng', [
+          <div className="popular-workout-card figma-recommend-workout-card card" onClick={() => openRoutineDetails('Thử thách Cơ bụng', [
             { id: 1, name: 'Crunches', category: 'Bụng • Core', sets: 3, reps: 15, weight: 0 },
             { id: 2, name: 'Leg Raises', category: 'Bụng • Core', sets: 3, reps: 12, weight: 0 }
-          ], 130)} style={{ cursor: 'pointer', padding: '12px', borderRadius: '16px', display: 'flex', gap: '12px', alignItems: 'center', border: '1.5px solid #e2e8f0' }}>
+          ], 130, 'hub')} style={{ cursor: 'pointer', padding: '12px', borderRadius: '16px', display: 'flex', gap: '12px', alignItems: 'center', border: '1.5px solid #e2e8f0' }}>
             <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=80&q=80" alt="Abs" style={{ width: '48px', height: '48px', borderRadius: '12px', objectFit: 'cover' }} />
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
               <span style={{ fontSize: '8px', color: '#0056c6', fontWeight: '800' }}>SỨC MẠNH</span>
