@@ -5,6 +5,7 @@ export default function Community({ userName = 'Alex', userXp = 1680 }) {
   const [activeTab, setActiveTab] = useState('leaderboard'); // 'leaderboard' or 'squads'
   const [cheeredUsers, setCheeredUsers] = useState([]);
   const [joinedSquad, setJoinedSquad] = useState(true);
+  const [selectedSquad, setSelectedSquad] = useState(null);
 
   const leaderboardData = [
     { rank: 1, name: 'Sarah L.', xp: 2200, isSelf: false, avatar: 'SL' },
