@@ -8431,3 +8431,13 @@ p {
 .dark-theme .grid-cell-item span {
   color: #ffffff !important;
 }
+
+/* Force white text inside Highlight Banner in Dark Theme */
+.figma-highlight-banner h4,
+.figma-highlight-banner p,
+.figma-highlight-banner span,
+.figma-highlight-banner .banner-title,
+.figma-highlight-banner .banner-desc,
+.figma-highlight-banner .banner-meta {
+  color: #ffffff !important;
+}

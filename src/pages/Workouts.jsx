@@ -121,7 +121,9 @@ export default function Workouts({ onWorkoutComplete }) {
         {/* Gợi ý cho bạn Section */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
           <h3 className="section-title-sm-bold" style={{ fontSize: '15px', fontWeight: '850', color: '#0f172a', margin: 0 }}>Gợi ý cho bạn</h3>
-          <span style={{ fontSize: '11.5px', color: '#0056C6', fontWeight: '800', cursor: 'pointer' }}>Xem tất cả</span>
+          <button onClick={() => setView('gym_hub')} style={{ background: 'none', border: 'none', padding: 0, fontSize: '11.5px', color: '#0056C6', fontWeight: '800', cursor: 'pointer', outline: 'none' }}>
+            Xem tất cả
+          </button>
         </div>
 
         {/* Highlight Banner */}
@@ -133,11 +135,11 @@ export default function Workouts({ onWorkoutComplete }) {
             <span style={{ background: '#10b981', color: '#ffffff', fontSize: '8px', fontWeight: '800', padding: '3px 8px', borderRadius: '99px' }}>MỚI</span>
             <span style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', fontSize: '8px', fontWeight: '800', padding: '3px 8px', borderRadius: '99px' }}>CAO ĐỘ</span>
           </div>
-          <h4 style={{ fontSize: '18px', fontWeight: '850', margin: '0 0 6px 0' }}>Toàn thân cấp tốc</h4>
-          <p style={{ fontSize: '11px', opacity: 0.85, margin: '0 0 16px 0', lineHeight: '1.4' }}>Đốt cháy calo tối đa với chuỗi bài tập HIIT cường độ cao phối hợp.</p>
+          <h4 className="banner-title" style={{ fontSize: '18px', fontWeight: '850', margin: '0 0 6px 0', color: '#ffffff' }}>Toàn thân cấp tốc</h4>
+          <p className="banner-desc" style={{ fontSize: '11px', opacity: 0.85, margin: '0 0 16px 0', lineHeight: '1.4', color: '#ffffff' }}>Đốt cháy calo tối đa với chuỗi bài tập HIIT cường độ cao phối hợp.</p>
           
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '12px', fontWeight: '800', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <span className="banner-meta" style={{ fontSize: '12px', fontWeight: '800', display: 'flex', alignItems: 'center', gap: '4px', color: '#ffffff' }}>
               <Clock size={14} /> 15 Phút
             </span>
             <button className="btn btn-primary" onClick={() => startPlayer('Toàn thân cấp tốc', [
