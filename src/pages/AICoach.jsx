@@ -11,7 +11,7 @@ export default function AICoach({ userName = 'Tâm', personalStats = {}, userGoa
     {
       id: 1,
       sender: 'aura',
-      text: `Chào ${userName}! Dựa trên dữ liệu phục hồi, hôm nay bạn đang ở trạng thái tốt. Bạn muốn tập trung vào mục tiêu nào hôm nay?`,
+      text: `Chào ${userName}! Tôi là Coach Aura của bạn 💪 Mục tiêu "${personalStats.goal || 'Tăng cơ'}" của bạn đã được ghi nhận. Hôm nay bạn muốn bắt đầu từ đâu?`,
       time: '08:00'
     }
   ]);
@@ -38,6 +38,35 @@ export default function AICoach({ userName = 'Tâm', personalStats = {}, userGoa
     }
   }, [messages, isTyping, coachView]);
 
+  // Build dynamic system prompt from user's personal data
+  const buildSystemPrompt = () => {
+    const s = personalStats;
+    const bmi = s.bmi || (s.weight && s.height ? (s.weight / ((s.height / 100) ** 2)).toFixed(1) : 'Chưa có');
+    return `Bạn là Coach Aura — huấn luyện viên sức khỏe AI của LevelUp. Trả lời bằng tiếng Việt, nhiệt tình, cá nhân hóa.
+
+QUY TẮc FORMAT (bắt buộc):
+- Dùng emoji ở đầu mỗi ý chính
+- Dùng **text** để in đậm các từ quan trọng
+- Dùng - (gạch đầu dòng) cho các bước / lưu ý cụ thể
+- Xuống dòng rõ ràng giữa các phần
+- Kết thúc bằng 1 câu động viên ngắn
+- KHÔNG dùng # heading, không dùng bảng
+
+=== THÔNG TIN NGƯỜI DÙNG ===
+- Tên: ${userName}
+- Giới tính: ${s.gender || 'Chưa rõ'} | Tuổi: ${s.age || '?'}
+- Chiều cao: ${s.height || '?'} cm | Cân nặng: ${s.weight || '?'} kg | BMI: ${bmi}
+- Mỡ: ${s.bodyFat || '?'}% | Cơ: ${s.musclePercent || '?'}%
+- Vòng ngực/ại/hông: ${s.chest || '?'}/${s.waist || '?'}/${s.hips || '?'} cm
+
+=== MỤC TIÊU & LỐI SỐNG ===
+- Mục tiêu: ${s.goal || 'Chưa đặt'}
+- Hoạt động: ${s.activityLevel || 'Trung bình'} | Nơi tập: ${s.workoutLocation || 'Không rõ'}
+- Ngủ: ${s.sleepHours || '?'}h | Nước: ${s.waterIntake || '?'}ml | Nhịp tim: ${s.restingHeartRate || '?'} bpm
+
+Chỉ trả lời đúng trọng tâm câu hỏi, không liệt kê lại thông tin người dùng.`;
+  };
+
   const callGeminiWithKey = async (key, updatedMessages) => {
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,
@@ -50,9 +79,11 @@ export default function AICoach({ userName = 'Tâm', personalStats = {}, userGoa
             parts: [{ text: msg.text }]
           })),
           systemInstruction: {
-            parts: [{
-              text: `Bạn là Coach Aura, một huấn luyện viên sức khỏe và thể chất thông minh, tận tâm của ứng dụng LevelUp. Hãy giữ câu trả lời ngắn gọn dưới 120 từ.`
-            }]
+            parts: [{ text: buildSystemPrompt() }]
+          },
+          generationConfig: {
+            temperature: 0.8,
+            maxOutputTokens: 1024
           }
         })
       }
@@ -141,10 +172,26 @@ export default function AICoach({ userName = 'Tâm', personalStats = {}, userGoa
               Chào bạn! Dựa trên dữ liệu phục hồi, hôm nay bạn đang ở trạng thái tốt. Bạn muốn tập trung vào mục tiêu nào hôm nay?
             </p>
 
-            {/* Quick Reply Badges */}
+            {/* Quick Reply Badges based on user goal */}
             <div className="coach-quick-badges-row">
-              <button className="badge-pill-btn" onClick={() => { setCoachView('chat'); handleSendMessage('Tập ngực'); }}>Tập ngực</button>
-              <button className="badge-pill-btn" onClick={() => { setCoachView('chat'); handleSendMessage('Cardio nhẹ'); }}>Cardio nhẹ</button>
+              {(personalStats.goal === 'Giảm cân' || personalStats.goal === 'Tăng sức bền') && (
+                <>
+                  <button className="badge-pill-btn" onClick={() => { setCoachView('chat'); handleSendMessage('Cardio nhẹ hôm nay'); }}>Cardio nhẹ</button>
+                  <button className="badge-pill-btn" onClick={() => { setCoachView('chat'); handleSendMessage('Kế hoạch giảm cân cho tôi'); }}>Kế hoạch giảm cân</button>
+                </>
+              )}
+              {(personalStats.goal === 'Tăng cơ' || personalStats.goal === 'Giữ dáng') && (
+                <>
+                  <button className="badge-pill-btn" onClick={() => { setCoachView('chat'); handleSendMessage('Tập ngực hôm nay'); }}>Tập ngực</button>
+                  <button className="badge-pill-btn" onClick={() => { setCoachView('chat'); handleSendMessage('Chế độ ăn tăng cơ'); }}>Chế độ ăn</button>
+                </>
+              )}
+              {!personalStats.goal && (
+                <>
+                  <button className="badge-pill-btn" onClick={() => { setCoachView('chat'); handleSendMessage('Tập ngực'); }}>Tập ngực</button>
+                  <button className="badge-pill-btn" onClick={() => { setCoachView('chat'); handleSendMessage('Cardio nhẹ'); }}>Cardio nhẹ</button>
+                </>
+              )}
             </div>
 
             {/* Simulated Input Field (Clicking redirects to active chat) */}
@@ -278,16 +325,25 @@ export default function AICoach({ userName = 'Tâm', personalStats = {}, userGoa
           {/* Quick Metrics Spec Bar */}
           <div className="chat-metrics-spec-bar">
             <div className="spec-item">
-              <span className="spec-lbl">Chỉ số hiện tại</span>
+              <span className="spec-lbl">Cân nặng</span>
               <span className="spec-val">{personalStats.weight || 72.5} kg</span>
             </div>
             <div className="spec-item">
               <span className="spec-lbl">BMI</span>
-              <span className="spec-val">{personalStats.bmi || 23.4}</span>
+              <span className="spec-val">
+                {personalStats.bmi || 
+                  (personalStats.weight && personalStats.height
+                    ? (personalStats.weight / ((personalStats.height / 100) ** 2)).toFixed(1)
+                    : '23.4')}
+              </span>
             </div>
             <div className="spec-item">
               <span className="spec-lbl">Cải thiện</span>
               <span className="spec-val">{personalStats.improvementAreas?.[0] || 'Bụng'}</span>
+            </div>
+            <div className="spec-item">
+              <span className="spec-lbl">Mục tiêu</span>
+              <span className="spec-val" style={{ color: '#0056c6', maxWidth: '70px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{personalStats.goal || 'Tăng cơ'}</span>
             </div>
           </div>
 
@@ -299,7 +355,54 @@ export default function AICoach({ userName = 'Tâm', personalStats = {}, userGoa
                   <div className="chat-aura-avatar-v2">A</div>
                 )}
                 <div className="chat-bubble-content-v2">
-                  <span className="chat-bubble-text-v2">{msg.text}</span>
+                  {msg.sender === 'aura' ? (
+                    <div className="chat-bubble-text-v2 aura-formatted">
+                      {msg.text.split('\n').map((line, lineIdx) => {
+                        const trimmed = line.trim();
+                        if (!trimmed) return <div key={lineIdx} style={{ height: '6px' }} />;
+
+                        // Parse **bold** within a line
+                        const parseBold = (str) => {
+                          const parts = str.split(/\*\*(.*?)\*\*/g);
+                          return parts.map((part, i) =>
+                            i % 2 === 1
+                              ? <strong key={i} style={{ fontWeight: '800', color: '#0f172a' }}>{part}</strong>
+                              : part
+                          );
+                        };
+
+                        // Bullet point line
+                        if (trimmed.startsWith('- ') || trimmed.startsWith('• ')) {
+                          const content = trimmed.replace(/^[-•]\s*/, '');
+                          return (
+                            <div key={lineIdx} style={{ display: 'flex', gap: '6px', marginBottom: '3px', alignItems: 'flex-start' }}>
+                              <span style={{ color: '#0056c6', fontWeight: '900', flexShrink: 0, marginTop: '1px' }}>•</span>
+                              <span style={{ lineHeight: '1.5' }}>{parseBold(content)}</span>
+                            </div>
+                          );
+                        }
+
+                        // Emoji-led section header (line starts with emoji)
+                        const emojiRegex = /^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F)/u;
+                        if (emojiRegex.test(trimmed)) {
+                          return (
+                            <div key={lineIdx} style={{ fontWeight: '700', marginBottom: '4px', marginTop: lineIdx > 0 ? '8px' : '0', lineHeight: '1.5' }}>
+                              {parseBold(trimmed)}
+                            </div>
+                          );
+                        }
+
+                        // Normal line
+                        return (
+                          <div key={lineIdx} style={{ marginBottom: '2px', lineHeight: '1.55' }}>
+                            {parseBold(trimmed)}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <span className="chat-bubble-text-v2">{msg.text}</span>
+                  )}
                   <span className="chat-bubble-time-v2">{msg.time}</span>
                 </div>
               </div>

@@ -169,8 +169,11 @@ export default function Dashboard({ userName = 'Tâm', activeStreak = 12, onStar
       >
         {/* HIIT buổi sáng */}
         <div className="figma-workout-thumbnail-card card">
-          <div className="workout-thumb-image-placeholder hiit">
-            <Play className="play-icon-center" size={20} fill="#ffffff" color="#ffffff" />
+          <div className="workout-thumb-image-placeholder" style={{ position: 'relative', overflow: 'hidden', padding: 0 }}>
+            <img src="/images/trangluyentap/pexels-iram-shehzad-45081404-37570727.jpg" alt="HIIT" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+            <div style={{ position: 'absolute', inset: 0, background: 'rgba(15,23,42,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Play size={22} fill="#ffffff" color="#ffffff" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))' }} />
+            </div>
           </div>
           <div className="workout-thumb-info">
             <h4 className="workout-thumb-title">HIIT buổi sáng</h4>
@@ -183,22 +186,28 @@ export default function Dashboard({ userName = 'Tâm', activeStreak = 12, onStar
 
         {/* Yoga thư giãn */}
         <div className="figma-workout-thumbnail-card card">
-          <div className="workout-thumb-image-placeholder yoga-relax">
-            <Play className="play-icon-center" size={20} fill="#ffffff" color="#ffffff" />
+          <div className="workout-thumb-image-placeholder" style={{ position: 'relative', overflow: 'hidden', padding: 0 }}>
+            <img src="/images/luyentaptainha/pexels-artempodrez-6951790.jpg" alt="Yoga" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+            <div style={{ position: 'absolute', inset: 0, background: 'rgba(15,23,42,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Play size={22} fill="#ffffff" color="#ffffff" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))' }} />
+            </div>
           </div>
           <div className="workout-thumb-info">
             <h4 className="workout-thumb-title">Yoga thư giãn</h4>
             <p className="workout-thumb-desc">30 phút • Cường độ nhẹ</p>
             <button className="btn btn-outline btn-sm-workout w-full mt-2" onClick={() => setActivePage('workouts')}>
-              View
+              Xem thêm
             </button>
           </div>
         </div>
 
         {/* Cardio bứt tốc */}
         <div className="figma-workout-thumbnail-card card">
-          <div className="workout-thumb-image-placeholder hiit" style={{ background: 'linear-gradient(135deg, #EF4444 0%, #B91C1C 100%)' }}>
-            <Play className="play-icon-center" size={20} fill="#ffffff" color="#ffffff" />
+          <div className="workout-thumb-image-placeholder" style={{ position: 'relative', overflow: 'hidden', padding: 0 }}>
+            <img src="/images/dashboard/pexels-hector-eslava-221100706-14256469.jpg" alt="Cardio" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+            <div style={{ position: 'absolute', inset: 0, background: 'rgba(15,23,42,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Play size={22} fill="#ffffff" color="#ffffff" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))' }} />
+            </div>
           </div>
           <div className="workout-thumb-info">
             <h4 className="workout-thumb-title">Cardio bứt tốc</h4>
@@ -211,8 +220,11 @@ export default function Dashboard({ userName = 'Tâm', activeStreak = 12, onStar
 
         {/* Sức mạnh cơ bắp */}
         <div className="figma-workout-thumbnail-card card">
-          <div className="workout-thumb-image-placeholder yoga-relax" style={{ background: 'linear-gradient(135deg, #10B981 0%, #047857 100%)' }}>
-            <Play className="play-icon-center" size={20} fill="#ffffff" color="#ffffff" />
+          <div className="workout-thumb-image-placeholder" style={{ position: 'relative', overflow: 'hidden', padding: 0 }}>
+            <img src="/images/taptaiphong/pexels-foadshariyati-30672398.jpg" alt="Strength" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+            <div style={{ position: 'absolute', inset: 0, background: 'rgba(15,23,42,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Play size={22} fill="#ffffff" color="#ffffff" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))' }} />
+            </div>
           </div>
           <div className="workout-thumb-info">
             <h4 className="workout-thumb-title">Sức mạnh thân trên</h4>

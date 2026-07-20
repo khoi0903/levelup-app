@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { 
   Search, Play, Clock, Flame, Award, ChevronRight, X, ArrowLeft,
-  Dumbbell, CheckCircle2, Heart, Zap, PlayCircle, Star, Edit3, Plus, Minus
+  Dumbbell, CheckCircle2, Heart, Zap, PlayCircle, Star, Edit3, Plus, Minus, SkipForward
 } from 'lucide-react';
 
+// Map exercise names to local images
+const exerciseImageMap = {
+  'Bench Press': '/images/chitietbaitap/bench press.jpg',
+  'Squats': '/images/chitietbaitap/squat.jpg',
+  'Pull-ups': '/images/chitietbaitap/pull up.jpg',
+  'Dumbbell Shoulder Press': '/images/chitietbaitap/dumbbell shoulder.jpg',
+  'Plank': '/images/chitietbaitap/plank.jpg',
+};
+
 const mockExercises = [
-  { id: 1, name: 'Bench Press', category: 'Ngực • Barbell', sets: 4, reps: 12, weight: 60, desc: 'Đẩy tạ trên ghế nằm ngang. Giúp phát triển cơ ngực, vai và bắp tay sau.' },
-  { id: 2, name: 'Squats', category: 'Đùi • Barbell', sets: 4, reps: 10, weight: 80, desc: 'Gánh tạ đòn squat. Bài tập cốt lõi cho cơ đùi trước, đùi sau và cơ mông.' },
-  { id: 3, name: 'Pull-ups', category: 'Lưng • Bodyweight', sets: 3, reps: 8, weight: 0, desc: 'Lên xà đơn. Tăng cường cơ xô, cơ lưng rộng và bắp tay trước.' },
-  { id: 4, name: 'Dumbbell Shoulder Press', category: 'Vai • Dumbbell', sets: 3, reps: 12, weight: 16, desc: 'Đẩy tạ đôi qua đầu ở tư thế ngồi. Phát triển cơ vai toàn diện.' },
-  { id: 5, name: 'Plank', category: 'Bụng • Core', sets: 3, reps: 60, weight: 0, isTimeBased: true, desc: 'Giữ cơ thể thẳng tắp trên khuỷu tay và mũi chân. Xây dựng sức bền cơ bụng.' }
+  { id: 1, name: 'Bench Press', category: 'Ngực • Barbell', sets: 4, reps: 12, weight: 60, desc: 'Đẩy tạ trên ghế nằm ngang. Giúp phát triển cơ ngực, vai và bắp tay sau. Giữ lưng phẳng, hạ tạ chậm rãi.' },
+  { id: 2, name: 'Squats', category: 'Đùi • Barbell', sets: 4, reps: 10, weight: 80, desc: 'Gánh tạ đòn squat. Bài tập cốt lõi cho cơ đùi trước, đùi sau và cơ mông. Giữ ngực thẳng, gối không vượt ngón chân.' },
+  { id: 3, name: 'Pull-ups', category: 'Lưng • Bodyweight', sets: 3, reps: 8, weight: 0, desc: 'Lên xà đơn. Tăng cường cơ xô, cơ lưng rộng và bắp tay trước. Kéo ngực lên chạm xà.' },
+  { id: 4, name: 'Dumbbell Shoulder Press', category: 'Vai • Dumbbell', sets: 3, reps: 12, weight: 16, desc: 'Đẩy tạ đôi qua đầu ở tư thế ngồi. Phát triển cơ vai toàn diện. Giữ lưng thẳng đứng.' },
+  { id: 5, name: 'Plank', category: 'Bụng • Core', sets: 3, reps: 60, weight: 0, isTimeBased: true, desc: 'Giữ cơ thể thẳng tắp trên khuỷu tay và mũi chân. Xây dựng sức bền cơ bụng và core.' }
 ];
 
 export default function Workouts({ onWorkoutComplete, setViewParent }) {
@@ -105,6 +114,17 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
     }
   };
 
+  const handleSkipExercise = () => {
+    if (currentExIndex < selectedRoutineExercises.length - 1) {
+      const nextIdx = currentExIndex + 1;
+      setCurrentExIndex(nextIdx);
+      setCurrentSet(1);
+      setCurrentReps(selectedRoutineExercises[nextIdx].reps);
+    } else {
+      setView('summary');
+    }
+  };
+
   const handleFinishWorkout = () => {
     if (onWorkoutComplete) {
       onWorkoutComplete(150); // gain 150 XP
@@ -140,26 +160,38 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
           
           {/* Home Card */}
           <div className="location-card-figma flex-1" onClick={() => setView('home_hub')} style={{
-            background: 'linear-gradient(rgba(15,23,42,0.4), rgba(15,23,42,0.75)), url("https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=250&q=80")',
-            backgroundSize: 'cover', backgroundPosition: 'center', height: '110px', borderRadius: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '12px', cursor: 'pointer', color: '#ffffff'
+            position: 'relative', height: '110px', borderRadius: '16px',
+            display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
+            padding: '12px', cursor: 'pointer', color: '#ffffff', overflow: 'hidden'
           }}>
-            <div className="location-icon-wrapper" style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '4px' }}>
-              <Zap size={14} color="#ffffff" fill="#ffffff" />
+            <img src="/images/luyentaptainha/pexels-artempodrez-6951790.jpg" alt="Tai nha"
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(rgba(15,23,42,0.35), rgba(15,23,42,0.8))', zIndex: 1 }} />
+            <div style={{ position: 'relative', zIndex: 2 }}>
+              <div className="location-icon-wrapper" style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '4px' }}>
+                <Zap size={14} color="#ffffff" fill="#ffffff" />
+              </div>
+              <span style={{ fontSize: '14px', fontWeight: '800', display: 'block' }}>Tại nhà</span>
+              <span style={{ fontSize: '10px', opacity: 0.8 }}>120+ bài tập</span>
             </div>
-            <span style={{ fontSize: '14px', fontWeight: '800' }}>Tại nhà</span>
-            <span style={{ fontSize: '10px', opacity: 0.8 }}>120+ bài tập</span>
           </div>
 
           {/* Gym Card */}
           <div className="location-card-figma flex-1" onClick={() => setView('gym_hub')} style={{
-            background: 'linear-gradient(rgba(15,23,42,0.4), rgba(15,23,42,0.75)), url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=250&q=80")',
-            backgroundSize: 'cover', backgroundPosition: 'center', height: '110px', borderRadius: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '12px', cursor: 'pointer', color: '#ffffff'
+            position: 'relative', height: '110px', borderRadius: '16px',
+            display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
+            padding: '12px', cursor: 'pointer', color: '#ffffff', overflow: 'hidden'
           }}>
-            <div className="location-icon-wrapper" style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '4px' }}>
-              <Dumbbell size={14} color="#ffffff" />
+            <img src="/images/taptaiphong/pexels-foadshariyati-30672398.jpg" alt="Phong gym"
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(rgba(15,23,42,0.35), rgba(15,23,42,0.8))', zIndex: 1 }} />
+            <div style={{ position: 'relative', zIndex: 2 }}>
+              <div className="location-icon-wrapper" style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '4px' }}>
+                <Dumbbell size={14} color="#ffffff" />
+              </div>
+              <span style={{ fontSize: '14px', fontWeight: '800', display: 'block' }}>Tại phòng gym</span>
+              <span style={{ fontSize: '10px', opacity: 0.8 }}>80+ chương trình</span>
             </div>
-            <span style={{ fontSize: '14px', fontWeight: '800' }}>Tại phòng gym</span>
-            <span style={{ fontSize: '10px', opacity: 0.8 }}>80+ chương trình</span>
           </div>
 
         </div>
@@ -174,36 +206,40 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
 
         {/* Highlight Banner */}
         <div className="figma-highlight-banner" style={{
-          background: 'linear-gradient(to right, rgba(0, 86, 198, 0.95), rgba(30, 41, 59, 0.9)), url("https://images.unsplash.com/photo-1548690312-e3b507d8c110?auto=format&fit=crop&w=350&q=80")',
-          backgroundSize: 'cover', borderRadius: '20px', padding: '18px', color: '#ffffff', marginBottom: '16px', position: 'relative'
+          position: 'relative', borderRadius: '20px', padding: '18px',
+          color: '#ffffff', marginBottom: '16px', overflow: 'hidden'
         }}>
+          <img src="/images/trangluyentap/pexels-julia-larson-6455895.jpg" alt="banner"
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(0,86,198,0.92), rgba(15,23,42,0.85))', zIndex: 1 }} />
+          <div style={{ position: 'relative', zIndex: 2 }}>
           <div style={{ display: 'flex', gap: '6px', marginBottom: '10px' }}>
             <span style={{ background: '#10b981', color: '#ffffff', fontSize: '8px', fontWeight: '800', padding: '3px 8px', borderRadius: '99px' }}>MỚI</span>
             <span style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', fontSize: '8px', fontWeight: '800', padding: '3px 8px', borderRadius: '99px' }}>CAO ĐỘ</span>
           </div>
-          <h4 className="banner-title" style={{ fontSize: '18px', fontWeight: '850', margin: '0 0 6px 0', color: '#ffffff' }}>Toàn thân cấp tốc</h4>
-          <p className="banner-desc" style={{ fontSize: '11px', opacity: 0.85, margin: '0 0 16px 0', lineHeight: '1.4', color: '#ffffff' }}>Đốt cháy calo tối đa với chuỗi bài tập HIIT cường độ cao phối hợp.</p>
+          <h4 style={{ fontSize: '18px', fontWeight: '850', margin: '0 0 6px 0', color: '#ffffff' }}>Toàn thân cấp tốc</h4>
+          <p style={{ fontSize: '11px', opacity: 0.85, margin: '0 0 16px 0', lineHeight: '1.4', color: '#ffffff' }}>Đốt cháy calo tối đa với chuỗi bài tập HIIT cường độ cao phối hợp.</p>
           
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <button className="btn btn-primary" onClick={() => openRoutineDetails('Toàn thân cấp tốc', [
-              { id: 1, name: 'Jumping Jacks', category: 'HIIT • Toàn thân', sets: 3, reps: 45, weight: 0 },
-              { id: 2, name: 'Burpees', category: 'HIIT • Sức bền', sets: 3, reps: 15, weight: 0 },
-              { id: 3, name: 'Mountain Climbers', category: 'Bụng • Core', sets: 3, reps: 40, weight: 0 }
+              { id: 1, name: 'Jumping Jacks', category: 'HIIT • Toàn thân', sets: 3, reps: 45, weight: 0, desc: 'Nhảy dang tay dang chân. Khởi động toàn thân, tăng nhịp tim nhanh chóng.' },
+              { id: 2, name: 'Burpees', category: 'HIIT • Sức bền', sets: 3, reps: 15, weight: 0, desc: 'Kết hợp squat, plank và nhảy. Bài tập toàn thân đốt calo tối đa.' },
+              { id: 3, name: 'Mountain Climbers', category: 'Bụng • Core', sets: 3, reps: 40, weight: 0, desc: 'Chạy tại chỗ ở tư thế plank. Tập trung vào core và sức bền tim mạch.' }
             ], 220, 'hub')} style={{ width: 'auto', padding: '8px 16px', fontSize: '13px', background: '#ffffff', color: '#0056c6', borderRadius: '12px', fontWeight: '800' }}>
               Bắt đầu ngay ➔
             </button>
           </div>
-        </div>
-
+          </div>
+          </div>
         {/* Mini recommendations list */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           
           {/* Item 1 */}
           <div className="popular-workout-card figma-recommend-workout-card card" onClick={() => openRoutineDetails('Yoga Chào Buổi Sáng', [
-            { id: 1, name: 'Tư thế chào mặt trời', category: 'Yoga • Linh hoạt', sets: 2, reps: 5, weight: 0 },
-            { id: 2, name: 'Tư thế chiến binh', category: 'Yoga • Cân bằng', sets: 3, reps: 8, weight: 0 }
+            { id: 1, name: 'Tư thế chào mặt trời', category: 'Yoga • Linh hoạt', sets: 2, reps: 5, weight: 0, desc: 'Chuỗi động tác kéo giãn từ trên xuống dưới, kết hợp nhịp thở sâu.' },
+            { id: 2, name: 'Tư thế chiến binh', category: 'Yoga • Cân bằng', sets: 3, reps: 8, weight: 0, desc: 'Tư thế đứng tăng cường cân bằng và sức mạnh chân.' }
           ], 110, 'hub')} style={{ cursor: 'pointer', padding: '12px', borderRadius: '16px', display: 'flex', gap: '12px', alignItems: 'center', border: '1.5px solid #e2e8f0' }}>
-            <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=80&q=80" alt="Yoga" style={{ width: '48px', height: '48px', borderRadius: '12px', objectFit: 'cover' }} />
+            <img src="/images/luyentaptainha/pexels-vi-nguyen-629176438-17572079.jpg" alt="Yoga" style={{ width: '48px', height: '48px', borderRadius: '12px', objectFit: 'cover' }} />
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
               <span style={{ fontSize: '8px', color: '#d97706', fontWeight: '800' }}>PHỔ BIẾN</span>
               <h5 style={{ fontSize: '13.5px', fontWeight: '800', margin: 0 }}>Yoga Chào Buổi Sáng</h5>
@@ -214,10 +250,10 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
 
           {/* Item 2 */}
           <div className="popular-workout-card figma-recommend-workout-card card" onClick={() => openRoutineDetails('Thử thách Cơ bụng', [
-            { id: 1, name: 'Crunches', category: 'Bụng • Core', sets: 3, reps: 15, weight: 0 },
-            { id: 2, name: 'Leg Raises', category: 'Bụng • Core', sets: 3, reps: 12, weight: 0 }
+            { id: 1, name: 'Crunches', category: 'Bụng • Core', sets: 3, reps: 15, weight: 0, desc: 'Gập bụng cơ bản. Tập trung siết cơ bụng ở đỉnh của chuyển động.' },
+            { id: 2, name: 'Leg Raises', category: 'Bụng • Core', sets: 3, reps: 12, weight: 0, desc: 'Nâng chân thẳng từ sàn lên 90 độ. Hiệu quả cho phần bụng dưới.' }
           ], 130, 'hub')} style={{ cursor: 'pointer', padding: '12px', borderRadius: '16px', display: 'flex', gap: '12px', alignItems: 'center', border: '1.5px solid #e2e8f0' }}>
-            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=80&q=80" alt="Abs" style={{ width: '48px', height: '48px', borderRadius: '12px', objectFit: 'cover' }} />
+            <img src="/images/trangluyentap/pexels-wolrider-17626053.jpg" alt="Abs" style={{ width: '48px', height: '48px', borderRadius: '12px', objectFit: 'cover' }} />
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
               <span style={{ fontSize: '8px', color: '#0056c6', fontWeight: '800' }}>SỨC MẠNH</span>
               <h5 style={{ fontSize: '13.5px', fontWeight: '800', margin: 0 }}>Thử thách Cơ bụng</h5>
@@ -264,14 +300,11 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
         </div>
 
         {/* Horizontal scroll cards */}
-        <div ref={gymScrollRef} className="horizontal-scroll-row" {...gymDrag} style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '12px', scrollbarWidth: 'none', marginBottom: '16px' }}>
+        <div ref={gymScrollRef} className="horizontal-scroll-row" {...gymDrag} style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '12px', scrollbarWidth: 'none', marginBottom: '16px', cursor: 'grab' }}>
           
           {/* Card 1: 4 weeks muscle routine */}
           <div className="gym-program-card card" onClick={() => {
-            setSelectedRoutineTitle('Lộ trình tăng cơ 4 tuần');
-            setSelectedRoutineExercises(mockExercises);
-            setSelectedRoutineKcal(450);
-            setView('details');
+            openRoutineDetails('Lộ trình tăng cơ 4 tuần', mockExercises, 450, 'gym_hub');
           }} style={{ minWidth: '220px', flex: 1, padding: '14px', borderRadius: '16px', border: '1.5px solid #e2e8f0', cursor: 'pointer', background: '#ffffff' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
               <span style={{ fontSize: '9px', fontWeight: '800', background: '#ebf3ff', color: '#0056c6', padding: '3px 8px', borderRadius: '99px' }}>PRO</span>
@@ -285,7 +318,12 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
           </div>
 
           {/* Card 2: Advanced shred */}
-          <div className="gym-program-card card" style={{ minWidth: '220px', flex: 1, padding: '14px', borderRadius: '16px', border: '1.5px solid #e2e8f0', cursor: 'pointer', background: '#ffffff' }}>
+          <div className="gym-program-card card" onClick={() => {
+            openRoutineDetails('Siết mỡ nâng cao', [
+              { id: 1, name: 'Bench Press', category: 'Ngực • Barbell', sets: 4, reps: 15, weight: 50, desc: 'Đẩy tạ ngực với tạ nhẹ hơn, nhiều rep hơn để đốt mỡ.' },
+              { id: 2, name: 'Squats', category: 'Đùi • Barbell', sets: 4, reps: 15, weight: 60, desc: 'Squat nhẹ hơn, nhiều rep để tăng trao đổi chất.' },
+            ], 380, 'gym_hub');
+          }} style={{ minWidth: '220px', flex: 1, padding: '14px', borderRadius: '16px', border: '1.5px solid #e2e8f0', cursor: 'pointer', background: '#ffffff' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
               <span style={{ fontSize: '9px', fontWeight: '800', background: '#ebf3ff', color: '#0056c6', padding: '3px 8px', borderRadius: '99px' }}>PRO</span>
               <span style={{ fontSize: '10px', color: '#64748b', fontWeight: '700' }}>4 buổi/tuần</span>
@@ -307,27 +345,33 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
           <div>
             <h4 style={{ fontSize: '15px', fontWeight: '850', margin: '0 0 4px 0', color: '#0f172a' }}>Ngày đẩy tạ Chest & Triceps</h4>
             <span style={{ fontSize: '11px', color: '#64748b', display: 'block', marginBottom: '12px' }}>8 bài tập • Trung bình</span>
-            <button className="btn btn-primary" onClick={() => startPlayer('Ngày đẩy tạ Chest & Triceps', mockExercises, 450)} style={{ width: 'auto', padding: '8px 20px', fontSize: '13px', borderRadius: '12px', fontWeight: '800' }}>
-              Bắt đầu
+            <button className="btn btn-primary" onClick={() => openRoutineDetails('Ngày đẩy tạ Chest & Triceps', mockExercises, 450, 'gym_hub')} style={{ width: 'auto', padding: '8px 20px', fontSize: '13px', borderRadius: '12px', fontWeight: '800' }}>
+              Xem chi tiết
             </button>
           </div>
-          <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=100&q=80" alt="Chest" style={{ width: '76px', height: '76px', borderRadius: '16px', objectFit: 'cover' }} />
+          <img src="/images/taptaiphong/pexels-bonaventure-fernandez-744363-13756380.jpg" alt="Chest" style={{ width: '76px', height: '76px', borderRadius: '16px', objectFit: 'cover' }} />
         </div>
 
         {/* Grid sub-categories */}
         <div style={{ display: 'flex', gap: '10px', marginBottom: '16px' }}>
-          <div className="grid-cell-item card flex-1" style={{ background: '#f8fafc', padding: '12px', borderRadius: '14px', border: '1.5px solid #e2e8f0', textAlign: 'center', cursor: 'pointer' }}>
+          <div className="grid-cell-item card flex-1" onClick={() => openRoutineDetails('Chân & Mông', [
+            { id: 1, name: 'Squats', category: 'Đùi • Barbell', sets: 5, reps: 10, weight: 80, desc: 'Bài tập squat nền tảng để phát triển cơ đùi và mông.' },
+          ], 300, 'gym_hub')} style={{ background: '#f8fafc', padding: '12px', borderRadius: '14px', border: '1.5px solid #e2e8f0', textAlign: 'center', cursor: 'pointer' }}>
             <span style={{ fontSize: '12px', fontWeight: '800', color: '#0f172a' }}>Chân & Mông</span>
           </div>
-          <div className="grid-cell-item card flex-1" style={{ background: '#f8fafc', padding: '12px', borderRadius: '14px', border: '1.5px solid #e2e8f0', textAlign: 'center', cursor: 'pointer' }}>
+          <div className="grid-cell-item card flex-1" onClick={() => openRoutineDetails('Lưng & Xô', [
+            { id: 1, name: 'Pull-ups', category: 'Lưng • Bodyweight', sets: 4, reps: 10, weight: 0, desc: 'Kéo xà phát triển cơ lưng rộng và cơ xô toàn diện.' },
+          ], 250, 'gym_hub')} style={{ background: '#f8fafc', padding: '12px', borderRadius: '14px', border: '1.5px solid #e2e8f0', textAlign: 'center', cursor: 'pointer' }}>
             <span style={{ fontSize: '12px', fontWeight: '800', color: '#0f172a' }}>Lưng & Xô</span>
           </div>
         </div>
 
         {/* Yoga Banner for Gymer */}
-        <div className="yoga-gymer-card card" style={{
-          background: 'linear-gradient(to right, rgba(15,23,42,0.9), rgba(15,23,42,0.5)), url("https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=300&q=80")',
-          backgroundSize: 'cover', borderRadius: '16px', padding: '16px', color: '#ffffff'
+        <div className="yoga-gymer-card card" onClick={() => openRoutineDetails('Yoga cho Gymer', [
+          { id: 1, name: 'Tư thế chào mặt trời', category: 'Yoga • Linh hoạt', sets: 2, reps: 5, weight: 0, desc: 'Chuỗi động tác phục hồi cơ bắp và tăng biên độ khớp.' },
+        ], 100, 'gym_hub')} style={{
+          background: 'linear-gradient(to right, rgba(15,23,42,0.88), rgba(15,23,42,0.5)), url("/images/trangluyentap/pexels-jean-daniel-19254708.jpg")',
+          backgroundSize: 'cover', borderRadius: '16px', padding: '16px', color: '#ffffff', cursor: 'pointer'
         }}>
           <h4 style={{ fontSize: '14.5px', fontWeight: '800', margin: '0 0 4px 0' }}>Yoga cho Gymer</h4>
           <p style={{ fontSize: '11px', opacity: 0.85, margin: 0 }}>Mở rộng biên độ khớp • 20 phút • Phục hồi cơ bắp toàn diện</p>
@@ -369,23 +413,23 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
         </div>
 
         {/* Horizontal scroll cards */}
-        <div ref={homeScrollRef} className="horizontal-scroll-row" {...homeDrag} style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '12px', scrollbarWidth: 'none', marginBottom: '16px' }}>
+        <div ref={homeScrollRef} className="horizontal-scroll-row" {...homeDrag} style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '12px', scrollbarWidth: 'none', marginBottom: '16px', cursor: 'grab' }}>
           
           {/* Card 1: Warmup */}
-          <div className="gym-program-card card" onClick={() => startPlayer('Khởi động buổi sáng', [
-            { id: 1, name: 'Khởi động khớp vai', category: 'Khởi động', sets: 2, reps: 30, weight: 0 },
-            { id: 2, name: 'Xoay hông', category: 'Khởi động', sets: 2, reps: 30, weight: 0 }
-          ], 80)} style={{ minWidth: '180px', flex: 1, padding: '12px', borderRadius: '16px', border: '1.5px solid #e2e8f0', cursor: 'pointer', background: '#ffffff' }}>
+          <div className="gym-program-card card" onClick={() => openRoutineDetails('Khởi động buổi sáng', [
+            { id: 1, name: 'Khởi động khớp vai', category: 'Khởi động', sets: 2, reps: 30, weight: 0, desc: 'Xoay vai nhẹ nhàng để làm nóng khớp trước khi tập.' },
+            { id: 2, name: 'Xoay hông', category: 'Khởi động', sets: 2, reps: 30, weight: 0, desc: 'Xoay hông để linh hoạt vùng lưng dưới và khớp háng.' }
+          ], 80, 'home_hub')} style={{ minWidth: '180px', flex: 1, padding: '12px', borderRadius: '16px', border: '1.5px solid #e2e8f0', cursor: 'pointer', background: '#ffffff' }}>
             <span style={{ fontSize: '8px', fontWeight: '800', background: '#e8f0fe', color: '#0056c6', padding: '3px 8px', borderRadius: '99px', display: 'inline-block', marginBottom: '8px' }}>MỚI</span>
             <h4 style={{ fontSize: '13px', fontWeight: '800', margin: '0 0 6px 0', color: '#0f172a' }}>Khởi động buổi sáng</h4>
             <span style={{ fontSize: '10px', color: '#64748b', fontWeight: '750' }}>15 phút • 300 XP</span>
           </div>
 
           {/* Card 2: Abs */}
-          <div className="gym-program-card card" onClick={() => startPlayer('Cơ bụng săn chắc', [
-            { id: 1, name: 'Russian Twist', category: 'Bụng • Core', sets: 3, reps: 20, weight: 0 },
-            { id: 2, name: 'Plank', category: 'Bụng • Core', sets: 3, reps: 45, weight: 0 }
-          ], 120)} style={{ minWidth: '180px', flex: 1, padding: '12px', borderRadius: '16px', border: '1.5px solid #e2e8f0', cursor: 'pointer', background: '#ffffff' }}>
+          <div className="gym-program-card card" onClick={() => openRoutineDetails('Cơ bụng săn chắc', [
+            { id: 1, name: 'Crunches', category: 'Bụng • Core', sets: 3, reps: 20, weight: 0, desc: 'Gập bụng cơ bản. Tập trung siết cơ bụng ở đỉnh của chuyển động.' },
+            { id: 2, name: 'Plank', category: 'Bụng • Core', sets: 3, reps: 45, weight: 0, isTimeBased: true, desc: 'Giữ tư thế plank vững chắc, không để hông võng xuống.' }
+          ], 120, 'home_hub')} style={{ minWidth: '180px', flex: 1, padding: '12px', borderRadius: '16px', border: '1.5px solid #e2e8f0', cursor: 'pointer', background: '#ffffff' }}>
             <h4 style={{ fontSize: '13px', fontWeight: '800', margin: '0 0 6px 0', color: '#0f172a' }}>Cơ bụng săn chắc</h4>
             <span style={{ fontSize: '10px', color: '#64748b', fontWeight: '750' }}>20 phút • 350 XP</span>
           </div>
@@ -395,10 +439,14 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
         {/* Section 2: Giãn cơ */}
         <h3 className="section-title-sm-bold" style={{ fontSize: '14.5px', fontWeight: '850', color: '#0f172a', margin: '0 0 12px 0' }}>Giãn cơ</h3>
         <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
-          <div className="grid-cell-item card flex-1" style={{ background: '#f8fafc', padding: '12px', borderRadius: '14px', border: '1.5px solid #e2e8f0', textAlign: 'center', cursor: 'pointer' }}>
+          <div className="grid-cell-item card flex-1" onClick={() => openRoutineDetails('Giãn cơ Toàn thân', [
+            { id: 1, name: 'Tư thế chào mặt trời', category: 'Yoga • Linh hoạt', sets: 2, reps: 5, weight: 0, desc: 'Chuỗi động tác kéo giãn nhẹ nhàng.' }
+          ], 60, 'home_hub')} style={{ background: '#f8fafc', padding: '12px', borderRadius: '14px', border: '1.5px solid #e2e8f0', textAlign: 'center', cursor: 'pointer' }}>
             <span style={{ fontSize: '12px', fontWeight: '800', color: '#0f172a' }}>Toàn thân</span>
           </div>
-          <div className="grid-cell-item card flex-1" style={{ background: '#f8fafc', padding: '12px', borderRadius: '14px', border: '1.5px solid #e2e8f0', textAlign: 'center', cursor: 'pointer' }}>
+          <div className="grid-cell-item card flex-1" onClick={() => openRoutineDetails('Giãn cơ Cổ & Vai', [
+            { id: 1, name: 'Khởi động khớp vai', category: 'Giãn cơ', sets: 2, reps: 20, weight: 0, desc: 'Giãn cơ nhẹ nhàng vùng cổ và vai.' }
+          ], 40, 'home_hub')} style={{ background: '#f8fafc', padding: '12px', borderRadius: '14px', border: '1.5px solid #e2e8f0', textAlign: 'center', cursor: 'pointer' }}>
             <span style={{ fontSize: '12px', fontWeight: '800', color: '#0f172a' }}>Cổ & Vai</span>
           </div>
         </div>
@@ -407,28 +455,28 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
         <h3 className="section-title-sm-bold" style={{ fontSize: '14.5px', fontWeight: '850', color: '#0f172a', margin: '0 0 12px 0' }}>Sức mạnh</h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '20px' }}>
           
-          <div className="popular-workout-card card" onClick={() => startPlayer('Thân dưới bùng nổ', [
-            { id: 1, name: 'Lunges', category: 'Chân • Bodyweight', sets: 4, reps: 12, weight: 0 },
-            { id: 2, name: 'Glute Bridges', category: 'Mông • Bodyweight', sets: 3, reps: 15, weight: 0 }
-          ], 150)} style={{ cursor: 'pointer', padding: '12px', borderRadius: '16px', display: 'flex', gap: '12px', alignItems: 'center', border: '1.5px solid #e2e8f0', background: '#ffffff' }}>
-            <img src="https://images.unsplash.com/photo-1434608519344-49d77a699e1d?auto=format&fit=crop&w=80&q=80" alt="Legs" style={{ width: '44px', height: '44px', borderRadius: '12px', objectFit: 'cover' }} />
+          <div className="popular-workout-card card" onClick={() => openRoutineDetails('Thân dưới bùng nổ', [
+            { id: 1, name: 'Lunges', category: 'Chân • Bodyweight', sets: 4, reps: 12, weight: 0, desc: 'Bước dài sang ngang, hạ gối gần sàn. Tập trung cơ đùi trước và mông.' },
+            { id: 2, name: 'Glute Bridges', category: 'Mông • Bodyweight', sets: 3, reps: 15, weight: 0, desc: 'Nằm ngửa, nâng hông lên và siết mông tối đa.' }
+          ], 150, 'home_hub')} style={{ cursor: 'pointer', padding: '12px', borderRadius: '16px', display: 'flex', gap: '12px', alignItems: 'center', border: '1.5px solid #e2e8f0', background: '#ffffff' }}>
+            <img src="/images/luyentaptainha/pexels-felix-young-449360607-20038933.jpg" alt="Legs" style={{ width: '44px', height: '44px', borderRadius: '12px', objectFit: 'cover' }} />
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
               <h5 style={{ fontSize: '13.5px', fontWeight: '800', margin: 0 }}>Thân dưới bùng nổ</h5>
-              <span style={{ fontSize: '11px', color: '#64748b' }}>8 reps x 4 sets</span>
+              <span style={{ fontSize: '11px', color: '#64748b' }}>4 bài • 30 phút</span>
             </div>
-            <PlayCircle size={22} color="#10b981" />
+            <ChevronRight size={20} color="#0056c6" />
           </div>
 
         </div>
 
         {/* Section 4: HIIT */}
         <h3 className="section-title-sm-bold" style={{ fontSize: '14.5px', fontWeight: '850', color: '#0f172a', margin: '0 0 12px 0' }}>HIIT</h3>
-        <div className="yoga-gymer-card card" onClick={() => startPlayer('Đốt mỡ siêu tốc', [
-          { id: 1, name: 'Burpees', category: 'HIIT', sets: 3, reps: 15, weight: 0 },
-          { id: 2, name: 'Jumping Squats', category: 'HIIT', sets: 3, reps: 20, weight: 0 }
-        ], 260)} style={{
-          background: 'linear-gradient(to right, rgba(0, 86, 198, 0.9), rgba(15, 23, 42, 0.75)), url("https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=300&q=80")',
-          backgroundSize: 'cover', borderRadius: '16px', padding: '16px', color: '#ffffff', cursor: 'pointer'
+        <div className="yoga-gymer-card card" onClick={() => openRoutineDetails('Đốt mỡ siêu tốc', [
+          { id: 1, name: 'Burpees', category: 'HIIT', sets: 3, reps: 15, weight: 0, desc: 'Kết hợp squat, plank và nhảy. Bài tập toàn thân đốt calo tối đa.' },
+          { id: 2, name: 'Jumping Jacks', category: 'HIIT', sets: 3, reps: 30, weight: 0, desc: 'Nhảy dang tay chân. Tăng nhịp tim và đốt calo hiệu quả.' }
+        ], 260, 'home_hub')} style={{
+          background: 'linear-gradient(to right, rgba(0, 86, 198, 0.88), rgba(15, 23, 42, 0.75)), url("/images/trangluyentap/pexels-iram-shehzad-45081404-37570727.jpg")',
+          backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '16px', padding: '16px', color: '#ffffff', cursor: 'pointer'
         }}>
           <span style={{ fontSize: '8px', fontWeight: '800', background: '#10b981', color: '#ffffff', padding: '3px 8px', borderRadius: '99px', display: 'inline-block', marginBottom: '8px' }}>CƯỜNG ĐỘ CAO</span>
           <h4 style={{ fontSize: '14.5px', fontWeight: '800', margin: '0 0 4px 0' }}>Đốt mỡ siêu tốc</h4>
@@ -446,7 +494,7 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
         
         {/* Header */}
         <div className="onboarding-header-nav-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px 8px 20px', boxSizing: 'border-box' }}>
-          <button className="back-btn-icon" onClick={() => setView('gym_hub')} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+          <button className="back-btn-icon" onClick={() => setView(detailsPrevView)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
             <ArrowLeft size={18} />
           </button>
           <span className="step-indicator-text" style={{ fontSize: '13px', fontWeight: '800', color: '#0f172a' }}>Chi tiết lịch tập</span>
@@ -455,16 +503,22 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
 
         {/* Large banner image info */}
         <div className="routine-banner-image" style={{
-          background: 'linear-gradient(to bottom, rgba(15,23,42,0.1), rgba(15,23,42,0.85)), url("https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=400&q=80")',
-          backgroundSize: 'cover', backgroundPosition: 'center', height: '180px', color: '#ffffff', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '16px', marginBottom: '20px'
+          position: 'relative', height: '180px', color: '#ffffff',
+          display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
+          padding: '16px', marginBottom: '20px', overflow: 'hidden', borderRadius: '0'
         }}>
-          <h3 style={{ fontSize: '20px', fontWeight: '900', margin: '0 0 6px 0' }}>{selectedRoutineTitle}</h3>
-          <div style={{ display: 'flex', gap: '12px', fontSize: '12px', opacity: 0.9 }}>
-            <span>60 phút</span>
-            <span>•</span>
-            <span>{selectedRoutineKcal} kcal</span>
-            <span>•</span>
-            <span style={{ color: '#fbbf24', fontWeight: '800' }}>★ Trung bình</span>
+          <img src="/images/taptaiphong/pexels-gumbatov-29027903.jpg" alt="banner"
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(15,23,42,0.1), rgba(15,23,42,0.85))', zIndex: 1 }} />
+          <div style={{ position: 'relative', zIndex: 2 }}>
+            <h3 style={{ fontSize: '20px', fontWeight: '900', margin: '0 0 6px 0', color: '#ffffff' }}>{selectedRoutineTitle}</h3>
+            <div style={{ display: 'flex', gap: '12px', fontSize: '12px', opacity: 0.9, color: '#ffffff' }}>
+              <span>60 phút</span>
+              <span>•</span>
+              <span>{selectedRoutineKcal} kcal</span>
+              <span>•</span>
+              <span style={{ color: '#fbbf24', fontWeight: '800' }}>★ Trung bình</span>
+            </div>
           </div>
         </div>
 
@@ -478,16 +532,20 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {selectedRoutineExercises.map((ex, idx) => (
               <div key={ex.id} className="popular-workout-card card" style={{ display: 'flex', gap: '12px', padding: '12px', borderRadius: '16px', border: '1.5px solid #e2e8f0', alignItems: 'center', background: '#ffffff' }}>
-                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#ebf3ff', color: '#0056c6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '13px' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#ebf3ff', color: '#0056c6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '13px', flexShrink: 0 }}>
                   {idx + 1}
                 </div>
+                {/* Show local exercise image if available */}
+                {exerciseImageMap[ex.name] && (
+                  <img src={exerciseImageMap[ex.name]} alt={ex.name} style={{ width: '44px', height: '44px', borderRadius: '10px', objectFit: 'cover', flexShrink: 0 }} />
+                )}
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
                   <h5 style={{ fontSize: '13.5px', fontWeight: '800', margin: 0, color: '#0f172a' }}>{ex.name}</h5>
                   <span style={{ fontSize: '11px', color: '#64748b' }}>
                     {ex.isTimeBased ? `${ex.reps} giây` : `${ex.reps} reps`} x {ex.sets} sets {ex.weight > 0 ? `• ${ex.weight} kg` : ''}
                   </span>
                 </div>
-                <PlayCircle size={20} color="#0056c6" />
+                <PlayCircle size={20} color="#0056c6" style={{ flexShrink: 0 }} />
               </div>
             ))}
           </div>
@@ -507,6 +565,10 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
   // ================= VIEW 5: WORKOUT PLAYER =================
   if (view === 'player') {
     const currentEx = selectedRoutineExercises[currentExIndex];
+    const exerciseImg = exerciseImageMap[currentEx.name];
+    const isLastSet = currentSet === currentEx.sets;
+    const isLastExercise = currentExIndex === selectedRoutineExercises.length - 1;
+
     return (
       <div className="workouts-page-v2 player-view fade-in">
         
@@ -516,41 +578,76 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
             <ArrowLeft size={18} />
           </button>
           <span className="step-indicator-text" style={{ fontSize: '13px', fontWeight: '800', color: '#0f172a' }}>Theo dõi bài tập</span>
-          <div style={{ width: 28 }}></div>
+          <button onClick={handleSkipExercise} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', color: '#64748b', fontSize: '11px', fontWeight: '800' }}>
+            <span>Bỏ qua</span>
+            <SkipForward size={14} />
+          </button>
         </div>
 
-        {/* Workout Video Demonstration Card */}
-        <div style={{ padding: '0 16px', marginTop: '10px' }}>
-          <h3 style={{ fontSize: '18px', fontWeight: '900', margin: '0 0 2px 0', color: '#0f172a' }}>{currentEx.name}</h3>
-          <span style={{ fontSize: '11px', color: '#0056c6', fontWeight: '800', background: '#ebf3ff', padding: '2px 8px', borderRadius: '99px', display: 'inline-block', marginBottom: '16px' }}>{currentEx.category}</span>
+        {/* Exercise progress indicator */}
+        <div style={{ padding: '4px 16px 0' }}>
+          <div style={{ display: 'flex', gap: '4px' }}>
+            {selectedRoutineExercises.map((_, i) => (
+              <div key={i} style={{
+                flex: 1, height: '3px', borderRadius: '99px',
+                background: i < currentExIndex ? '#0056c6' : i === currentExIndex ? '#0056c6' : '#e2e8f0',
+                opacity: i === currentExIndex ? 1 : i < currentExIndex ? 0.6 : 0.3
+              }} />
+            ))}
+          </div>
+          <span style={{ fontSize: '10px', color: '#64748b', fontWeight: '700', marginTop: '4px', display: 'block' }}>
+            Bài {currentExIndex + 1}/{selectedRoutineExercises.length}
+          </span>
+        </div>
 
-          {/* Video Placeholder */}
+        {/* Workout exercise content */}
+        <div style={{ padding: '8px 16px', marginTop: '4px' }}>
+          <h3 style={{ fontSize: '18px', fontWeight: '900', margin: '0 0 2px 0', color: '#0f172a' }}>{currentEx.name}</h3>
+          <span style={{ fontSize: '11px', color: '#0056c6', fontWeight: '800', background: '#ebf3ff', padding: '2px 8px', borderRadius: '99px', display: 'inline-block', marginBottom: '12px' }}>{currentEx.category}</span>
+
+          {/* Exercise Image or Placeholder */}
           <div className="exercise-media-placeholder" style={{
-            background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
-            height: '180px', borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', marginBottom: '20px', position: 'relative'
+            height: '160px', borderRadius: '20px', overflow: 'hidden', marginBottom: '14px', position: 'relative',
+            background: exerciseImg ? 'transparent' : 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center'
           }}>
-            <PlayCircle size={44} color="#ffffff" style={{ opacity: 0.8 }} />
-            <span style={{ position: 'absolute', bottom: '12px', right: '12px', background: 'rgba(0,0,0,0.6)', padding: '4px 8px', borderRadius: '8px', fontSize: '9.5px', fontWeight: '800' }}>HƯỚNG DẪN 3D</span>
+            {exerciseImg ? (
+              <img src={exerciseImg} alt={currentEx.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            ) : (
+              <>
+                <PlayCircle size={44} color="#ffffff" style={{ opacity: 0.8 }} />
+                <span style={{ position: 'absolute', bottom: '12px', right: '12px', background: 'rgba(0,0,0,0.6)', padding: '4px 8px', borderRadius: '8px', fontSize: '9.5px', fontWeight: '800', color: '#fff' }}>HƯỚNG DẪN</span>
+              </>
+            )}
           </div>
 
+          {/* Exercise description */}
+          {currentEx.desc && (
+            <p style={{ fontSize: '11.5px', color: '#64748b', lineHeight: '1.5', margin: '0 0 14px 0', background: '#f8fafc', padding: '10px 12px', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+              💡 {currentEx.desc}
+            </p>
+          )}
+
           {/* Sets and Weights metrics row */}
-          <div style={{ display: 'flex', gap: '12px', marginBottom: '20px' }}>
-            <div className="metric-box flex-1" style={{ background: '#f8fafc', border: '1.5px solid #e2e8f0', borderRadius: '16px', padding: '12px', textAlign: 'center' }}>
+          <div style={{ display: 'flex', gap: '10px', marginBottom: '16px' }}>
+            <div className="metric-box flex-1" style={{ background: '#f8fafc', border: '1.5px solid #e2e8f0', borderRadius: '16px', padding: '10px', textAlign: 'center' }}>
               <span style={{ fontSize: '9.5px', color: '#64748b', fontWeight: '800', display: 'block', textTransform: 'uppercase', marginBottom: '4px' }}>Hiệp</span>
               <strong style={{ fontSize: '18px', fontWeight: '900', color: '#0056c6' }}>{currentSet} / {currentEx.sets}</strong>
             </div>
 
-            <div className="metric-box flex-1" style={{ background: '#f8fafc', border: '1.5px solid #e2e8f0', borderRadius: '16px', padding: '12px', textAlign: 'center' }}>
+            <div className="metric-box flex-1" style={{ background: '#f8fafc', border: '1.5px solid #e2e8f0', borderRadius: '16px', padding: '10px', textAlign: 'center' }}>
               <span style={{ fontSize: '9.5px', color: '#64748b', fontWeight: '800', display: 'block', textTransform: 'uppercase', marginBottom: '4px' }}>Trọng lượng</span>
               <strong style={{ fontSize: '18px', fontWeight: '900', color: '#0056c6' }}>{currentEx.weight > 0 ? `${currentEx.weight} kg` : 'Bodyweight'}</strong>
             </div>
           </div>
 
           {/* Reps Counter Interactive Dial */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '30px' }}>
-            <span style={{ fontSize: '10px', color: '#64748b', fontWeight: '800', textTransform: 'uppercase', marginBottom: '8px' }}>Số lần lặp (Reps)</span>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '16px' }}>
+            <span style={{ fontSize: '10px', color: '#64748b', fontWeight: '800', textTransform: 'uppercase', marginBottom: '8px' }}>
+              {currentEx.isTimeBased ? 'Giây (Seconds)' : 'Số lần lặp (Reps)'}
+            </span>
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-              <button onClick={() => setCurrentReps(Math.max(0, currentReps - 1))} style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#ebf3ff', border: 'none', display: 'flex', alignItems: 'center', justifySelf: 'center', justifyContent: 'center', cursor: 'pointer', color: '#0056c6' }}>
+              <button id="reps-decrease-btn" onClick={() => setCurrentReps(Math.max(0, currentReps - 1))} style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#ebf3ff', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#0056c6' }}>
                 <Minus size={18} />
               </button>
               
@@ -558,7 +655,7 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
                 <strong style={{ fontSize: '28px', fontWeight: '900', color: '#0f172a' }}>{currentReps}</strong>
               </div>
 
-              <button onClick={() => setCurrentReps(currentReps + 1)} style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#ebf3ff', border: 'none', display: 'flex', alignItems: 'center', justifySelf: 'center', justifyContent: 'center', cursor: 'pointer', color: '#0056c6' }}>
+              <button id="reps-increase-btn" onClick={() => setCurrentReps(currentReps + 1)} style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#ebf3ff', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#0056c6' }}>
                 <Plus size={18} />
               </button>
             </div>
@@ -567,9 +664,9 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
         </div>
 
         {/* Bottom controls */}
-        <div className="onboarding-actions-static" style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '16px', background: '#ffffff', borderTop: '1.5px solid #f1f5f9', display: 'flex', flexDirection: 'column', gap: '8px', zIndex: 100 }}>
-          <button className="btn btn-primary w-full" onClick={handleNextSet}>
-            {currentSet === currentEx.sets && currentExIndex === selectedRoutineExercises.length - 1 ? 'Hoàn thành buổi tập' : 'Hoàn thành hiệp'}
+        <div className="onboarding-actions-static" style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '12px 16px', background: '#ffffff', borderTop: '1.5px solid #f1f5f9', display: 'flex', flexDirection: 'column', gap: '8px', zIndex: 100 }}>
+          <button id="complete-set-btn" className="btn btn-primary w-full" onClick={handleNextSet}>
+            {isLastSet && isLastExercise ? '🏆 Hoàn thành buổi tập' : isLastSet ? '➔ Bài tiếp theo' : '✓ Xong hiệp này'}
           </button>
         </div>
 
@@ -584,6 +681,7 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
         
         {/* Header Title */}
         <div style={{ textAlign: 'center', marginBottom: '24px', marginTop: '20px' }}>
+          <div style={{ fontSize: '48px', marginBottom: '8px' }}>🎉</div>
           <h2 className="celebration-title" style={{ fontSize: '28px', fontWeight: '900', color: '#0056c6', margin: '0 0 6px 0' }}>Tuyệt vời!</h2>
           <p style={{ fontSize: '13px', color: '#64748b', margin: 0 }}>Bạn đã hoàn thành lộ trình tập luyện thành công.</p>
         </div>
@@ -605,15 +703,22 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
             <span style={{ fontSize: '11px', color: '#64748b', marginLeft: '2px' }}>kcal</span>
           </div>
 
+          {/* XP gained */}
+          <div className="metric-box flex-1 card" style={{ background: '#f8fafc', border: '1.5px solid #e2e8f0', borderRadius: '16px', padding: '16px', textAlign: 'center' }}>
+            <span style={{ fontSize: '10px', color: '#64748b', fontWeight: '800', display: 'block', marginBottom: '4px' }}>XP ĐẠT ĐƯỢC</span>
+            <strong style={{ fontSize: '20px', fontWeight: '900', color: '#10b981' }}>+150</strong>
+            <span style={{ fontSize: '11px', color: '#64748b', marginLeft: '2px' }}>XP</span>
+          </div>
+
         </div>
 
         {/* Records Badge achievements row */}
         <h4 className="figma-section-heading" style={{ fontSize: '11px', fontWeight: '800', color: '#94a3b8', letterSpacing: '0.05em', margin: '0 0 12px 0' }}>THÀNH TÍCH ĐẠT ĐƯỢC</h4>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '30px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px' }}>
           
           {/* Achievement 1 */}
           <div className="popular-workout-card card" style={{ display: 'flex', gap: '12px', padding: '12px', borderRadius: '16px', border: '1.5px solid #e2e8f0', alignItems: 'center', background: '#ffffff' }}>
-            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#fffbeb', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px' }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#fffbeb', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', flexShrink: 0 }}>
               🏆
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -622,20 +727,32 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
             </div>
           </div>
 
+          {/* Achievement 2 */}
+          <div className="popular-workout-card card" style={{ display: 'flex', gap: '12px', padding: '12px', borderRadius: '16px', border: '1.5px solid #e2e8f0', alignItems: 'center', background: '#ffffff' }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#f0fdf4', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', flexShrink: 0 }}>
+              🔥
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <strong style={{ fontSize: '13px', fontWeight: '800', color: '#0f172a' }}>Chuỗi ngày tập</strong>
+              <span style={{ fontSize: '11px', color: '#64748b' }}>Duy trì streak 5 ngày liên tiếp</span>
+            </div>
+          </div>
+
         </div>
 
         {/* Star feedback rating box */}
-        <div className="star-rating-box card" style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', padding: '16px', borderRadius: '20px', textAlign: 'center', marginBottom: '30px' }}>
+        <div className="star-rating-box card" style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', padding: '16px', borderRadius: '20px', textAlign: 'center', marginBottom: '24px' }}>
           <span style={{ fontSize: '12px', fontWeight: '800', color: '#475569', display: 'block', marginBottom: '10px' }}>Đánh giá buổi tập của bạn</span>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
             {[1, 2, 3, 4, 5].map((star) => (
               <button
                 key={star}
+                id={`star-rating-${star}`}
                 onClick={() => setUserRating(star)}
                 style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
               >
                 <Star
-                  size={24}
+                  size={28}
                   color="#fbbf24"
                   fill={star <= userRating ? '#fbbf24' : 'transparent'}
                 />
@@ -645,8 +762,8 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
         </div>
 
         {/* Finish exit button */}
-        <button className="btn btn-primary w-full" onClick={handleFinishWorkout}>
-          Về trang chủ
+        <button id="finish-workout-btn" className="btn btn-primary w-full" onClick={handleFinishWorkout}>
+          🏠 Về trang chủ
         </button>
 
       </div>

@@ -7061,12 +7061,18 @@ p {
 }
 
 .chat-bubble-content-v2 {
-  max-width: 75%;
+  max-width: 78%;
   background: #f1f5f9;
   padding: 10px 14px;
   border-radius: 16px 16px 16px 4px;
   display: flex;
   flex-direction: column;
+}
+
+.chat-bubble-row-v2.aura .chat-bubble-content-v2 {
+  max-width: 88%;
+  background: #f8faff;
+  border: 1px solid #e8f0fe;
 }
 
 .chat-bubble-row-v2.user .chat-bubble-content-v2 {
@@ -7076,8 +7082,15 @@ p {
 }
 
 .chat-bubble-text-v2 {
-  font-size: 12.5px;
-  line-height: 1.5;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #1e293b;
+}
+
+.aura-formatted {
+  font-size: 13px;
+  color: #1e293b;
+  word-break: break-word;
 }
 
 .chat-bubble-time-v2 {
