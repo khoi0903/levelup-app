@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { 
   Search, Play, Clock, Flame, Award, ChevronRight, X, ArrowLeft,
   Dumbbell, CheckCircle2, Heart, Zap, PlayCircle, Star, Edit3, Plus, Minus, SkipForward
@@ -21,8 +21,233 @@ const mockExercises = [
   { id: 5, name: 'Plank', category: 'Bụng • Core', sets: 3, reps: 60, weight: 0, isTimeBased: true, desc: 'Giữ cơ thể thẳng tắp trên khuỷu tay và mũi chân. Xây dựng sức bền cơ bụng và core.' }
 ];
 
+// Programs Mock Data with 4-week sessions breakdown
+const mockPrograms = {
+  'muscle_4weeks': {
+    id: 'muscle_4weeks',
+    title: 'Lộ trình tăng cơ 4 tuần',
+    subtitle: '5 buổi/tuần • 20 buổi tập tổng cộng',
+    progress: 45,
+    completedSessions: 9,
+    totalSessions: 20,
+    weeks: [
+      {
+        weekNum: 1,
+        title: 'Tuần 1: Khởi động & Thích nghi',
+        sessions: [
+          {
+            id: 'm1_s1',
+            sessionName: 'Buổi 1: Ngực & Tay sau',
+            duration: 45,
+            kcal: 420,
+            completed: true,
+            exercises: [
+              { id: 1, name: 'Bench Press', category: 'Ngực • Barbell', sets: 4, reps: 12, weight: 60, desc: 'Đẩy tạ trên ghế nằm ngang. Giúp phát triển cơ ngực, vai và bắp tay sau.' },
+              { id: 4, name: 'Dumbbell Shoulder Press', category: 'Vai • Dumbbell', sets: 3, reps: 12, weight: 16, desc: 'Đẩy tạ đôi qua đầu. Phát triển cơ vai toàn diện.' },
+              { id: 5, name: 'Plank', category: 'Bụng • Core', sets: 3, reps: 60, weight: 0, isTimeBased: true, desc: 'Giữ cơ thể thẳng tắp trên khuỷu tay.' }
+            ]
+          },
+          {
+            id: 'm1_s2',
+            sessionName: 'Buổi 2: Lưng & Bắp tay',
+            duration: 40,
+            kcal: 380,
+            completed: true,
+            exercises: [
+              { id: 3, name: 'Pull-ups', category: 'Lưng • Bodyweight', sets: 4, reps: 10, weight: 0, desc: 'Lên xà đơn. Tăng cường cơ xô và bắp tay trước.' },
+              { id: 1, name: 'Bench Press', category: 'Ngực • Barbell', sets: 3, reps: 10, weight: 55, desc: 'Đẩy tạ ngực vừa sức.' }
+            ]
+          },
+          {
+            id: 'm1_s3',
+            sessionName: 'Buổi 3: Chân & Mông',
+            duration: 50,
+            kcal: 480,
+            completed: true,
+            exercises: [
+              { id: 2, name: 'Squats', category: 'Đùi • Barbell', sets: 4, reps: 10, weight: 80, desc: 'Gánh tạ đòn squat. Bài tập cốt lõi cho cơ đùi và mông.' },
+              { id: 5, name: 'Plank', category: 'Bụng • Core', sets: 3, reps: 60, weight: 0, isTimeBased: true, desc: 'Giữ cơ thể thẳng tắp.' }
+            ]
+          },
+          {
+            id: 'm1_s4',
+            sessionName: 'Buổi 4: Vai & Cơ bụng',
+            duration: 45,
+            kcal: 400,
+            completed: true,
+            exercises: [
+              { id: 4, name: 'Dumbbell Shoulder Press', category: 'Vai • Dumbbell', sets: 4, reps: 12, weight: 18, desc: 'Đẩy tạ đôi tập trung cơ vai.' },
+              { id: 5, name: 'Plank', category: 'Bụng • Core', sets: 4, reps: 60, weight: 0, isTimeBased: true, desc: 'Siết cơ bụng.' }
+            ]
+          },
+          {
+            id: 'm1_s5',
+            sessionName: 'Buổi 5: Full Body Pump',
+            duration: 50,
+            kcal: 450,
+            completed: true,
+            exercises: [
+              { id: 1, name: 'Bench Press', category: 'Ngực • Barbell', sets: 4, reps: 10, weight: 65, desc: 'Đẩy tạ ngực bứt tốc.' },
+              { id: 2, name: 'Squats', category: 'Đùi • Barbell', sets: 4, reps: 10, weight: 85, desc: 'Squat sức mạnh.' }
+            ]
+          }
+        ]
+      },
+      {
+        weekNum: 2,
+        title: 'Tuần 2: Tăng tải trọng (Progressive Overload)',
+        sessions: [
+          {
+            id: 'm2_s1',
+            sessionName: 'Buổi 6: Ngực & Tay sau Nâng cao',
+            duration: 45,
+            kcal: 450,
+            completed: false,
+            isCurrent: true,
+            exercises: [
+              { id: 1, name: 'Bench Press', category: 'Ngực • Barbell', sets: 4, reps: 12, weight: 65, desc: 'Đẩy tạ nặng hơn tuần 1.' },
+              { id: 4, name: 'Dumbbell Shoulder Press', category: 'Vai • Dumbbell', sets: 4, reps: 10, weight: 18, desc: 'Đẩy tạ đôi phát triển vai.' }
+            ]
+          },
+          {
+            id: 'm2_s2',
+            sessionName: 'Buổi 7: Lưng Xô & Core',
+            duration: 45,
+            kcal: 410,
+            completed: false,
+            exercises: [
+              { id: 3, name: 'Pull-ups', category: 'Lưng • Bodyweight', sets: 4, reps: 12, weight: 0, desc: 'Kéo xà ngực chạm xà.' },
+              { id: 5, name: 'Plank', category: 'Bụng • Core', sets: 4, reps: 60, weight: 0, isTimeBased: true, desc: 'Tăng sức bền core.' }
+            ]
+          },
+          {
+            id: 'm2_s3',
+            sessionName: 'Buổi 8: Chân & Đùi sau',
+            duration: 50,
+            kcal: 490,
+            completed: false,
+            exercises: [
+              { id: 2, name: 'Squats', category: 'Đùi • Barbell', sets: 5, reps: 10, weight: 85, desc: 'Squat gánh tạ sâu.' }
+            ]
+          },
+          {
+            id: 'm2_s4',
+            sessionName: 'Buổi 9: Vai & Ngực trên',
+            duration: 40,
+            kcal: 390,
+            completed: false,
+            exercises: [
+              { id: 4, name: 'Dumbbell Shoulder Press', category: 'Vai • Dumbbell', sets: 4, reps: 12, weight: 18, desc: 'Tập trung cơ vai trước.' }
+            ]
+          },
+          {
+            id: 'm2_s5',
+            sessionName: 'Buổi 10: Toàn thân Bứt tốc',
+            duration: 55,
+            kcal: 510,
+            completed: false,
+            exercises: [
+              { id: 1, name: 'Bench Press', category: 'Ngực • Barbell', sets: 4, reps: 10, weight: 65, desc: 'Đẩy ngực toàn lực.' },
+              { id: 2, name: 'Squats', category: 'Đùi • Barbell', sets: 4, reps: 10, weight: 85, desc: 'Squat bứt tốc.' }
+            ]
+          }
+        ]
+      },
+      {
+        weekNum: 3,
+        title: 'Tuần 3: Đột phá sức mạnh',
+        sessions: [
+          {
+            id: 'm3_s1',
+            sessionName: 'Buổi 11: Ngực & Tay sau Max Out',
+            duration: 50,
+            kcal: 470,
+            completed: false,
+            exercises: [
+              { id: 1, name: 'Bench Press', category: 'Ngực • Barbell', sets: 5, reps: 8, weight: 70, desc: 'Đẩy tạ tối đa sức mạnh.' }
+            ]
+          },
+          {
+            id: 'm3_s2',
+            sessionName: 'Buổi 12: Lưng & Tay trước Siết cơ',
+            duration: 45,
+            kcal: 420,
+            completed: false,
+            exercises: [
+              { id: 3, name: 'Pull-ups', category: 'Lưng • Bodyweight', sets: 5, reps: 10, weight: 0, desc: 'Kéo xà ngực nâng cao.' }
+            ]
+          }
+        ]
+      },
+      {
+        weekNum: 4,
+        title: 'Tuần 4: Siết cơ & Hoàn thiện',
+        sessions: [
+          {
+            id: 'm4_s1',
+            sessionName: 'Buổi 16: Tổng lực Ngực & Vai',
+            duration: 50,
+            kcal: 480,
+            completed: false,
+            exercises: [
+              { id: 1, name: 'Bench Press', category: 'Ngực • Barbell', sets: 5, reps: 10, weight: 70, desc: 'Đẩy ngực hoàn thiện.' }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  'shred_4weeks': {
+    id: 'shred_4weeks',
+    title: 'Siết mỡ nâng cao',
+    subtitle: '4 buổi/tuần • 16 buổi tập tổng cộng',
+    progress: 12,
+    completedSessions: 2,
+    totalSessions: 16,
+    weeks: [
+      {
+        weekNum: 1,
+        title: 'Tuần 1: Kích hoạt đốt calo',
+        sessions: [
+          {
+            id: 's1_s1',
+            sessionName: 'Buổi 1: Cardio & Ngực Đốt calo',
+            duration: 40,
+            kcal: 400,
+            completed: true,
+            exercises: [
+              { id: 1, name: 'Bench Press', category: 'Ngực • Barbell', sets: 4, reps: 15, weight: 50, desc: 'Đẩy tạ ngực nhẹ hơn, rep nhiều để đốt calo.' }
+            ]
+          },
+          {
+            id: 's1_s2',
+            sessionName: 'Buổi 2: Chân & HIIT bứt tốc',
+            duration: 45,
+            kcal: 460,
+            completed: true,
+            exercises: [
+              { id: 2, name: 'Squats', category: 'Đùi • Barbell', sets: 4, reps: 15, weight: 60, desc: 'Squat tốc độ nhịp nhàng.' }
+            ]
+          },
+          {
+            id: 's1_s3',
+            sessionName: 'Buổi 3: Lưng & Core Siết mỡ',
+            duration: 40,
+            kcal: 390,
+            completed: false,
+            isCurrent: true,
+            exercises: [
+              { id: 3, name: 'Pull-ups', category: 'Lưng • Bodyweight', sets: 4, reps: 10, weight: 0, desc: 'Kéo xà đốt calo.' }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+};
+
 export default function Workouts({ onWorkoutComplete, setViewParent }) {
-  // Routing view state: 'hub', 'gym_hub', 'home_hub', 'details', 'player', 'summary'
+  // Routing view state: 'hub', 'gym_hub', 'home_hub', 'program_sessions', 'details', 'player', 'summary'
   const [view, setViewInternal] = useState('hub');
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -33,7 +258,12 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
     }
   };
   
-  // Selection states
+  // Program selection state
+  const [selectedProgram, setSelectedProgram] = useState(mockPrograms['muscle_4weeks']);
+  const [programPrevView, setProgramPrevView] = useState('gym_hub');
+  const [selectedWeek, setSelectedWeek] = useState(2);
+
+  // Routine & exercise selection states
   const [selectedRoutineTitle, setSelectedRoutineTitle] = useState('Lộ trình tăng cơ 4 tuần');
   const [selectedRoutineExercises, setSelectedRoutineExercises] = useState(mockExercises);
   const [selectedRoutineKcal, setSelectedRoutineKcal] = useState(450);
@@ -77,6 +307,14 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
   const homeDrag = attachDragEvents(homeScrollRef);
 
   const [detailsPrevView, setDetailsPrevView] = useState('gym_hub');
+
+  const openProgramSessions = (programId, fromView = 'gym_hub') => {
+    const prog = mockPrograms[programId] || mockPrograms['muscle_4weeks'];
+    setSelectedProgram(prog);
+    setProgramPrevView(fromView);
+    setSelectedWeek(2);
+    setView('program_sessions');
+  };
 
   const openRoutineDetails = (title, exercises, kcal, fromView = 'gym_hub') => {
     setSelectedRoutineTitle(title);
@@ -303,9 +541,7 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
         <div ref={gymScrollRef} className="horizontal-scroll-row" {...gymDrag} style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '12px', scrollbarWidth: 'none', marginBottom: '16px', cursor: 'grab' }}>
           
           {/* Card 1: 4 weeks muscle routine */}
-          <div className="gym-program-card card" onClick={() => {
-            openRoutineDetails('Lộ trình tăng cơ 4 tuần', mockExercises, 450, 'gym_hub');
-          }} style={{ minWidth: '220px', flex: 1, padding: '14px', borderRadius: '16px', border: '1.5px solid #e2e8f0', cursor: 'pointer', background: '#ffffff' }}>
+          <div className="gym-program-card card" onClick={() => openProgramSessions('muscle_4weeks', 'gym_hub')} style={{ minWidth: '220px', flex: 1, padding: '14px', borderRadius: '16px', border: '1.5px solid #e2e8f0', cursor: 'pointer', background: '#ffffff' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
               <span style={{ fontSize: '9px', fontWeight: '800', background: '#ebf3ff', color: '#0056c6', padding: '3px 8px', borderRadius: '99px' }}>PRO</span>
               <span style={{ fontSize: '10px', color: '#64748b', fontWeight: '700' }}>5 buổi/tuần</span>
@@ -318,12 +554,7 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
           </div>
 
           {/* Card 2: Advanced shred */}
-          <div className="gym-program-card card" onClick={() => {
-            openRoutineDetails('Siết mỡ nâng cao', [
-              { id: 1, name: 'Bench Press', category: 'Ngực • Barbell', sets: 4, reps: 15, weight: 50, desc: 'Đẩy tạ ngực với tạ nhẹ hơn, nhiều rep hơn để đốt mỡ.' },
-              { id: 2, name: 'Squats', category: 'Đùi • Barbell', sets: 4, reps: 15, weight: 60, desc: 'Squat nhẹ hơn, nhiều rep để tăng trao đổi chất.' },
-            ], 380, 'gym_hub');
-          }} style={{ minWidth: '220px', flex: 1, padding: '14px', borderRadius: '16px', border: '1.5px solid #e2e8f0', cursor: 'pointer', background: '#ffffff' }}>
+          <div className="gym-program-card card" onClick={() => openProgramSessions('shred_4weeks', 'gym_hub')} style={{ minWidth: '220px', flex: 1, padding: '14px', borderRadius: '16px', border: '1.5px solid #e2e8f0', cursor: 'pointer', background: '#ffffff' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
               <span style={{ fontSize: '9px', fontWeight: '800', background: '#ebf3ff', color: '#0056c6', padding: '3px 8px', borderRadius: '99px' }}>PRO</span>
               <span style={{ fontSize: '10px', color: '#64748b', fontWeight: '700' }}>4 buổi/tuần</span>
@@ -481,6 +712,151 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
           <span style={{ fontSize: '8px', fontWeight: '800', background: '#10b981', color: '#ffffff', padding: '3px 8px', borderRadius: '99px', display: 'inline-block', marginBottom: '8px' }}>CƯỜNG ĐỘ CAO</span>
           <h4 style={{ fontSize: '14.5px', fontWeight: '800', margin: '0 0 4px 0' }}>Đốt mỡ siêu tốc</h4>
           <p style={{ fontSize: '11px', opacity: 0.85, margin: 0 }}>Khó • 25 phút</p>
+        </div>
+
+      </div>
+    );
+  }
+
+  // ================= VIEW 3.5: PROGRAM SESSIONS LIST (Lộ trình -> Buổi tập) =================
+  if (view === 'program_sessions') {
+    const currentWeekObj = selectedProgram.weeks.find(w => w.weekNum === selectedWeek) || selectedProgram.weeks[0];
+
+    return (
+      <div className="workouts-page-v2 program-sessions-view fade-in" style={{ padding: '12px', paddingBottom: '80px' }}>
+        
+        {/* Header row */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+          <button className="back-btn-icon" onClick={() => setView(programPrevView)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+            <ArrowLeft size={18} />
+          </button>
+          <h2 style={{ fontSize: '18px', fontWeight: '850', margin: 0 }}>Chi tiết lộ trình</h2>
+        </div>
+
+        {/* Program Hero Banner */}
+        <div className="program-hero-banner card" style={{
+          background: 'linear-gradient(135deg, #0056c6 0%, #1e40af 100%)',
+          color: '#ffffff',
+          borderRadius: '20px',
+          padding: '18px',
+          marginBottom: '18px',
+          boxShadow: '0 8px 20px rgba(0,86,198,0.2)'
+        }}>
+          <span style={{ fontSize: '9px', fontWeight: '800', background: 'rgba(255,255,255,0.2)', color: '#ffffff', padding: '3px 8px', borderRadius: '99px', display: 'inline-block', marginBottom: '8px' }}>
+            CHƯƠNG TRÌNH PRO
+          </span>
+          <h3 style={{ fontSize: '18px', fontWeight: '900', margin: '0 0 4px 0', color: '#ffffff' }}>{selectedProgram.title}</h3>
+          <p style={{ fontSize: '11.5px', opacity: 0.9, margin: '0 0 14px 0', color: '#ffffff' }}>{selectedProgram.subtitle}</p>
+
+          {/* Progress bar */}
+          <div style={{ background: 'rgba(255,255,255,0.2)', height: '6px', borderRadius: '99px', overflow: 'hidden', marginBottom: '6px' }}>
+            <div style={{ width: `${selectedProgram.progress}%`, height: '100%', background: '#10b981', borderRadius: '99px' }}></div>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10.5px', fontWeight: '750', color: '#ffffff', opacity: 0.95 }}>
+            <span>Tiến độ: {selectedProgram.progress}%</span>
+            <span>{selectedProgram.completedSessions}/{selectedProgram.totalSessions} buổi hoàn thành</span>
+          </div>
+        </div>
+
+        {/* Week Tabs */}
+        <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '6px', marginBottom: '16px', scrollbarWidth: 'none' }}>
+          {selectedProgram.weeks.map((w) => (
+            <button
+              key={w.weekNum}
+              onClick={() => setSelectedWeek(w.weekNum)}
+              style={{
+                padding: '8px 16px',
+                borderRadius: '99px',
+                fontSize: '12px',
+                fontWeight: '800',
+                border: '1.5px solid',
+                borderColor: selectedWeek === w.weekNum ? '#0056c6' : '#e2e8f0',
+                background: selectedWeek === w.weekNum ? '#ebf3ff' : '#ffffff',
+                color: selectedWeek === w.weekNum ? '#0056c6' : '#64748b',
+                cursor: 'pointer',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              Tuần {w.weekNum}
+            </button>
+          ))}
+        </div>
+
+        {/* Week Header */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+          <h4 style={{ fontSize: '14px', fontWeight: '850', color: '#0f172a', margin: 0 }}>
+            {currentWeekObj.title}
+          </h4>
+          <span style={{ fontSize: '11px', color: '#64748b', fontWeight: '700' }}>{currentWeekObj.sessions.length} buổi</span>
+        </div>
+
+        {/* List of Buổi tập (Workout Sessions) */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {currentWeekObj.sessions.map((session, idx) => (
+            <div
+              key={session.id}
+              className="session-card card"
+              onClick={() => openRoutineDetails(session.sessionName, session.exercises, session.kcal, 'program_sessions')}
+              style={{
+                padding: '14px',
+                borderRadius: '16px',
+                border: session.isCurrent ? '2px solid #0056c6' : '1.5px solid #e2e8f0',
+                background: session.isCurrent ? '#f8faff' : '#ffffff',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justify: 'space-between',
+                gap: '12px'
+              }}
+            >
+              <div style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '12px',
+                background: session.completed ? '#d1fae5' : session.isCurrent ? '#ebf3ff' : '#f1f5f9',
+                display: 'flex',
+                alignItems: 'center',
+                justify: 'center',
+                flexShrink: 0
+              }}>
+                {session.completed ? (
+                  <CheckCircle2 size={20} color="#10b981" />
+                ) : session.isCurrent ? (
+                  <Flame size={20} color="#0056c6" fill="#0056c6" />
+                ) : (
+                  <span style={{ fontSize: '13px', fontWeight: '850', color: '#94a3b8' }}>{idx + 1}</span>
+                )}
+              </div>
+
+              <div style={{ flex: 1 }}>
+                <h5 style={{ fontSize: '13.5px', fontWeight: '850', margin: '0 0 2px 0', color: '#0f172a' }}>{session.sessionName}</h5>
+                <div style={{ fontSize: '11px', color: '#64748b', fontWeight: '750', marginBottom: '2px' }}>
+                  <span>{session.duration} phút</span>
+                  <span> • </span>
+                  <span>{session.exercises.length} bài tập</span>
+                  <span> • </span>
+                  <span>{session.kcal} kcal</span>
+                </div>
+                <div style={{ fontSize: '10.5px', color: '#94a3b8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '200px' }}>
+                  Bài: {session.exercises.map(e => e.name).join(', ')}
+                </div>
+              </div>
+
+              <div>
+                {session.completed ? (
+                  <span style={{ fontSize: '10px', fontWeight: '800', background: '#d1fae5', color: '#059669', padding: '4px 8px', borderRadius: '99px' }}>
+                    Đã tập ✅
+                  </span>
+                ) : session.isCurrent ? (
+                  <button className="btn btn-primary" style={{ padding: '6px 12px', fontSize: '11.5px', borderRadius: '10px', fontWeight: '800' }}>
+                    Tập ➔
+                  </button>
+                ) : (
+                  <ChevronRight size={18} color="#94a3b8" />
+                )}
+              </div>
+            </div>
+          ))}
         </div>
 
       </div>
