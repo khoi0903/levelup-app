@@ -324,7 +324,6 @@ export default function MealNutrition({ userName = 'Tâm', personalStats = {}, u
               <div>
                 <span className="meal-eyebrow">Kết quả nhận diện</span>
                 <h3>{analysis.mealName}</h3>
-                {analysisSource && <small className="meal-source-pill">Phân tích bằng {analysisSource}</small>}
               </div>
               <div
                 className="meal-score-ring"

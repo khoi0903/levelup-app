@@ -7046,72 +7046,84 @@ p {
 }
 
 .chat-aura-avatar-v2 {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  background: #ebf3ff;
-  color: #0056c6;
-  font-size: 11px;
+  background: linear-gradient(135deg, #0056c6 0%, #1e40af 100%);
+  color: #ffffff;
+  font-size: 12px;
   font-weight: 900;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 3px 8px rgba(0, 86, 198, 0.25);
 }
 
 .chat-bubble-content-v2 {
-  max-width: 78%;
-  background: #f1f5f9;
-  padding: 10px 14px;
-  border-radius: 16px 16px 16px 4px;
+  max-width: 82%;
+  background: #ffffff;
+  padding: 12px 16px;
+  border-radius: 18px 18px 18px 4px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
 }
 
 .chat-bubble-row-v2.aura .chat-bubble-content-v2 {
   max-width: 88%;
-  background: #f8faff;
-  border: 1px solid #e8f0fe;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
 }
 
 .chat-bubble-row-v2.user .chat-bubble-content-v2 {
-  background: #0056c6;
-  color: #ffffff;
-  border-radius: 16px 16px 4px 16px;
+  background: linear-gradient(135deg, #0056c6 0%, #0284c7 100%);
+  color: #ffffff !important;
+  border-radius: 18px 18px 4px 18px;
+  box-shadow: 0 4px 12px rgba(0, 86, 198, 0.25);
 }
 
 .chat-bubble-text-v2 {
-  font-size: 13px;
+  font-size: 13.5px;
   line-height: 1.55;
-  color: #1e293b;
+  color: #0f172a;
+}
+
+.chat-bubble-row-v2.user .chat-bubble-text-v2 {
+  color: #ffffff !important;
+  font-weight: 600;
 }
 
 .aura-formatted {
-  font-size: 13px;
-  color: #1e293b;
+  font-size: 13.5px;
+  color: #0f172a;
   word-break: break-word;
 }
 
 .chat-bubble-time-v2 {
-  font-size: 8.5px;
-  color: #94a3b8;
+  font-size: 9px;
+  color: #64748b;
   align-self: flex-end;
   margin-top: 4px;
+  font-weight: 600;
 }
 
 .chat-bubble-row-v2.user .chat-bubble-time-v2 {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.85) !important;
 }
 
 .chat-input-bar-v2 {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #f1f5f9;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
   border-radius: 99px;
-  padding: 6px 12px;
+  padding: 6px 14px;
   margin-top: auto;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
 }
 
 .chat-text-input-v2 {
