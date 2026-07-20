@@ -542,8 +542,7 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
           
           {/* Card 1: 4 weeks muscle routine */}
           <div className="gym-program-card card" onClick={() => openProgramSessions('muscle_4weeks', 'gym_hub')} style={{ minWidth: '220px', flex: 1, padding: '14px', borderRadius: '16px', border: '1.5px solid #e2e8f0', cursor: 'pointer', background: '#ffffff' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-              <span style={{ fontSize: '9px', fontWeight: '800', background: '#ebf3ff', color: '#0056c6', padding: '3px 8px', borderRadius: '99px' }}>PRO</span>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: '10px' }}>
               <span style={{ fontSize: '10px', color: '#64748b', fontWeight: '700' }}>5 buổi/tuần</span>
             </div>
             <h4 style={{ fontSize: '14px', fontWeight: '800', margin: '0 0 8px 0', color: '#0f172a' }}>Lộ trình tăng cơ 4 tuần</h4>
@@ -555,8 +554,7 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
 
           {/* Card 2: Advanced shred */}
           <div className="gym-program-card card" onClick={() => openProgramSessions('shred_4weeks', 'gym_hub')} style={{ minWidth: '220px', flex: 1, padding: '14px', borderRadius: '16px', border: '1.5px solid #e2e8f0', cursor: 'pointer', background: '#ffffff' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-              <span style={{ fontSize: '9px', fontWeight: '800', background: '#ebf3ff', color: '#0056c6', padding: '3px 8px', borderRadius: '99px' }}>PRO</span>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: '10px' }}>
               <span style={{ fontSize: '10px', color: '#64748b', fontWeight: '700' }}>4 buổi/tuần</span>
             </div>
             <h4 style={{ fontSize: '14px', fontWeight: '800', margin: '0 0 8px 0', color: '#0f172a' }}>Siết mỡ nâng cao</h4>
@@ -742,9 +740,6 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
           marginBottom: '18px',
           boxShadow: '0 8px 20px rgba(0,86,198,0.2)'
         }}>
-          <span style={{ fontSize: '9px', fontWeight: '800', background: 'rgba(255,255,255,0.2)', color: '#ffffff', padding: '3px 8px', borderRadius: '99px', display: 'inline-block', marginBottom: '8px' }}>
-            CHƯƠNG TRÌNH PRO
-          </span>
           <h3 style={{ fontSize: '18px', fontWeight: '900', margin: '0 0 4px 0', color: '#ffffff' }}>{selectedProgram.title}</h3>
           <p style={{ fontSize: '11.5px', opacity: 0.9, margin: '0 0 14px 0', color: '#ffffff' }}>{selectedProgram.subtitle}</p>
 
