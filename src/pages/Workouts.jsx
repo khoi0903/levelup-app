@@ -792,73 +792,99 @@ export default function Workouts({ onWorkoutComplete, setViewParent }) {
 
         {/* List of Buổi tập (Workout Sessions) */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          {currentWeekObj.sessions.map((session, idx) => (
-            <div
-              key={session.id}
-              className="session-card card"
-              onClick={() => openRoutineDetails(session.sessionName, session.exercises, session.kcal, 'program_sessions')}
-              style={{
-                padding: '14px',
-                borderRadius: '16px',
-                border: session.isCurrent ? '2px solid #0056c6' : '1.5px solid #e2e8f0',
-                background: session.isCurrent ? '#f8faff' : '#ffffff',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justify: 'space-between',
-                gap: '12px'
-              }}
-            >
-              <div style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '12px',
-                background: session.completed ? '#d1fae5' : session.isCurrent ? '#ebf3ff' : '#f1f5f9',
-                display: 'flex',
-                alignItems: 'center',
-                justify: 'center',
-                flexShrink: 0
-              }}>
-                {session.completed ? (
-                  <CheckCircle2 size={20} color="#10b981" />
-                ) : session.isCurrent ? (
-                  <Flame size={20} color="#0056c6" fill="#0056c6" />
-                ) : (
-                  <span style={{ fontSize: '13px', fontWeight: '850', color: '#94a3b8' }}>{idx + 1}</span>
-                )}
-              </div>
+          {(() => {
+            let prevSessionsCount = 0;
+            for (const w of selectedProgram.weeks) {
+              if (w.weekNum < currentWeekObj.weekNum) {
+                prevSessionsCount += w.sessions.length;
+              }
+            }
 
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <h5 style={{ fontSize: '13.5px', fontWeight: '850', margin: '0 0 2px 0', color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  {session.sessionName}
-                </h5>
-                <div style={{ fontSize: '11px', color: '#64748b', fontWeight: '750', marginBottom: '2px', whiteSpace: 'nowrap' }}>
-                  <span>{session.duration} phút</span>
-                  <span> • </span>
-                  <span>{session.exercises.length} bài tập</span>
-                  <span> • </span>
-                  <span>{session.kcal} kcal</span>
-                </div>
-                <div style={{ fontSize: '10.5px', color: '#94a3b8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  Bài: {session.exercises.map(e => e.name).join(', ')}
-                </div>
-              </div>
+            return currentWeekObj.sessions.map((session, idx) => {
+              const sessionNumber = prevSessionsCount + idx + 1;
 
-              <div style={{ flexShrink: 0, whiteSpace: 'nowrap' }}>
-                {session.completed ? (
-                  <span style={{ fontSize: '11px', fontWeight: '800', background: '#d1fae5', color: '#047857', padding: '5px 10px', borderRadius: '99px', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                    Đã tập <CheckCircle2 size={13} color="#047857" />
-                  </span>
-                ) : session.isCurrent ? (
-                  <button className="btn btn-primary" style={{ padding: '6px 14px', fontSize: '11.5px', borderRadius: '10px', fontWeight: '800', whiteSpace: 'nowrap' }}>
-                    Tập ngay ➔
-                  </button>
-                ) : (
-                  <ChevronRight size={18} color="#94a3b8" />
-                )}
-              </div>
-            </div>
-          ))}
+              return (
+                <div
+                  key={session.id}
+                  className="session-card card"
+                  onClick={() => openRoutineDetails(session.sessionName, session.exercises, session.kcal, 'program_sessions')}
+                  style={{
+                    padding: '14px',
+                    borderRadius: '16px',
+                    border: session.isCurrent ? '2px solid #0056c6' : '1.5px solid #e2e8f0',
+                    background: session.isCurrent ? '#f8faff' : '#ffffff',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justify: 'space-between',
+                    gap: '12px'
+                  }}
+                >
+                  {/* Left Box: Ô màu xanh / ô xanh lá chứa icon & số */}
+                  <div style={{
+                    width: '42px',
+                    height: '42px',
+                    borderRadius: '14px',
+                    background: session.completed 
+                      ? '#d1fae5' 
+                      : session.isCurrent 
+                        ? 'linear-gradient(135deg, #0056c6 0%, #1e40af 100%)' 
+                        : '#ebf3ff',
+                    border: session.completed
+                      ? '1.5px solid #a7f3d0'
+                      : session.isCurrent
+                        ? 'none'
+                        : '1.5px solid #bfdbfe',
+                    boxShadow: session.isCurrent ? '0 4px 12px rgba(0,86,198,0.35)' : 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justify: 'center',
+                    flexShrink: 0
+                  }}>
+                    {session.completed ? (
+                      <CheckCircle2 size={22} color="#059669" />
+                    ) : session.isCurrent ? (
+                      <Flame size={20} color="#ffffff" fill="#ffffff" />
+                    ) : (
+                      <span style={{ fontSize: '15px', fontWeight: '850', color: '#0056c6' }}>{sessionNumber}</span>
+                    )}
+                  </div>
+
+                  {/* Middle Content */}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <h5 style={{ fontSize: '14px', fontWeight: '850', margin: '0 0 3px 0', color: '#0f172a', lineHeight: '1.3' }}>
+                      {session.sessionName}
+                    </h5>
+                    <div style={{ fontSize: '11px', color: '#64748b', fontWeight: '750', marginBottom: '2px', whiteSpace: 'nowrap' }}>
+                      <span>{session.duration} phút</span>
+                      <span> • </span>
+                      <span>{session.exercises.length} bài tập</span>
+                      <span> • </span>
+                      <span>{session.kcal} kcal</span>
+                    </div>
+                    <div style={{ fontSize: '10.5px', color: '#94a3b8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      Bài: {session.exercises.map(e => e.name).join(', ')}
+                    </div>
+                  </div>
+
+                  {/* Right Status Badge / Action */}
+                  <div style={{ flexShrink: 0, whiteSpace: 'nowrap' }}>
+                    {session.completed ? (
+                      <span style={{ fontSize: '11px', fontWeight: '800', background: '#d1fae5', color: '#047857', padding: '5px 10px', borderRadius: '99px', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                        Đã tập <CheckCircle2 size={13} color="#047857" />
+                      </span>
+                    ) : session.isCurrent ? (
+                      <button className="btn btn-primary" style={{ padding: '7px 14px', fontSize: '11.5px', borderRadius: '12px', fontWeight: '800', whiteSpace: 'nowrap', boxShadow: '0 4px 10px rgba(0,86,198,0.25)' }}>
+                        Tập ngay ➔
+                      </button>
+                    ) : (
+                      <ChevronRight size={18} color="#94a3b8" />
+                    )}
+                  </div>
+                </div>
+              );
+            });
+          })()}
         </div>
 
       </div>
