@@ -381,9 +381,14 @@ Chỉ trả lời đúng trọng tâm câu hỏi, không tự nhiên liệt kê 
                           );
                         }
 
-                        // Emoji-led section header (line starts with emoji)
-                        const emojiRegex = /^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F)/u;
-                        if (emojiRegex.test(trimmed)) {
+                        // Safe check for emoji-led section header
+                        const firstChar = trimmed.codePointAt(0) || 0;
+                        const isEmojiHeader = (firstChar >= 0x1f300 && firstChar <= 0x1f9ff) ||
+                          (firstChar >= 0x2600 && firstChar <= 0x26ff) ||
+                          (firstChar >= 0x2700 && firstChar <= 0x27bf) ||
+                          (firstChar >= 0x1f600 && firstChar <= 0x1f64f);
+
+                        if (isEmojiHeader) {
                           return (
                             <div key={lineIdx} style={{ fontWeight: '700', marginBottom: '4px', marginTop: lineIdx > 0 ? '8px' : '0', lineHeight: '1.5' }}>
                               {parseBold(trimmed)}
