@@ -1,5 +1,52 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
+
+const activityOptions = ['Chưa tập', '1-2 ngày', '3-4 ngày', '5+ ngày'];
+const workoutDurationOptions = ['15 phút', '30 phút', '45 phút', '60+ phút'];
+const improvementAreaOptions = ['Bụng', 'Tay', 'Ngực', 'Vai', 'Chân', 'Toàn thân'];
+const injuryHistoryOptions = ['Đầu gối', 'Vai', 'Lưng', 'Cổ tay'];
+
+function ChoiceGroup({ options, value, onChange }) {
+  return (
+    <div className="gender-toggle-row personal-choice-grid">
+      {options.map((option) => (
+        <button
+          key={option}
+          type="button"
+          className={`gender-btn ${value === option ? 'active' : ''}`}
+          onClick={() => onChange(option)}
+        >
+          {option}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function MultiChoiceGroup({ options, values, onChange }) {
+  const toggleOption = (option) => {
+    if (values.includes(option)) {
+      onChange(values.filter((item) => item !== option));
+    } else {
+      onChange([...values, option]);
+    }
+  };
+
+  return (
+    <div className="gender-toggle-row personal-choice-grid">
+      {options.map((option) => (
+        <button
+          key={option}
+          type="button"
+          className={`gender-btn ${values.includes(option) ? 'active' : ''}`}
+          onClick={() => toggleOption(option)}
+        >
+          {option}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 export default function PersonalInfo({ stats = {}, onSave, onBack }) {
   const [gender, setGender] = useState(stats.gender || 'Nam');
@@ -13,13 +60,12 @@ export default function PersonalInfo({ stats = {}, onSave, onBack }) {
   
   const [bmi, setBmi] = useState(stats.bmi || 22.9);
   const [restingHeartRate, setRestingHeartRate] = useState(stats.restingHeartRate || 70);
-  const [bodyFat, setBodyFat] = useState(stats.bodyFat || 15);
-  const [musclePercent, setMusclePercent] = useState(stats.musclePercent || 45);
-  const [sleepHours, setSleepHours] = useState(stats.sleepHours || 8);
-  const [waterIntake, setWaterIntake] = useState(stats.waterIntake || 2000);
+  const [improvementAreas, setImprovementAreas] = useState(stats.improvementAreas || ['Bụng']);
+  const [injuryHistory, setInjuryHistory] = useState(stats.injuryHistory || []);
 
   // Newly requested inputs
-  const [activityLevel, setActivityLevel] = useState(stats.activityLevel || 'Trung bình');
+  const [activityLevel, setActivityLevel] = useState(stats.activityLevel || '3-4 ngày');
+  const [workoutDuration, setWorkoutDuration] = useState(stats.workoutDuration || '30 phút');
   const [goal, setGoal] = useState(stats.goal || 'Tăng cơ');
   const [workoutLocation, setWorkoutLocation] = useState(stats.workoutLocation || 'Phòng gym');
 
@@ -45,9 +91,8 @@ export default function PersonalInfo({ stats = {}, onSave, onBack }) {
     onSave({
       gender, age, height, weight,
       chest, waist, hips,
-      bmi, restingHeartRate, bodyFat, musclePercent,
-      sleepHours, waterIntake,
-      activityLevel, goal, workoutLocation
+      bmi, restingHeartRate, improvementAreas, injuryHistory,
+      activityLevel, workoutDuration, goal, workoutLocation
     });
   };
 
@@ -198,50 +243,31 @@ export default function PersonalInfo({ stats = {}, onSave, onBack }) {
           </div>
         </div>
 
-        {/* Fat % and Muscle % */}
-        <div className="stat-double-row">
-          <div className="stat-input-group flex-1">
-            <label className="stat-input-label">Phần trăm mỡ</label>
-            <div className="input-with-unit-box">
-              <input
-                type="number"
-                className="stat-number-input inline-input"
-                value={bodyFat}
-                onChange={(e) => setBodyFat(Number(e.target.value))}
-              />
-              <span className="input-unit-label">%</span>
-            </div>
-          </div>
-
-          <div className="stat-input-group flex-1">
-            <label className="stat-input-label">Phần trăm cơ</label>
-            <div className="input-with-unit-box">
-              <input
-                type="number"
-                className="stat-number-input inline-input"
-                value={musclePercent}
-                onChange={(e) => setMusclePercent(Number(e.target.value))}
-              />
-              <span className="input-unit-label">%</span>
-            </div>
-          </div>
+        {/* Vùng cần cải thiện */}
+        <div className="stat-input-group">
+          <label className="stat-input-label">Vùng cần cải thiện</label>
+          <MultiChoiceGroup
+            options={improvementAreaOptions}
+            values={improvementAreas}
+            onChange={setImprovementAreas}
+          />
         </div>
 
-        {/* Mức độ hoạt động */}
+        {/* Tiền sử chấn thương */}
         <div className="stat-input-group">
-          <label className="stat-input-label">Mức độ hoạt động</label>
-          <select
-            value={activityLevel}
-            onChange={(e) => setActivityLevel(e.target.value)}
-            className="stat-number-input"
-            style={{ width: '100%', height: '44px', background: '#ffffff', border: '1.5px solid #e2e8f0', borderRadius: '12px', padding: '0 12px', fontSize: '13.5px', fontWeight: '800', color: '#0f172a', cursor: 'pointer', outline: 'none' }}
-          >
-            <option value="Ít vận động">Ít vận động</option>
-            <option value="Vận động nhẹ">Vận động nhẹ</option>
-            <option value="Trung bình">Trung bình (Bình thường)</option>
-            <option value="Năng động">Năng động</option>
-            <option value="Rất năng động">Rất năng động</option>
-          </select>
+          <label className="stat-input-label">Tiền sử chấn thương</label>
+          <MultiChoiceGroup
+            options={injuryHistoryOptions}
+            values={injuryHistory}
+            onChange={setInjuryHistory}
+          />
+        </div>
+
+        {/* Mức độ vận động hiện tại */}
+        <div className="stat-input-group">
+          <label className="stat-input-label">Mức độ vận động hiện tại</label>
+          <span className="stat-helper-text">Bạn tập bao nhiêu ngày/tuần?</span>
+          <ChoiceGroup options={activityOptions} value={activityLevel} onChange={setActivityLevel} />
         </div>
 
         {/* Mục tiêu cá nhân */}
@@ -277,33 +303,10 @@ export default function PersonalInfo({ stats = {}, onSave, onBack }) {
           </select>
         </div>
 
-        {/* Sleep Hours and Water Intake */}
-        <div className="stat-double-row">
-          <div className="stat-input-group flex-1">
-            <label className="stat-input-label">Thời gian ngủ</label>
-            <div className="input-with-unit-box">
-              <input
-                type="number"
-                className="stat-number-input inline-input"
-                value={sleepHours}
-                onChange={(e) => setSleepHours(Number(e.target.value))}
-              />
-              <span className="input-unit-label">giờ</span>
-            </div>
-          </div>
-
-          <div className="stat-input-group flex-1">
-            <label className="stat-input-label">Lượng nước</label>
-            <div className="input-with-unit-box">
-              <input
-                type="number"
-                className="stat-number-input inline-input"
-                value={waterIntake}
-                onChange={(e) => setWaterIntake(Number(e.target.value))}
-              />
-              <span className="input-unit-label">ml</span>
-            </div>
-          </div>
+        {/* Thời gian có thể tập */}
+        <div className="stat-input-group">
+          <label className="stat-input-label">Thời gian có thể tập</label>
+          <ChoiceGroup options={workoutDurationOptions} value={workoutDuration} onChange={setWorkoutDuration} />
         </div>
 
       </div>

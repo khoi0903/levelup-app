@@ -286,8 +286,8 @@ export default function AICoach({ userName = 'Tâm', personalStats = {}, userGoa
               <span className="spec-val">{personalStats.bmi || 23.4}</span>
             </div>
             <div className="spec-item">
-              <span className="spec-lbl">Mỡ cơ thể</span>
-              <span className="spec-val">{personalStats.bodyFat || 18}%</span>
+              <span className="spec-lbl">Cải thiện</span>
+              <span className="spec-val">{personalStats.improvementAreas?.[0] || 'Bụng'}</span>
             </div>
           </div>
 

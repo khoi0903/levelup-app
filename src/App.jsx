@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import MobileFrame from './components/MobileFrame';
-import Header from './components/Header';
 import BottomNav from './components/BottomNav';
 import Onboarding from './pages/Onboarding';
 import Pricing from './pages/Pricing';
@@ -9,6 +8,7 @@ import ScheduleSetup from './pages/ScheduleSetup';
 import Dashboard from './pages/Dashboard';
 import Workouts from './pages/Workouts';
 import AICoach from './pages/AICoach';
+import MealNutrition from './pages/MealNutrition';
 import Community from './pages/Community';
 import Progress from './pages/Progress';
 import Profile from './pages/Profile';
@@ -20,7 +20,7 @@ import './App.css';
 
 export default function App() {
   // Global States
-  const [isOnboarded, setIsOnboarded] = useState(false);
+  const [, setIsOnboarded] = useState(false);
   const [userGoal, setUserGoal] = useState(null);
   const [currentPlan, setCurrentPlan] = useState('free');
   const [activePage, setActivePage] = useState('welcome'); // welcome, login, onboarding, pricing, dashboard, etc.
@@ -46,11 +46,10 @@ export default function App() {
     hips: 95,
     bmi: 22.9,
     restingHeartRate: 70,
-    bodyFat: 15,
-    musclePercent: 45,
-    sleepHours: 8,
-    waterIntake: 2000,
-    activityLevel: 'Trung bình',
+    improvementAreas: ['Bụng'],
+    injuryHistory: [],
+    activityLevel: '3-4 ngày',
+    workoutDuration: '30 phút',
     goal: 'Tăng cơ',
     workoutLocation: 'Phòng gym'
   });
@@ -69,11 +68,7 @@ export default function App() {
 
   const handlePricingSelect = (plan) => {
     setCurrentPlan(plan);
-    if (isOnboarded) {
-      setActivePage('profile');
-    } else {
-      setActivePage('health_sync');
-    }
+    setActivePage('health_sync');
   };
 
   const handlePersonalInfoSave = (stats) => {
@@ -152,12 +147,14 @@ export default function App() {
         hips: 95,
         bmi: 22.9,
         restingHeartRate: 70,
-        bodyFat: 15,
-        musclePercent: 45,
+        improvementAreas: ['Bụng'],
+        injuryHistory: [],
         caloriesIn: 2000,
         caloriesOut: 2200,
-        sleepHours: 8,
-        waterIntake: 2000
+        activityLevel: '3-4 ngày',
+        workoutDuration: '30 phút',
+        goal: 'Tăng cơ',
+        workoutLocation: 'Phòng gym'
       });
     }
   };
@@ -257,6 +254,15 @@ export default function App() {
         return <Workouts onWorkoutComplete={handleWorkoutComplete} setViewParent={setWorkoutsSubView} />;
       case 'coach':
         return <AICoach userName={userName} personalStats={personalStats} userGoal={userGoal} isDark={isDark} />;
+      case 'nutrition':
+        return (
+          <MealNutrition
+            userName={userName}
+            personalStats={personalStats}
+            userGoal={userGoal}
+            setActivePage={setActivePage}
+          />
+        );
       case 'community':
         return <Community userName={userName} userXp={xp} />;
       case 'progress':
@@ -323,6 +329,7 @@ export default function App() {
         <button className={`demo-chip ${activePage === 'health_sync' ? 'active' : ''}`} onClick={() => setActivePage('health_sync')}>6. Sức khỏe (3/4)</button>
         <button className={`demo-chip ${activePage === 'schedule_setup' ? 'active' : ''}`} onClick={() => setActivePage('schedule_setup')}>7. Lịch tập (4/4)</button>
         <button className={`demo-chip ${activePage === 'dashboard' ? 'active' : ''}`} onClick={() => { setIsOnboarded(true); setActivePage('dashboard'); }}>8. Dashboard</button>
+        <button className={`demo-chip ${activePage === 'nutrition' ? 'active' : ''}`} onClick={() => { setIsOnboarded(true); setActivePage('nutrition'); }}>9. Dinh dưỡng AI</button>
       </div>
 
       <MobileFrame isDark={isDark}>

@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { 
   Award, Flame, Zap, Shield, BookOpen, Target, LogOut, Lock, 
   ChevronRight, Swords, Dna, Settings, ArrowLeft, Volume2, Sparkles, X, Check,
   Calendar, Moon, Bell, RefreshCw, CreditCard, TrendingUp
 } from 'lucide-react';
 
+const improvementAreaOptions = ['Bụng', 'Tay', 'Ngực', 'Vai', 'Chân', 'Toàn thân'];
+const injuryHistoryOptions = ['Đầu gối', 'Vai', 'Lưng', 'Cổ tay'];
+
 export default function Profile({
   userName = 'Nguyễn Chu Thiện Tâm',
   userGoal = 'consistency',
   currentPlan = 'pro',
   xp = 850,
-  level = 4,
   onResetOnboarding,
   onLogout,
   setActivePage,
@@ -20,7 +22,6 @@ export default function Profile({
   coachVoice = 'empathetic',
   isDark = false,
   notificationsEnabled = true,
-  soundsEnabled = false,
   personalStats = {}
 }) {
   const [showSettings, setShowSettings] = useState(false);
@@ -295,30 +296,73 @@ export default function Profile({
               />
             </div>
 
-            {/* Phần trăm mỡ */}
+            {/* Vùng cần cải thiện */}
             <div className="goal-card-box-v2" style={{ cursor: 'default' }}>
-              <div className="goal-card-left-v2">
-                <span className="goal-name-text-v2" style={{ fontSize: '13px' }}>Phần trăm mỡ (%)</span>
+              <div style={{ width: '100%' }}>
+                <span className="goal-name-text-v2" style={{ fontSize: '13px' }}>Vùng cần cải thiện</span>
+                <div className="profile-chip-grid">
+                  {improvementAreaOptions.map((area) => {
+                    const currentAreas = personalStats.improvementAreas || [];
+                    const isSelected = currentAreas.includes(area);
+                    return (
+                      <button
+                        key={area}
+                        type="button"
+                        className={`profile-choice-chip ${isSelected ? 'active' : ''}`}
+                        onClick={() => {
+                          if (onUpdateSettings) {
+                            const nextAreas = isSelected
+                              ? currentAreas.filter((item) => item !== area)
+                              : [...currentAreas, area];
+                            onUpdateSettings('personalStats', { ...personalStats, improvementAreas: nextAreas });
+                          }
+                        }}
+                      >
+                        {area}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-              <input
-                type="number"
-                value={personalStats.bodyFat || 15}
-                onChange={(e) => {
-                  if (onUpdateSettings) {
-                    onUpdateSettings('personalStats', { ...personalStats, bodyFat: Number(e.target.value) });
-                  }
-                }}
-                style={{ width: '60px', textAlign: 'right', border: 'none', background: 'transparent', fontSize: '13px', fontWeight: '800', color: '#0f172a', outline: 'none' }}
-              />
             </div>
 
-            {/* Mức độ hoạt động */}
+            {/* Tiền sử chấn thương */}
+            <div className="goal-card-box-v2" style={{ cursor: 'default' }}>
+              <div style={{ width: '100%' }}>
+                <span className="goal-name-text-v2" style={{ fontSize: '13px' }}>Tiền sử chấn thương</span>
+                <div className="profile-chip-grid">
+                  {injuryHistoryOptions.map((injury) => {
+                    const currentInjuries = personalStats.injuryHistory || [];
+                    const isSelected = currentInjuries.includes(injury);
+                    return (
+                      <button
+                        key={injury}
+                        type="button"
+                        className={`profile-choice-chip ${isSelected ? 'active' : ''}`}
+                        onClick={() => {
+                          if (onUpdateSettings) {
+                            const nextInjuries = isSelected
+                              ? currentInjuries.filter((item) => item !== injury)
+                              : [...currentInjuries, injury];
+                            onUpdateSettings('personalStats', { ...personalStats, injuryHistory: nextInjuries });
+                          }
+                        }}
+                      >
+                        {injury}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Mức độ vận động hiện tại */}
             <div className="goal-card-box-v2" style={{ cursor: 'default' }}>
               <div className="goal-card-left-v2">
-                <span className="goal-name-text-v2" style={{ fontSize: '13px' }}>Mức độ hoạt động</span>
+                <span className="goal-name-text-v2" style={{ fontSize: '13px' }}>Ngày tập/tuần</span>
               </div>
               <select
-                value={personalStats.activityLevel || 'Trung bình'}
+                value={personalStats.activityLevel || '3-4 ngày'}
                 onChange={(e) => {
                   if (onUpdateSettings) {
                     onUpdateSettings('personalStats', { ...personalStats, activityLevel: e.target.value });
@@ -326,11 +370,31 @@ export default function Profile({
                 }}
                 style={{ border: 'none', background: 'transparent', fontSize: '13px', fontWeight: '800', color: '#0f172a', outline: 'none', cursor: 'pointer', textAlign: 'right' }}
               >
-                <option value="Ít vận động">Ít vận động</option>
-                <option value="Vận động nhẹ">Vận động nhẹ</option>
-                <option value="Trung bình">Trung bình</option>
-                <option value="Năng động">Năng động</option>
-                <option value="Rất năng động">Rất năng động</option>
+                <option value="Chưa tập">Chưa tập</option>
+                <option value="1-2 ngày">1-2 ngày</option>
+                <option value="3-4 ngày">3-4 ngày</option>
+                <option value="5+ ngày">5+ ngày</option>
+              </select>
+            </div>
+
+            {/* Thời gian có thể tập */}
+            <div className="goal-card-box-v2" style={{ cursor: 'default' }}>
+              <div className="goal-card-left-v2">
+                <span className="goal-name-text-v2" style={{ fontSize: '13px' }}>Thời gian có thể tập</span>
+              </div>
+              <select
+                value={personalStats.workoutDuration || '30 phút'}
+                onChange={(e) => {
+                  if (onUpdateSettings) {
+                    onUpdateSettings('personalStats', { ...personalStats, workoutDuration: e.target.value });
+                  }
+                }}
+                style={{ border: 'none', background: 'transparent', fontSize: '13px', fontWeight: '800', color: '#0f172a', outline: 'none', cursor: 'pointer', textAlign: 'right' }}
+              >
+                <option value="15 phút">15 phút</option>
+                <option value="30 phút">30 phút</option>
+                <option value="45 phút">45 phút</option>
+                <option value="60+ phút">60+ phút</option>
               </select>
             </div>
 
