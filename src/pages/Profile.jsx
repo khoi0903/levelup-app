@@ -28,6 +28,25 @@ export default function Profile({
   const [showFinanceModal, setShowFinanceModal] = useState(false);
   const [tempGoal, setTempGoal] = useState(userGoal);
 
+  // Timepicker modal states
+  const [showTimeModal, setShowTimeModal] = useState(false);
+  const [tempHour, setTempHour] = useState('06');
+  const [tempMinute, setTempMinute] = useState('00');
+  const [tempPeriod, setTempPeriod] = useState('SA');
+
+  const openTimePicker = () => {
+    const parts = reminderTime.split(' ');
+    if (parts[0]) {
+      const hm = parts[0].split(':');
+      if (hm[0]) setTempHour(hm[0]);
+      if (hm[1]) setTempMinute(hm[1]);
+    }
+    if (parts[1]) {
+      setTempPeriod(parts[1]);
+    }
+    setShowTimeModal(true);
+  };
+
   const goalNames = {
     consistency: 'Xây dựng kỉ luật',
     energy: 'Tăng cường năng lượng',
@@ -116,30 +135,19 @@ export default function Profile({
             </div>
 
             {/* Reminder Time */}
-            <div className="goal-card-box-v2" style={{ cursor: 'default' }}>
+            <div className="goal-card-box-v2" onClick={openTimePicker} style={{ cursor: 'pointer' }}>
               <div className="goal-card-left-v2">
                 <div className="goal-icon-circle-v2">
                   <Calendar size={16} color="#0056C6" />
                 </div>
                 <div>
                   <span className="sub-lbl-v2" style={{ display: 'block', fontSize: '9px' }}>NHẮC NHỜ HÀNG NGÀY</span>
-                  <input
-                    type="time"
-                    className="reminder-time-input"
-                    value={reminderTime}
-                    onChange={(e) => onUpdateSettings && onUpdateSettings('reminderTime', e.target.value)}
-                    style={{
-                      border: 'none',
-                      background: 'transparent',
-                      fontSize: '13px',
-                      fontWeight: '800',
-                      color: '#0f172a',
-                      outline: 'none',
-                      padding: 0
-                    }}
-                  />
+                  <span style={{ fontSize: '13px', fontWeight: '800', color: '#0f172a' }}>{reminderTime}</span>
                 </div>
               </div>
+              <span style={{ fontSize: '11.5px', color: '#0056C6', fontWeight: '800', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                Chọn <ChevronRight size={14} />
+              </span>
             </div>
 
             {/* Coach Voice */}
@@ -693,6 +701,77 @@ export default function Profile({
 
             <button className="btn btn-primary w-full" onClick={handleSaveGoal}>
               Lưu mục tiêu
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Custom Time Picker Modal Overlay */}
+      {showTimeModal && (
+        <div className="modal-overlay" style={{
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(15, 23, 42, 0.65)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
+        }}>
+          <div className="modal-content-card" style={{
+            width: '280px', background: '#ffffff', borderRadius: '24px', padding: '20px',
+            boxShadow: '0 10px 25px rgba(0,0,0,0.2)', display: 'flex', flexDirection: 'column', gap: '16px'
+          }}>
+            {/* Modal Header */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: '15px', fontWeight: '850', color: '#0f172a' }}>Chọn giờ nhắc nhở</span>
+              <button onClick={() => setShowTimeModal(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: '#64748b' }}>
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Time columns selectors */}
+            <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+              
+              {/* Hour Select */}
+              <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                <span style={{ fontSize: '9px', fontWeight: '800', color: '#94a3b8', textAlign: 'center', marginBottom: '4px' }}>GIỜ</span>
+                <select value={tempHour} onChange={(e) => setTempHour(e.target.value)} style={{
+                  padding: '10px', borderRadius: '12px', border: '1.5px solid #e2e8f0', fontSize: '14px', fontWeight: '800', color: '#0f172a', outline: 'none', background: '#ffffff'
+                }}>
+                  {Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0')).map(h => (
+                    <option key={h} value={h}>{h}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Minute Select */}
+              <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                <span style={{ fontSize: '9px', fontWeight: '800', color: '#94a3b8', textAlign: 'center', marginBottom: '4px' }}>PHÚT</span>
+                <select value={tempMinute} onChange={(e) => setTempMinute(e.target.value)} style={{
+                  padding: '10px', borderRadius: '12px', border: '1.5px solid #e2e8f0', fontSize: '14px', fontWeight: '800', color: '#0f172a', outline: 'none', background: '#ffffff'
+                }}>
+                  {Array.from({ length: 12 }, (_, i) => String(i * 5).padStart(2, '0')).map(m => (
+                    <option key={m} value={m}>{m}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Period Select */}
+              <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                <span style={{ fontSize: '9px', fontWeight: '800', color: '#94a3b8', textAlign: 'center', marginBottom: '4px' }}>BUỔI</span>
+                <select value={tempPeriod} onChange={(e) => setTempPeriod(e.target.value)} style={{
+                  padding: '10px', borderRadius: '12px', border: '1.5px solid #e2e8f0', fontSize: '14px', fontWeight: '800', color: '#0f172a', outline: 'none', background: '#ffffff'
+                }}>
+                  <option value="SA">SA (AM)</option>
+                  <option value="CH">CH (PM)</option>
+                </select>
+              </div>
+
+            </div>
+
+            {/* Confirm button */}
+            <button className="btn btn-primary" onClick={() => {
+              if (onUpdateSettings) {
+                onUpdateSettings('reminderTime', `${tempHour}:${tempMinute} ${tempPeriod}`);
+              }
+              setShowTimeModal(false);
+            }} style={{ marginTop: '8px' }}>
+              Xác nhận
             </button>
           </div>
         </div>
