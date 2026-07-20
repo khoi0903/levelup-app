@@ -7450,3 +7450,101 @@ p {
 .dark-theme .chat-bubble-time-v2 {
   color: #64748b !important;
 }
+
+/* Comprehensive Dark Mode Rules for All Pages & Onboarding Flow */
+.dark-theme {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+.dark-theme .card,
+.dark-theme .figma-reason-card,
+.dark-theme .figma-perm-card,
+.dark-theme .figma-calendar-card,
+.dark-theme .figma-reminder-card,
+.dark-theme .figma-plan-card,
+.dark-theme .figma-total-stats-card,
+.dark-theme .figma-achievement-card,
+.dark-theme .figma-level-badge-card,
+.dark-theme .privilege-card,
+.dark-theme .figma-calendar-picker-card,
+.dark-theme .figma-trophy-message-box,
+.dark-theme .figma-voice-selector-card,
+.dark-theme .figma-recommend-workout-card,
+.dark-theme .figma-performance-preview-card,
+.dark-theme .coach-welcome-card {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+.dark-theme h1,
+.dark-theme h2,
+.dark-theme h3,
+.dark-theme h4,
+.dark-theme h5,
+.dark-theme h6,
+.dark-theme .figma-health-title,
+.dark-theme .figma-schedule-title,
+.dark-theme .pricing-title,
+.dark-theme .figma-progress-title,
+.dark-theme .figma-plan-title:not(.text-white),
+.dark-theme .total-value-num,
+.dark-theme .level-badge-main-title,
+.dark-theme .month-year-label,
+.dark-theme .metric-value-bold,
+.dark-theme .trophy-box-title,
+.dark-theme .coach-name-v2,
+.dark-theme .recommend-title,
+.dark-theme .voice-name,
+.dark-theme .chat-title-main,
+.dark-theme .performance-title-v2,
+.dark-theme .gauge-score-num,
+.dark-theme .date-day-num {
+  color: #ffffff !important;
+}
+
+.dark-theme p,
+.dark-theme span,
+.dark-theme li,
+.dark-theme .figma-health-sub,
+.dark-theme .figma-schedule-sub,
+.dark-theme .pricing-subtitle,
+.dark-theme .streak-card-subtitle,
+.dark-theme .challenge-card-sub,
+.dark-theme .workout-thumb-desc,
+.dark-theme .stat-card-label,
+.dark-theme .heart-label,
+.dark-theme .stat-card-unit,
+.dark-theme .heart-unit,
+.dark-theme .date-day-name,
+.dark-theme .reminder-title,
+.dark-theme .reminder-sub,
+.dark-theme .ach-desc,
+.dark-theme .priv-sub,
+.dark-theme .gauge-assessment-text,
+.dark-theme .rec-lbl,
+.dark-theme .recommend-desc,
+.dark-theme .voice-style,
+.dark-theme .spec-lbl,
+.dark-theme .spec-val {
+  color: #cbd5e1 !important;
+}
+
+/* Callout box of Health Permission Page in Dark Theme */
+.dark-theme .figma-reason-card {
+  background-color: rgba(30, 86, 198, 0.15) !important;
+  border: 1.5px solid rgba(30, 86, 198, 0.3) !important;
+}
+.dark-theme .figma-reason-card .reason-title-bold {
+  color: #60a5fa !important;
+}
+
+/* Input fields of Welcome/Login/Register Page in Dark Theme */
+.dark-theme input[type="text"],
+.dark-theme input[type="email"],
+.dark-theme input[type="password"] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #ffffff !important;
+}
