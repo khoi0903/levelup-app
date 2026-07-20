@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { 
   Plus, CheckCircle2, Activity, Lightbulb, 
-  BarChart2, Heart, Moon, Footprints, Utensils, Droplets 
+  BarChart2, Heart, Moon, Footprints, Utensils, Droplets, ArrowLeft
 } from 'lucide-react';
 
-export default function HealthSync({ onNext, onSkip }) {
+export default function HealthSync({ onNext, onSkip, onBack }) {
   // Toggle states matching Figma Screen 3
   const [permissions, setPermissions] = useState({
     bodyComp: true,
@@ -74,7 +74,9 @@ export default function HealthSync({ onNext, onSkip }) {
     <div className="onboarding-screen fade-in">
       {/* Top Header */}
       <div className="onboarding-header-nav-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px 8px 20px', boxSizing: 'border-box' }}>
-        <div style={{ width: 48 }}></div> {/* Spacer to center the title progress section */}
+        <button className="back-btn-icon" onClick={onBack} aria-label="Quay lại" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', width: 48 }}>
+          <ArrowLeft size={18} />
+        </button>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
           <span className="step-indicator-text" style={{ fontSize: '10px', fontWeight: '800', color: '#94a3b8', letterSpacing: '0.05em' }}>BƯỚC 3/5</span>
           <div className="figma-dots-indicator" style={{ display: 'flex', gap: '4px' }}>
