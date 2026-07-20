@@ -7577,3 +7577,502 @@ p {
   background-color: #334155 !important;
   color: #f8fafc !important;
 }
+
+/* Profile V2 Design Styles */
+.profile-page-v2 {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+}
+
+.profile-header-v2 {
+  margin-bottom: 16px;
+}
+
+.profile-brand-title {
+  font-size: 20px;
+  font-weight: 900;
+  color: #0056C6;
+  margin: 0;
+}
+
+.profile-user-card-v2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.avatar-container-v2 {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin-bottom: 12px;
+}
+
+.avatar-img-v2 {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.avatar-edit-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #0056C6;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ffffff;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 86, 198, 0.3);
+}
+
+.pencil-icon {
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.profile-name-v2 {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 4px 0;
+}
+
+.profile-join-date {
+  font-size: 11px;
+  color: #64748B;
+  font-weight: 600;
+}
+
+/* Rank Card V2 */
+.rank-card-v2 {
+  background: linear-gradient(135deg, #0056c6 0%, #1d4ed8 100%);
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 86, 198, 0.25);
+  margin-bottom: 12px;
+  transition: transform 0.2s ease;
+}
+
+.rank-card-v2:hover {
+  transform: translateY(-1px);
+}
+
+.rank-left-v2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rank-icon-bg-v2 {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rank-info-v2 {
+  display: flex;
+  flex-direction: column;
+}
+
+.rank-lbl-v2 {
+  font-size: 9px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.05em;
+}
+
+.rank-name-v2 {
+  font-size: 16px;
+  font-weight: 900;
+  color: #ffffff;
+  margin-top: 2px;
+}
+
+/* Subscription Card V2 */
+.sub-card-v2 {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+
+.sub-left-v2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sub-icon-bg-v2 {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ebf3ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sub-info-v2 {
+  display: flex;
+  flex-direction: column;
+}
+
+.sub-lbl-v2 {
+  font-size: 9px;
+  font-weight: 800;
+  color: #64748B;
+  letter-spacing: 0.05em;
+}
+
+.sub-name-v2 {
+  font-size: 15px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-top: 2px;
+}
+
+.sub-price-v2 {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  text-align: right;
+}
+
+.price-val {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #0056C6;
+}
+
+.price-lbl {
+  font-size: 10px;
+  color: #64748B;
+  font-weight: 700;
+}
+
+/* Stats Grid V2 */
+.profile-stats-grid-v2 {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.stat-card-item-v2 {
+  flex: 1;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stat-icon-wrapper-v2 {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-icon-wrapper-v2.kcal-bg {
+  background: #fee2e2;
+}
+
+.stat-icon-wrapper-v2.streak-bg {
+  background: #d1fae5;
+}
+
+.stat-text-wrapper-v2 {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value-v2 {
+  font-size: 15px;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.stat-label-v2 {
+  font-size: 10px;
+  color: #64748B;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+/* Badges section V2 */
+.badges-section-v2 {
+  margin-bottom: 20px;
+}
+
+.badges-header-v2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.badges-title-v2 {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.badges-link-v2 {
+  background: none;
+  border: none;
+  font-size: 11px;
+  color: #0056C6;
+  font-weight: 800;
+  cursor: pointer;
+  padding: 0;
+}
+
+.badges-row-v2 {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.badge-pill-item-v2 {
+  flex: 1;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 10px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.badge-circle-v2 {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+  position: relative;
+}
+
+.badge-circle-v2.blue-circle { background: #ebf3ff; color: #0056C6; }
+.badge-circle-v2.yellow-circle { background: #fef3c7; color: #d97706; }
+.badge-circle-v2.green-circle { background: #d1fae5; color: #059669; }
+.badge-circle-v2.locked-circle { background: #f1f5f9; color: #94a3b8; border: 1.5px dashed #cbd5e1; }
+
+.badge-name-v2 {
+  font-size: 10px;
+  font-weight: 800;
+  color: #334155;
+}
+
+/* Rank Progress tracker card */
+.rank-progress-card-v2 {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+
+.progress-top-row-v2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.progress-lbl-v2 {
+  font-size: 11px;
+  font-weight: 800;
+  color: #64748B;
+}
+
+.progress-val-v2 {
+  font-size: 11px;
+  font-weight: 900;
+  color: #0056C6;
+}
+
+.progress-track-v2 {
+  height: 6px;
+  background: #f1f5f9;
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-fill-v2 {
+  height: 100%;
+  background: #0056C6;
+  border-radius: 99px;
+}
+
+.progress-subtext-v2 {
+  font-size: 9.5px;
+  color: #94a3b8;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* Goal V2 */
+.goal-section-v2 {
+  margin-bottom: 20px;
+}
+
+.goal-title-v2 {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 10px 0;
+}
+
+.goal-card-box-v2 {
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 12px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.goal-card-left-v2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.goal-icon-circle-v2 {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #ebf3ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.goal-name-text-v2 {
+  font-size: 13px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.goal-change-btn-v2 {
+  background: #0056C6;
+  color: #ffffff;
+  border: none;
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.goal-change-btn-v2:hover {
+  background: #004bbb;
+}
+
+/* Logout button */
+.logout-btn-v2 {
+  background: #fff5f5;
+  border: 1.5px solid #fee2e2;
+  border-radius: 16px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #ef4444;
+  font-size: 13px;
+  font-weight: 800;
+  width: 100%;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  margin-bottom: 24px;
+}
+
+.logout-btn-v2:hover {
+  background: #fde8e8;
+}
+
+/* Profile V2 Dark Mode Compatibility Override */
+.dark-theme .profile-name-v2,
+.dark-theme .sub-name-v2,
+.dark-theme .stat-value-v2,
+.dark-theme .badge-name-v2,
+.dark-theme .progress-val-v2,
+.dark-theme .goal-name-text-v2,
+.dark-theme .badges-title-v2,
+.dark-theme .goal-title-v2 {
+  color: #ffffff !important;
+}
+
+.dark-theme .profile-join-date,
+.dark-theme .sub-lbl-v2,
+.dark-theme .price-lbl,
+.dark-theme .stat-label-v2,
+.dark-theme .progress-lbl-v2,
+.dark-theme .progress-subtext-v2 {
+  color: #94a3b8 !important;
+}
+
+.dark-theme .sub-card-v2,
+.dark-theme .stat-card-item-v2,
+.dark-theme .badge-pill-item-v2,
+.dark-theme .rank-progress-card-v2,
+.dark-theme .goal-card-box-v2 {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+.dark-theme .goal-icon-circle-v2,
+.dark-theme .sub-icon-bg-v2 {
+  background: #334155 !important;
+  color: #60a5fa !important;
+}
+
+.dark-theme .badge-circle-v2.blue-circle { background: #334155 !important; color: #60a5fa !important; }
+.dark-theme .badge-circle-v2.yellow-circle { background: #453015 !important; color: #fbbf24 !important; }
+.dark-theme .badge-circle-v2.green-circle { background: #064e3b !important; color: #34d399 !important; }
+.dark-theme .badge-circle-v2.locked-circle { background: #1e293b !important; color: #475569 !important; border-color: #334155 !important; }
+
+.dark-theme .logout-btn-v2 {
+  background: rgba(239, 68, 68, 0.08) !important;
+  border-color: rgba(239, 68, 68, 0.2) !important;
+}
