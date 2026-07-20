@@ -19,11 +19,11 @@ export default function ScheduleSetup({ onComplete, onBack, initialTime = '06:00
     setReminders((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  // Generate 4 weekdays starting from currentWeekStart Monday
+  // Generate 7 weekdays starting from currentWeekStart Monday
   const getWeekDays = (startMonday) => {
     const days = [];
-    const dayNames = ['T2', 'T3', 'T4', 'T5'];
-    for (let i = 0; i < 4; i++) {
+    const dayNames = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
+    for (let i = 0; i < 7; i++) {
       const d = new Date(startMonday);
       d.setDate(startMonday.getDate() + i);
       days.push({

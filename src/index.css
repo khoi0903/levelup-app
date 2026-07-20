@@ -8257,3 +8257,148 @@ p {
 .dark-theme .figma-schedule-sub {
   color: #94a3b8 !important;
 }
+
+/* Step 5 Reminders List Formatting Fixes */
+.figma-reminders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.reminder-toggle-card {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  background: #ffffff !important;
+  border: 1.5px solid #e2e8f0 !important;
+  border-radius: 16px !important;
+  padding: 12px 16px !important;
+  cursor: pointer !important;
+}
+
+.dark-theme .reminder-toggle-card {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+.rem-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.rem-info {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 2px !important;
+}
+
+.rem-title {
+  font-size: 13.5px !important;
+  font-weight: 800 !important;
+  color: #0f172a !important;
+}
+
+.dark-theme .rem-title {
+  color: #ffffff !important;
+}
+
+.rem-time {
+  font-size: 11px !important;
+  color: #64748b !important;
+  font-weight: 700 !important;
+}
+
+.dark-theme .rem-time {
+  color: #94a3b8 !important;
+}
+
+.rem-icon-wrapper {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rem-icon-wrapper.orange { background: #fef3c7; }
+.rem-icon-wrapper.blue { background: #dbeafe; }
+.rem-icon-wrapper.green { background: #d1fae5; }
+
+.dark-theme .rem-icon-wrapper.orange { background: rgba(217, 119, 6, 0.15); }
+.dark-theme .rem-icon-wrapper.blue { background: rgba(0, 86, 198, 0.15); }
+.dark-theme .rem-icon-wrapper.green { background: rgba(16, 185, 129, 0.15); }
+
+/* Step 5 Horizontal Calendar 7-Day Fitting Overrides */
+.figma-dates-row {
+  display: flex !important;
+  justify-content: space-between !important;
+  gap: 4px !important;
+  margin-top: 12px !important;
+}
+
+.figma-date-card {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 6px 2px !important;
+  border-radius: 10px !important;
+  border: 1.5px solid #e2e8f0 !important;
+  background: #ffffff !important;
+  transition: all 0.2s ease !important;
+  min-width: 0 !important;
+}
+
+.dark-theme .figma-date-card {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+.figma-date-card.active {
+  background: #0056c6 !important;
+  border-color: #0056c6 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 10px rgba(0, 86, 198, 0.25) !important;
+}
+
+.figma-date-card .date-day-name {
+  font-size: 9.5px !important;
+  font-weight: 800 !important;
+  color: #64748b !important;
+  margin-bottom: 2px !important;
+}
+
+.dark-theme .figma-date-card .date-day-name {
+  color: #94a3b8 !important;
+}
+
+.figma-date-card.active .date-day-name {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.figma-date-card .date-day-num {
+  font-size: 13.5px !important;
+  font-weight: 900 !important;
+  color: #0f172a !important;
+}
+
+.dark-theme .figma-date-card .date-day-num {
+  color: #ffffff !important;
+}
+
+.figma-date-card.active .date-day-num {
+  color: #ffffff !important;
+}
+
+.date-green-dot {
+  width: 4px !important;
+  height: 4px !important;
+  border-radius: 50% !important;
+  background: #10b981 !important;
+  margin-top: 2px !important;
+}

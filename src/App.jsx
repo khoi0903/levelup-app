@@ -266,6 +266,7 @@ export default function App() {
             activeStreak={activeStreak}
             checkInHistory={checkInHistory}
             onToggleCheckIn={handleToggleCheckIn}
+            setActivePage={setActivePage}
           />
         );
       case 'profile':
