@@ -5086,3 +5086,50 @@ p {
   font-size: 10.5px;
   color: #64748b;
 }
+
+/* Quick Demo Page Switcher Bar */
+.quick-demo-switcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1e293b;
+  padding: 10px 16px;
+  border-radius: 99px;
+  margin-top: 10px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 95vw;
+}
+
+.demo-label {
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 800;
+  margin-right: 4px;
+}
+
+.demo-chip {
+  background: #334155;
+  color: #f8fafc;
+  border: 1px solid #475569;
+  padding: 5px 12px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.demo-chip:hover {
+  background: #475569;
+  border-color: #64748b;
+}
+
+.demo-chip.active {
+  background: #0056c6;
+  color: #ffffff;
+  border-color: #60a5fa;
+  box-shadow: 0 2px 8px rgba(0, 86, 198, 0.5);
+}

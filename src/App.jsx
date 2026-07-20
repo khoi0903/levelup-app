@@ -111,7 +111,7 @@ export default function App() {
       case 'welcome':
         return (
           <Welcome
-            onSignUpEmail={() => setActivePage('register')}
+            onSignUpEmail={() => setActivePage('onboarding')}
             onNavigateToLogin={() => setActivePage('login')}
           />
         );
@@ -130,7 +130,7 @@ export default function App() {
               setIsOnboarded(true);
               setActivePage('dashboard');
             }}
-            onNavigateToSignUp={() => setActivePage('register')}
+            onNavigateToSignUp={() => setActivePage('onboarding')}
             onBack={() => setActivePage('welcome')}
           />
         );
@@ -207,36 +207,57 @@ export default function App() {
           />
         );
       default:
-        return <Dashboard setActivePage={setActivePage} />;
+        return (
+          <Dashboard
+            userName={userName}
+            activeStreak={activeStreak}
+            onStartWorkout={() => setActivePage('workouts')}
+            setActivePage={setActivePage}
+          />
+        );
     }
   };
 
-  const showHeader = isOnboarded && activePage !== 'pricing';
-  const showBottomNav = isOnboarded;
+  const isAuthOrOnboarding = ['welcome', 'login', 'register', 'onboarding', 'pricing', 'health_sync', 'schedule_setup'].includes(activePage);
 
   return (
-    <MobileFrame isDark={isDark}>
-      {showHeader && (
-        <Header
-          xp={xp}
-          maxXp={2000}
-          level={level}
-          setActivePage={setActivePage}
-          isDark={isDark}
-        />
-      )}
-      
-      <div className="app-content">
-        {renderPage()}
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      {/* Quick Demo Page Switcher Bar */}
+      <div className="quick-demo-switcher">
+        <span className="demo-label">Chuyển nhanh màn hình Figma:</span>
+        <button className={`demo-chip ${activePage === 'welcome' ? 'active' : ''}`} onClick={() => setActivePage('welcome')}>1. Welcome</button>
+        <button className={`demo-chip ${activePage === 'login' ? 'active' : ''}`} onClick={() => setActivePage('login')}>2. Login</button>
+        <button className={`demo-chip ${activePage === 'onboarding' ? 'active' : ''}`} onClick={() => setActivePage('onboarding')}>3. Mục tiêu (1/4)</button>
+        <button className={`demo-chip ${activePage === 'pricing' ? 'active' : ''}`} onClick={() => setActivePage('pricing')}>4. Gói dịch vụ (2/4)</button>
+        <button className={`demo-chip ${activePage === 'health_sync' ? 'active' : ''}`} onClick={() => setActivePage('health_sync')}>5. Sức khỏe (3/4)</button>
+        <button className={`demo-chip ${activePage === 'schedule_setup' ? 'active' : ''}`} onClick={() => setActivePage('schedule_setup')}>6. Lịch tập (4/4)</button>
+        <button className={`demo-chip ${activePage === 'dashboard' ? 'active' : ''}`} onClick={() => { setIsOnboarded(true); setActivePage('dashboard'); }}>7. Dashboard</button>
       </div>
 
-      {showBottomNav && (
-        <BottomNav
-          activePage={activePage === 'progress' || activePage === 'pricing' ? 'profile' : activePage}
-          setActivePage={setActivePage}
-          isDark={isDark}
-        />
-      )}
-    </MobileFrame>
+      <MobileFrame isDark={isDark}>
+        {!isAuthOrOnboarding && (
+          <Header
+            userName={userName}
+            userXp={xp}
+            userLevel={level}
+            activeStreak={activeStreak}
+            isDark={isDark}
+            onNotificationClick={() => alert('Không có thông báo mới!')}
+          />
+        )}
+
+        <main className="app-content">
+          {renderPage()}
+        </main>
+
+        {!isAuthOrOnboarding && (
+          <BottomNav
+            activeTab={activePage}
+            setActiveTab={setActivePage}
+            isDark={isDark}
+          />
+        )}
+      </MobileFrame>
+    </div>
   );
 }
