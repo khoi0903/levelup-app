@@ -2,6 +2,34 @@ import React from 'react';
 import { ArrowLeft, Check, Users, Lock, CheckCircle2 } from 'lucide-react';
 
 export default function Pricing({ onSelectPlan, currentPlan = 'free', fromProfile = false, onBack }) {
+  // Mouse drag-to-scroll hooks for easy horizontal swipe of pricing cards
+  const scrollRef = React.useRef(null);
+  const [isDown, setIsDown] = React.useState(false);
+  const [startX, setStartX] = React.useState(0);
+  const [scrollLeftState, setScrollLeftState] = React.useState(0);
+
+  const handleMouseDown = (e) => {
+    setIsDown(true);
+    setStartX(e.pageX - scrollRef.current.offsetLeft);
+    setScrollLeftState(scrollRef.current.scrollLeft);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDown(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDown(false);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startX) * 2; // scroll speed
+    scrollRef.current.scrollLeft = scrollLeftState - walk;
+  };
+
   return (
     <div className="pricing-screen fade-in">
       {/* Header Navigation */}
@@ -22,7 +50,15 @@ export default function Pricing({ onSelectPlan, currentPlan = 'free', fromProfil
       </div>
 
       {/* Plans Stack */}
-      <div className="figma-plans-stack">
+      <div 
+        ref={scrollRef}
+        className="figma-plans-stack"
+        onMouseDown={handleMouseDown}
+        onMouseLeave={handleMouseLeave}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
+        style={{ cursor: isDown ? 'grabbing' : 'grab', userSelect: 'none' }}
+      >
         {/* Card 1: LevelUp Free */}
         <div className="figma-plan-card free-card">
           <h3 className="figma-plan-title">LevelUp Free</h3>

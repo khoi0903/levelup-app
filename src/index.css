@@ -5533,12 +5533,21 @@ p {
 /* Figma Screen 2 Pricing Styles */
 .figma-plans-stack {
   display: flex;
-  flex-direction: column;
-  gap: 14px;
+  flex-direction: row;
+  gap: 16px;
   margin: 16px 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 8px 4px;
+}
+
+.figma-plans-stack::-webkit-scrollbar {
+  display: none;
 }
 
 .figma-plan-card {
+  min-width: 290px;
+  flex-shrink: 0;
   background: #ffffff;
   border: 1.5px solid #e2e8f0;
   border-radius: 20px;
@@ -5546,6 +5555,9 @@ p {
   position: relative;
   transition: all 0.25s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .figma-plan-title {
