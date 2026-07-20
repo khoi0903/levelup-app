@@ -24,6 +24,7 @@ export default function App() {
   const [userGoal, setUserGoal] = useState(null);
   const [currentPlan, setCurrentPlan] = useState('free');
   const [activePage, setActivePage] = useState('welcome'); // welcome, login, onboarding, pricing, dashboard, etc.
+  const [workoutsSubView, setWorkoutsSubView] = useState('hub');
   const [pricingFromProfile, setPricingFromProfile] = useState(false);
   
   // App settings & profile
@@ -252,7 +253,7 @@ export default function App() {
           />
         );
       case 'workouts':
-        return <Workouts onWorkoutComplete={handleWorkoutComplete} />;
+        return <Workouts onWorkoutComplete={handleWorkoutComplete} setViewParent={setWorkoutsSubView} />;
       case 'coach':
         return <AICoach userName={userName} personalStats={personalStats} userGoal={userGoal} isDark={isDark} />;
       case 'community':
@@ -306,6 +307,7 @@ export default function App() {
   };
 
   const isAuthOrOnboarding = ['welcome', 'login', 'register', 'onboarding', 'pricing', 'health_sync', 'personal_info', 'schedule_setup'].includes(activePage);
+  const hideBottomNav = isAuthOrOnboarding || (activePage === 'workouts' && ['details', 'player', 'summary'].includes(workoutsSubView));
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -327,7 +329,7 @@ export default function App() {
           {renderPage()}
         </main>
 
-        {!isAuthOrOnboarding && (
+        {!hideBottomNav && (
           <BottomNav
             activePage={activePage}
             setActivePage={setActivePage}

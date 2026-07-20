@@ -12,10 +12,17 @@ const mockExercises = [
   { id: 5, name: 'Plank', category: 'Bụng • Core', sets: 3, reps: 60, weight: 0, isTimeBased: true, desc: 'Giữ cơ thể thẳng tắp trên khuỷu tay và mũi chân. Xây dựng sức bền cơ bụng.' }
 ];
 
-export default function Workouts({ onWorkoutComplete }) {
+export default function Workouts({ onWorkoutComplete, setViewParent }) {
   // Routing view state: 'hub', 'gym_hub', 'home_hub', 'details', 'player', 'summary'
-  const [view, setView] = useState('hub');
+  const [view, setViewInternal] = useState('hub');
   const [searchTerm, setSearchTerm] = useState('');
+
+  const setView = (newView) => {
+    setViewInternal(newView);
+    if (setViewParent) {
+      setViewParent(newView);
+    }
+  };
   
   // Selection states
   const [selectedRoutineTitle, setSelectedRoutineTitle] = useState('Lộ trình tăng cơ 4 tuần');
