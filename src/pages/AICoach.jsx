@@ -85,12 +85,12 @@ const renderFormattedText = (text) => {
   });
 };
 
-export default function AICoach({ userGoal = 'consistency', isDark }) {
+export default function AICoach({ userName = 'Tâm', userGoal = 'consistency', isDark }) {
   const [messages, setMessages] = useState([
     {
       id: 1,
       sender: 'aura',
-      text: "Chào Alex! Tôi thấy mục tiêu chính của bạn là nâng cao tính kỷ luật tập luyện. Hôm nay là ngày thứ 5 liên tiếp của bạn rồi! Bạn thấy cơ thể thế nào hôm nay?",
+      text: `Chào ${userName}! Tôi thấy mục tiêu chính của bạn là nâng cao tính kỷ luật tập luyện. Hôm nay là ngày thứ 5 liên tiếp của bạn rồi! Bạn thấy cơ thể thế nào hôm nay?`,
       time: '08:00'
     }
   ]);

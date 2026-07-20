@@ -184,7 +184,7 @@ export default function App() {
       case 'workouts':
         return <Workouts onWorkoutComplete={handleWorkoutComplete} />;
       case 'coach':
-        return <AICoach userGoal={userGoal} isDark={isDark} />;
+        return <AICoach userName={userName} userGoal={userGoal} isDark={isDark} />;
       case 'community':
         return <Community userName={userName} userXp={xp} />;
       case 'progress':
