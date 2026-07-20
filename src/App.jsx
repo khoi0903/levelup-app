@@ -46,8 +46,11 @@ export default function App() {
 
   const handlePricingSelect = (plan) => {
     setCurrentPlan(plan);
-    setIsOnboarded(true);
-    setActivePage('dashboard');
+    if (isOnboarded) {
+      setActivePage('profile');
+    } else {
+      setActivePage('health_sync');
+    }
   };
 
   const handleWorkoutComplete = (gainedXp) => {
