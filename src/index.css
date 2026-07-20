@@ -6638,3 +6638,7 @@ p {
   align-items: center;
   justify-content: center;
 }
+
+.center-capsule-item svg {
+  transform: rotate(-45deg);
+}
