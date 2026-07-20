@@ -4473,7 +4473,6 @@ p {
   align-items: center;
   justify-content: center;
   padding: 16px;
-  backdrop-filter: blur(4px);
 }
 
 .modal-content-card {
